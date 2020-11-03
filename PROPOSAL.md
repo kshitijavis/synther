@@ -8,4 +8,6 @@ This project can be split into 3 main steps: Building the underlying piano engin
 
 Some components of the timeline above will likely have to be readjusted. For example, I might be able to build both the GUI and audio engine during week 2, which will allow me to spend more time on implementing my special features (loading and saving). I will also likely be able to implement the loading/saving logic during week 2, as a implement my classes. This will give me even more time during week 3, which I could use to begin working on some "stretch goals."
 
-One interesting 
+One interesting "stretch goal" will be adding a feature that turns _Synther_ into a rhythm game (like _Just Dance_ or _Dance Dance Revolution_). This would involve creating a system where notes fall from the top of the screen and the user plays notes on the keyboard in time with the falling notes. This feature could further be extended to allow users to build their own game files. The user could using _Synther's_ loading feature and then load in the file as a game. 
+
+An easier stretch goal might be adding a "sustain" feature to _Synther_, mimicking the sustain pedal on a piano. The user could toggle the sustain feature on and off using a special key-bind. This would require me to use flexible audio files that can be adjusted to not only play piano sounds, but also sustain them realistically.
