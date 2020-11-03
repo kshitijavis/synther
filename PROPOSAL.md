@@ -1,1 +1,5 @@
-Put your final project proposal here.
+## _Synther_: Project Proposal
+
+My final project will be an app called _Synther_ that uses Cinder to build a virtual piano keyboard, which can be used to play, record, and playback simple musical pieces. The app will map a standard QWERTY keyboard to a virtual piano keyboard, allowing the user to "play" a piano on their computer. At a minimum, _Synther_ will offer a user the ability to play a composition, record the composition to a file, and eventually load in a recorded file to watch the piano automatically play the composition.
+
+As a pianist, I have a fair amount of background knowledge on music. In fact, I have a handful of apps currently installed on my phone that offer virtual keybaord capabitilies (like _GarageBand_ and _PianoCompanion_), just in case I want to visualize a tune that's stuck in my head. I think it would be interesting to build a similar app that not only _plays_ simple notes, but also offers recording and playback capabilities. I'm also interested in exploring the countless avenues for extension on a simple _Synter_ implementation, like adding the ability to connect to an external synthesizer, loading in MIDI files, and supporting different sounds/instruments. Overall, I think this project would be a great way to implement my own version of a product that I use almost daily: virtual music.
