@@ -25,14 +25,21 @@ void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
 }
 
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
+  ci::audio::SourceFileRef source_file;
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_p:
-      ci::audio::SourceFileRef source_file = ci::audio::load(
-          ci::app::loadAsset("epiano_mrk2_c1.wav"));
-      output_voice = ci::audio::Voice::create(source_file);
+       source_file = ci::audio::load(
+          ci::app::loadAsset("Piano.pp.A6.aiff"));
+       v1 = ci::audio::Voice::create(source_file);
 
-      output_voice->setPan(10000);
-      output_voice->start();
+       v1->start();
+      break;
+    case ci::app::KeyEvent::KEY_o:
+      source_file = ci::audio::load(
+          ci::app::loadAsset("Piano.pp.Ab6.aiff"));
+      v2 = ci::audio::Voice::create(source_file);
+
+      v2->start();
       break;
   }
 }

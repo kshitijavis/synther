@@ -31,7 +31,8 @@ class IdealGasApp : public ci::app::App {
   const double kWindowWidth = 1100;
 
   // Voice handling
-  ci::audio::VoiceRef output_voice;
+  ci::audio::VoiceRef v1;
+  ci::audio::VoiceRef v2;
 
   // Voice processing
 
