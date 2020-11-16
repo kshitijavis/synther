@@ -22,6 +22,12 @@ else()
     add_compile_options(-Wall -Wpedantic -Werror)
 endif()
 
+# To find Cocoa framework
+if(APPLE)
+    set(CMAKE_FIND_FRAMEWORK LAST)
+    set(CMAKE_FIND_APPBUNDLE LAST)
+endif()
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 
