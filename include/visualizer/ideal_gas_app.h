@@ -5,6 +5,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/audio/audio.h"
 #include "core/simulation.h"
 
 namespace idealgas {
@@ -28,6 +29,12 @@ class IdealGasApp : public ci::app::App {
   // Window & Element positioning
   const double kWindowHeight = 700;
   const double kWindowWidth = 1100;
+
+  // Voice handling
+  ci::audio::VoiceRef output_voice;
+
+  // Voice processing
+
 };
 
 }  // namespace visualizer
