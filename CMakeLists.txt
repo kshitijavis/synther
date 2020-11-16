@@ -54,7 +54,6 @@ list(APPEND CORE_SOURCE_FILES src/core/simulation.cc)
 
 list(APPEND TEST_FILES tests/simulation_test.cc)
 list(APPEND TEST_FILES tests/particle_test.cc)
-list(APPEND TEST_FILES tests/histogram_test.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/ideal_gas_app.cc)

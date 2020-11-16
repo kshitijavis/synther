@@ -1,21 +1,19 @@
-#include <cinder/Rand.h>
-#include <visualizer/ideal_gas_app.h>
-
-#include <fstream>
-#include <vector>
-
 #include "cinder/gl/gl.h"
+#include "cinder/audio/audio.h"
+#include "visualizer/ideal_gas_app.h"
 
 namespace idealgas {
 
 namespace visualizer {
+
+ci::audio::VoiceRef m_voice;
 
 IdealGasApp::IdealGasApp() {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
 void IdealGasApp::setup() {
-  }
+}
 
 void IdealGasApp::update() {
 }
@@ -29,7 +27,15 @@ void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
 }
 
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
-  switch (event.getCode()) {}
+  switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_p:
+      ci::audio::SourceFileRef source_file = ci::audio::load(
+          ci::app::loadAsset("epiano_mrk2_c1.wav"));
+      m_voice = ci::audio::Voice::create(source_file);
+
+      m_voice->start();
+      break;
+  }
 }
 
 }  // namespace visualizer
