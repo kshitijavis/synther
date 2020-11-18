@@ -1,10 +1,10 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/synther-app.h>
 
-using idealgas::visualizer::IdealGasApp;
+using idealgas::visualizer::SynterApp;
 
-void prepareSettings(IdealGasApp::Settings* settings) {
+void prepareSettings(SynterApp::Settings* settings) {
   settings->setResizable(false);
 }
 
 // This line is a macro that expands into an "int main()" function.
-CINDER_APP(IdealGasApp, ci::app::RendererGl, prepareSettings);
+CINDER_APP(SynterApp, ci::app::RendererGl, prepareSettings);

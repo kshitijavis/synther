@@ -1,30 +1,31 @@
-#include "cinder/gl/gl.h"
+#include "visualizer/synther-app.h"
+
 #include "cinder/audio/audio.h"
-#include "visualizer/ideal_gas_app.h"
+#include "cinder/gl/gl.h"
 
 namespace idealgas {
 
 namespace visualizer {
 
-IdealGasApp::IdealGasApp() {
+SynterApp::SynterApp() {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
-void IdealGasApp::setup() {
+void SynterApp::setup() {
 }
 
-void IdealGasApp::update() {
+void SynterApp::update() {
 }
 
-void IdealGasApp::draw() {
+void SynterApp::draw() {
   ci::Color8u background_color(ci::Color("darkgreen"));
   ci::gl::clear(background_color);
 }
 
-void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
+void SynterApp::mouseDown(ci::app::MouseEvent event) {
 }
 
-void IdealGasApp::keyDown(ci::app::KeyEvent event) {
+void SynterApp::keyDown(ci::app::KeyEvent event) {
   ci::audio::SourceFileRef source_file;
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_p:

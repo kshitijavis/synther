@@ -6,7 +6,6 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
-#include "core/simulation.h"
 
 namespace idealgas {
 
@@ -15,9 +14,9 @@ namespace visualizer {
 /**
  * Allows a user to to visualize and interact with an ideal gas simulation.
  */
-class IdealGasApp : public ci::app::App {
+class SynterApp : public ci::app::App {
  public:
-  IdealGasApp();
+  SynterApp();
 
   void setup() override;
   void update() override;
