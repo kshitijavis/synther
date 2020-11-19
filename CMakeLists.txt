@@ -56,7 +56,8 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/visualizer/synther-app.cc)
+        src/visualizer/synther-app.cc
+        src/visualizer/keyboard.cc)
 
 list(APPEND SOURCE_FILES include/core/music.h)
 list(APPEND SOURCE_FILES src/core/recording.cc)

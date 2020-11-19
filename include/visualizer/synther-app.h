@@ -7,6 +7,8 @@
 #include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
 
+#include <visualizer/keyboard.h>
+
 namespace synther {
 
 namespace visualizer {
@@ -28,6 +30,9 @@ class SyntherApp : public ci::app::App {
   // Window & Element positioning
   const double kWindowHeight = 700;
   const double kWindowWidth = 1100;
+
+  // Appearance
+  const std::string kBackgroundColor = "brown";
 
   // Voice handling
   ci::audio::VoiceRef v1;
