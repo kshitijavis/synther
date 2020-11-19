@@ -13,6 +13,12 @@
 
 namespace synther {
 
+/**
+ * A Recording based on the idea that a piece of music is simply a list of
+ *   notes played at some time after the beginning of the piece. This class
+ *   stores a Recording of a musical composition as a list of notes paired with
+ *   the time the note was played.
+ */
 class Recording {
  public:
   /**
