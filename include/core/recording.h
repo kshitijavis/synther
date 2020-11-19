@@ -1,15 +1,14 @@
 //
 // Created by Kshitij Sinha on 11/18/20.
 //
+#ifndef SYNTHER_RECORDING_H
+#define SYNTHER_RECORDING_H
 
 #include <vector>
 #include <utility>
 #include <chrono>
 
 #include "music.h"
-
-#ifndef SYNTHER_RECORDING_H
-#define SYNTHER_RECORDING_H
 
 namespace synther {
 
