@@ -2,7 +2,8 @@
 // Created by Kshitij Sinha on 11/18/20.
 //
 
-#include <map>
+#include <vector>
+#include <utility>
 #include <chrono>
 
 #include "music.h"
@@ -25,10 +26,16 @@ class Recording {
    *   recording
    */
   void StartRecording();
+
+  /**
+   * Adds a music note to the recording and pairs it with the time from the
+   *   start of the recording to the method call
+   */
+  void AddNote(const music::Note& note);
  private:
   bool is_recording_;
   std::chrono::time_point<std::chrono::system_clock> start_time_;
-  std::map<music::Note, double> notes_;
+  std::vector<std::pair<music::Note, std::chrono::duration<double>>> notes_;
 };
 
 } // namespace synther
