@@ -49,6 +49,10 @@ Accidental Note::GetAccidental() const {
   return accidental_;
 }
 
+size_t Note::GetSemitoneIndex() const {
+  return semitone_index_;
+}
+
 }  // namespace music
 
 }  // namespace synther

@@ -34,6 +34,13 @@ class Note {
    * @return an enum representing the note's accidental
    */
   Accidental GetAccidental() const;
+
+  /**
+   * Get the note's semitone index, which defines the semitone ID of the note,
+   *   such that the index of A0 = 0
+   * @return a size_t representing the note's semitone index
+   */
+  size_t GetSemitoneIndex() const;
  private:
   size_t octave_;
   char letter_;
