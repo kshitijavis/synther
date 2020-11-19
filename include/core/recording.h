@@ -3,6 +3,7 @@
 //
 
 #include <map>
+#include <chrono>
 
 #include "music.h"
 
@@ -12,10 +13,22 @@
 namespace synther {
 
 class Recording {
+ public:
+  /**
+   * Constructs a default recording with default parameters
+   */
+  Recording() = default;
+
+  /**
+   * Begins recording a composition. The class will begin keeping track of time
+   *   since the recording is started and will allow notes to be added to the
+   *   recording
+   */
+  void StartRecording();
  private:
-  double start_time_;
-  std::map<music::Note, double> notes_;
   bool is_recording_;
+  std::chrono::time_point<std::chrono::system_clock> start_time_;
+  std::map<music::Note, double> notes_;
 };
 
 } // namespace synther
