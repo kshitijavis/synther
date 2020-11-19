@@ -3,29 +3,29 @@
 #include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"
 
-namespace idealgas {
+namespace synther {
 
 namespace visualizer {
 
-SynterApp::SynterApp() {
+SyntherApp::SyntherApp() {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
-void SynterApp::setup() {
+void SyntherApp::setup() {
 }
 
-void SynterApp::update() {
+void SyntherApp::update() {
 }
 
-void SynterApp::draw() {
-  ci::Color8u background_color(ci::Color("darkgreen"));
+void SyntherApp::draw() {
+  ci::Color8u background_color(ci::Color("brown"));
   ci::gl::clear(background_color);
 }
 
-void SynterApp::mouseDown(ci::app::MouseEvent event) {
+void SyntherApp::mouseDown(ci::app::MouseEvent event) {
 }
 
-void SynterApp::keyDown(ci::app::KeyEvent event) {
+void SyntherApp::keyDown(ci::app::KeyEvent event) {
   ci::audio::SourceFileRef source_file;
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_p:
@@ -47,4 +47,4 @@ void SynterApp::keyDown(ci::app::KeyEvent event) {
 
 }  // namespace visualizer
 
-}  // namespace idealgas
+}  // namespace synther

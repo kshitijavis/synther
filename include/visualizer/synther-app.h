@@ -7,16 +7,16 @@
 #include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
 
-namespace idealgas {
+namespace synther {
 
 namespace visualizer {
 
 /**
  * Allows a user to to visualize and interact with an ideal gas simulation.
  */
-class SynterApp : public ci::app::App {
+class SyntherApp : public ci::app::App {
  public:
-  SynterApp();
+  SyntherApp();
 
   void setup() override;
   void update() override;
@@ -39,4 +39,4 @@ class SynterApp : public ci::app::App {
 
 }  // namespace visualizer
 
-}  // namespace idealgas
+}  // namespace synther
