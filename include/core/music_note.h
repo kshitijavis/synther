@@ -15,13 +15,13 @@ enum class Accidental { Sharp, Flat, Natural };
 
 class Note {
  public:
-  Note(size_t octave, char letter, Accidental accidental);
+  Note(int octave, char letter, Accidental accidental);
 
   /**
    * Get the octave in which the note lies
    * @return the octave of the note
    */
-  size_t GetOctave() const;
+  int GetOctave() const;
 
   /**
    * Get the note's letter name (A, B, C, etc.)
@@ -40,17 +40,17 @@ class Note {
    *   such that the index of A0 = 0
    * @return a size_t representing the note's semitone index
    */
-  size_t GetSemitoneIndex() const;
+  int GetSemitoneIndex() const;
  private:
-  size_t octave_;
+  int octave_;
   char letter_;
   Accidental accidental_;
 
   // A numerical 'code' that represents a note such that the index of A0 = 0.
   // Every increase in a semitone increases the note's index by 1
-  size_t semitone_index_;
+  int semitone_index_;
 
-  static const std::map<char, size_t> kWholetoneIndices;
+  static const std::map<char, int> kWholetoneIndices;
   static constexpr size_t kOctaveSize = 12;
 
 };

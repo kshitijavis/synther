@@ -10,7 +10,7 @@ namespace synther {
 
 namespace music {
 
-const std::map<char, size_t> Note::kWholetoneIndices{
+const std::map<char, int> Note::kWholetoneIndices{
     {'A', 0},
     {'B', 2},
     {'C', 3},
@@ -20,7 +20,7 @@ const std::map<char, size_t> Note::kWholetoneIndices{
     {'G', 10}
 };
 
-Note::Note(size_t octave, char letter, Accidental accidental)
+Note::Note(int octave, char letter, Accidental accidental)
     : octave_(octave), letter_(toupper(letter)), accidental_(accidental) {
   semitone_index_ = octave_ * kOctaveSize + kWholetoneIndices.at(letter);
 
@@ -37,7 +37,7 @@ Note::Note(size_t octave, char letter, Accidental accidental)
   }
 }
 
-size_t Note::GetOctave() const {
+int Note::GetOctave() const {
   return octave_;
 }
 
@@ -49,7 +49,7 @@ Accidental Note::GetAccidental() const {
   return accidental_;
 }
 
-size_t Note::GetSemitoneIndex() const {
+int Note::GetSemitoneIndex() const {
   return semitone_index_;
 }
 
