@@ -2,10 +2,11 @@
 // Created by Kshitij Sinha on 11/18/20.
 //
 
+#include "core/recording.h"
+
 #include <chrono>
 
-#include "core/recording.h"
-#include "core/music.h"
+#include "core/music-note.h"
 
 namespace synther {
 

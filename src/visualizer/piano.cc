@@ -2,7 +2,7 @@
 // Created by Kshitij Sinha on 11/18/20.
 //
 
-#include "visualizer/keyboard.h"
+#include "visualizer/piano.h"
 
 namespace synther {
 

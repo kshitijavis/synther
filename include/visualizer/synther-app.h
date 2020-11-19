@@ -7,7 +7,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
 
-#include <visualizer/keyboard.h>
+#include <visualizer/piano.h>
 
 namespace synther {
 

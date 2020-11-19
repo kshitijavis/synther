@@ -57,9 +57,9 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/synther-app.cc
-        src/visualizer/keyboard.cc)
+        src/visualizer/piano.cc)
 
-list(APPEND SOURCE_FILES include/core/music.h)
+list(APPEND SOURCE_FILES src/core/music-note.cc)
 list(APPEND SOURCE_FILES src/core/recording.cc)
 
 ci_make_app(

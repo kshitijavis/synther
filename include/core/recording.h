@@ -4,11 +4,11 @@
 #ifndef SYNTHER_RECORDING_H
 #define SYNTHER_RECORDING_H
 
-#include <vector>
-#include <utility>
 #include <chrono>
+#include <utility>
+#include <vector>
 
-#include "music.h"
+#include "music-note.h"
 
 namespace synther {
 
