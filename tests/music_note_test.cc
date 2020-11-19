@@ -72,3 +72,43 @@ TEST_CASE("Default constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetSemitoneIndex() == 50);
   }
 }
+
+TEST_CASE("Semitone equals accurately compares two notes", "[semitoneequals]") {
+  SECTION("Two identical notes are equal") {
+    Note first(4, 'C', Accidental::Flat);
+    Note second(4, 'C', Accidental::Flat);
+
+    REQUIRE(first.SemitoneEquals(second));
+  }
+
+  SECTION("Two non-identical notes with the same semitone "
+      "(using sharp, flat accidentals), are equal") {
+    Note first(4, 'D', Accidental::Sharp);
+    Note second(4, 'E', Accidental::Flat);
+
+    REQUIRE(first.SemitoneEquals(second));
+  }
+
+  SECTION("Two non-identical notes with the same semitone "
+      "(using sharp, natural accidentals), are equal") {
+    Note first(4, 'C', Accidental::Natural);
+    Note second(4, 'B', Accidental::Sharp);
+
+    REQUIRE(first.SemitoneEquals(second));
+  }
+
+  SECTION("Two notes that are an 'octave' apart but share a semitone"
+      "are equal") {
+    Note first(1, 'A', Accidental::Flat);
+    Note second(0, 'G', Accidental::Sharp);
+
+    REQUIRE(first.SemitoneEquals(second));
+  }
+
+  SECTION("Two notes with different semitones are not equal") {
+    Note first(3, 'E', Accidental::Natural);
+    Note second(0, 'G', Accidental::Sharp);
+
+    REQUIRE(!first.SemitoneEquals(second));
+  }
+}
