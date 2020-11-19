@@ -37,6 +37,10 @@ Note::Note(int octave, char letter, Accidental accidental)
   }
 }
 
+bool Note::SemitoneEquals(const Note& other) const {
+  return semitone_index_ == other.semitone_index_;
+}
+
 int Note::GetOctave() const {
   return octave_;
 }
