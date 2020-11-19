@@ -1,4 +1,4 @@
-#include "visualizer/synther-app.h"
+#include "visualizer/synther_app.h"
 
 #include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"

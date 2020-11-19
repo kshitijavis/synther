@@ -5,7 +5,7 @@
 #ifndef SYNTHER_PIANO_H
 #define SYNTHER_PIANO_H
 
-#include <core/music-note.h>
+#include <core/music_note.h>
 
 #include <vector>
 

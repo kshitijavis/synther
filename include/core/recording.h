@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "music-note.h"
+#include "music_note.h"
 
 namespace synther {
 

@@ -1,4 +1,4 @@
-#include <visualizer/synther-app.h>
+#include <visualizer/synther_app.h>
 
 using synther::visualizer::SyntherApp;
 

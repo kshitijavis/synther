@@ -2,8 +2,9 @@
 // Created by Kshitij Sinha on 11/19/20.
 //
 
-#include <core/music-note.h>
-#include <std::map>
+#include <core/music_note.h>
+
+#include <map>
 
 namespace synther {
 

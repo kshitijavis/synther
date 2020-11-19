@@ -14,6 +14,7 @@ namespace music {
 enum class Accidental { Sharp, Flat, Natural };
 
 class Note {
+ public:
   Note(size_t octave, char letter, Accidental accidental);
 
   /**

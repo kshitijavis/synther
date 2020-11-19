@@ -6,7 +6,7 @@
 
 #include <chrono>
 
-#include "core/music-note.h"
+#include "core/music_note.h"
 
 namespace synther {
 
