@@ -13,6 +13,20 @@ namespace music {
 
 enum class Accidental { Sharp, Flat, Natural };
 
+/**
+ * Represents a musical note, defined by the main parameters: octave, letter,
+ *   and accidental. These three parameters are used to define where the note
+ *   is on the standard Western musical scale.
+ *
+ * Alternatively, a Note can also be defined by its semitone-index with respect
+ *   to some base note. In this implementation, the base note, A0, has the
+ *   semitone-index of 0. All other notes on the scale can be defined by their
+ *   semitone distance from A0
+ *
+ * Regardless of the method of construction, a Note will keep track of its
+ *   octave, letter, accidental, and semitone-index, each of which can be
+ *   accessed but not changed
+ */
 class Note {
  public:
   /**
@@ -26,6 +40,20 @@ class Note {
    *   (Sharp, Flat, Natural)
    */
   Note(int octave, char letter, Accidental accidental);
+
+  /**
+   * Constructs a note using its semitone-index, which is the Note's semitone
+   *   distance from A0
+   * @param semitone_index the semitone-index of the note with respect to A0
+   * @param priority the Accidental that will be given priority, if the note's
+   *   semitone requires an accidental. Must be Sharp or Flat
+   *   Since any note can have multiple names, (B-flat is the same as A-sharp),
+   *   this constructor will prioritize the Accidental specified (If
+   *   Accidental::Sharp is passed, the constructor will choose A-sharp instead
+   *   of B-flat) If a note does not require an accidental, none will be
+   *   assigned.
+   */
+  Note(int semitone_index, Accidental priority);
 
   /**
    * Compares two notes by their semitone index. The semitone index acts as a
@@ -60,22 +88,23 @@ class Note {
    * @return a size_t representing the note's semitone index
    */
   int GetSemitoneIndex() const;
+
  private:
   int octave_;
   char letter_;
   Accidental accidental_;
 
-  // A numerical 'code' that represents a note such that the index of A0 = 0.
+  // A numerical 'code' that represents note's semitone.
+  // 0-index starts from the note A0.
   // Every increase in a semitone increases the note's index by 1
   int semitone_index_;
 
   static const std::map<char, int> kWholetoneIndices;
-  static constexpr size_t kOctaveSize = 12;
-
+  static constexpr size_t kNotesPerOctave = 12;
 };
 
-} // namespace music
+}  // namespace music
 
-} // namespace synther
+}  // namespace synther
 
 #endif  // SYNTHER_MUSIC_NOTE_H
