@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "visualizer/piano_key.h"
+#include "core/music_note.h"
 
 namespace synther {
 
@@ -19,8 +20,11 @@ class Piano {
   Piano(int first_semitone, size_t key_count);
  private:
   // Data
-  __unused int first_semitone_;
-  __unused size_t key_count_;
+  int first_semitone_;
+  size_t key_count_;
+  std::vector<PianoKey> keys_;
+
+  const music::Accidental kPriority = music::Accidental::Sharp;
 };
 
 } // namespace visualizer

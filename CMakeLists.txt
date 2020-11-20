@@ -64,6 +64,7 @@ list(APPEND SOURCE_FILES src/core/music_note.cc)
 list(APPEND SOURCE_FILES src/core/recording.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
+list(APPEND TEST_FILES tests/piano_test.cc)
 
 ci_make_app(
         APP_NAME        synther-app
