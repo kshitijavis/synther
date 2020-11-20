@@ -8,7 +8,7 @@
 using synther::music::Note;
 using synther::music::Accidental;
 
-TEST_CASE("Default constructor correctly sets fields", "[constructor]") {
+TEST_CASE("Octave/Letter constructor correctly sets fields", "[constructor]") {
   SECTION("Base note (A) in first octave without accidental") {
     Note note(0, 'A', Accidental::Natural);
 
@@ -70,6 +70,115 @@ TEST_CASE("Default constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetLetter() == 'C');
     REQUIRE(note.GetAccidental() == Accidental::Flat);
     REQUIRE(note.GetSemitoneIndex() == 50);
+  }
+}
+
+TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
+  SECTION("Base note (A) in first octave that doesn't require accidental") {
+    // Use arbitrary accidental that should not be used
+    Note note(0, Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 0);
+    REQUIRE(note.GetLetter() == 'A');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 0);
+  }
+
+  SECTION("Base note (A) in higher octave that doesn't require accidental") {
+    // Use arbitrary accidental that should not be used
+    Note note(60, Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 5);
+    REQUIRE(note.GetLetter() == 'A');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 60);
+  }
+
+  SECTION("Higher-level in first octave without accidental") {
+    // Use arbitrary accidental that should not be used
+    Note note(10, Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 0);
+    REQUIRE(note.GetLetter() == 'G');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 10);
+  }
+
+  SECTION("Higher-level in higher octave without accidental") {
+    // Use arbitrary accidental that should not be used
+    Note note(38, Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 3);
+    REQUIRE(note.GetLetter() == 'B');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 38);
+  }
+
+  SECTION("Note in first octave that requires an accidental with Sharp"
+      "priority") {
+    Note note(1,Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 0);
+    REQUIRE(note.GetLetter() == 'A');
+    REQUIRE(note.GetAccidental() == Accidental::Sharp);
+    REQUIRE(note.GetSemitoneIndex() == 1);
+  }
+
+  SECTION("Note in first octave that requires an accidental with Flat"
+      "priority") {
+    Note note(1,Accidental::Flat);
+
+    REQUIRE(note.GetOctave() == 0);
+    REQUIRE(note.GetLetter() == 'B');
+    REQUIRE(note.GetAccidental() == Accidental::Sharp);
+    REQUIRE(note.GetSemitoneIndex() == 1);
+  }
+
+  SECTION("Note in higher octave that requires an accidental with Sharp"
+          "priority") {
+    Note note(21,Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 1);
+    REQUIRE(note.GetLetter() == 'F');
+    REQUIRE(note.GetAccidental() == Accidental::Sharp);
+    REQUIRE(note.GetSemitoneIndex() == 21);
+  }
+
+  SECTION("Note in higher octave that requires an accidental with Flat"
+          "priority") {
+    Note note(21,Accidental::Flat);
+
+    REQUIRE(note.GetOctave() == 1);
+    REQUIRE(note.GetLetter() == 'G');
+    REQUIRE(note.GetAccidental() == Accidental::Flat);
+    REQUIRE(note.GetSemitoneIndex() == 21);
+  }
+
+  SECTION("Border case: E with sharp priority should default to E-natural") {
+    Note note(19,Accidental::Sharp);
+
+    REQUIRE(note.GetOctave() == 1);
+    REQUIRE(note.GetLetter() == 'E');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 19);
+  }
+
+  SECTION("Border case: E-flat with flat priority should default to E-flat") {
+    Note note(18,Accidental::Flat);
+
+    REQUIRE(note.GetOctave() == 1);
+    REQUIRE(note.GetLetter() == 'E');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 18);
+  }
+
+  SECTION("Border case, F with flat priority should default to F natural") {
+    Note note(20,Accidental::Flat);
+
+    REQUIRE(note.GetOctave() == 1);
+    REQUIRE(note.GetLetter() == 'F');
+    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetSemitoneIndex() == 20);
   }
 }
 
