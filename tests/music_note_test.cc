@@ -130,7 +130,7 @@ TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
 
     REQUIRE(note.GetOctave() == 0);
     REQUIRE(note.GetLetter() == 'B');
-    REQUIRE(note.GetAccidental() == Accidental::Sharp);
+    REQUIRE(note.GetAccidental() == Accidental::Flat);
     REQUIRE(note.GetSemitoneIndex() == 1);
   }
 
@@ -168,7 +168,7 @@ TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
 
     REQUIRE(note.GetOctave() == 1);
     REQUIRE(note.GetLetter() == 'E');
-    REQUIRE(note.GetAccidental() == Accidental::Natural);
+    REQUIRE(note.GetAccidental() == Accidental::Flat);
     REQUIRE(note.GetSemitoneIndex() == 18);
   }
 
