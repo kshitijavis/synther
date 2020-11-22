@@ -15,6 +15,10 @@ class PianoKey {
  public:
   explicit PianoKey(const music::Note& note);
 
+  /**
+   * Gets the Note mapped to this PianoKey
+   * @return the Note represented by this PianoKey
+   */
   const music::Note& GetNote() const;
  private:
   music::Note note_;
