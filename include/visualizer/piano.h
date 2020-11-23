@@ -32,7 +32,7 @@ class Piano {
    * @param key_count the number of keys on the piano
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
-        const ci::Color& background_color, int first_semitone, size_t key_count);
+        int first_semitone, size_t key_count);
 
   void Draw() const;
 

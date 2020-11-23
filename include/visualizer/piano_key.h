@@ -25,7 +25,8 @@ class PianoKey {
   void Draw(const glm::dvec2& top_left_corner, double width, double height) const;
  private:
   music::Note note_;
-  __unused ci::Color color_;
+  ci::Color fill_color_;
+  ci::Color outline_color_;
 };
 
 } // namespace visualizer

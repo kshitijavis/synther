@@ -10,9 +10,9 @@
 synther::visualizer::PianoKey::PianoKey(const synther::music::Note& note)
     : note_(note) {
   if (note.GetAccidental() == music::Accidental::Natural) {
-    color_ = ci::Color("white");
+    fill_color_ = ci::Color("white");
   } else {
-    color_ = ci::Color("black");
+    fill_color_ = ci::Color("black");
   }
 }
 
@@ -25,6 +25,8 @@ void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
   glm::dvec2 bottom_right_corner = top_left_corner + glm::dvec2(width, height);
   ci::Rectf bar_bounds(top_left_corner, bottom_right_corner);
 
-  ci::gl::color(color_);
+  ci::gl::color(fill_color_);
   ci::gl::drawSolidRect(bar_bounds);
+  ci::gl::color(outline_color_);
+  ci::gl::drawStrokedRect(bar_bounds);
 }

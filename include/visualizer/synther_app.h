@@ -7,7 +7,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
 
-#include <visualizer/piano.h>
+#include "visualizer/piano.h"
 
 namespace synther {
 
@@ -30,9 +30,17 @@ class SyntherApp : public ci::app::App {
   // Window & Element positioning
   const double kWindowHeight = 700;
   const double kWindowWidth = 1100;
+  const double kSidePadding = 30;
+  const double kTopPadding = 30;
 
   // Appearance
   const std::string kBackgroundColor = "brown";
+
+  // Piano
+  Piano piano_;
+  static constexpr double kPianoHeight = 300;
+  static constexpr int kFirstSemitoneIndex = 0;
+  static constexpr size_t kKeyCount = 88;
 
   // Voice handling
   ci::audio::VoiceRef v1;

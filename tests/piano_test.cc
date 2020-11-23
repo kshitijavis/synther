@@ -14,7 +14,7 @@ using synther::music::Accidental;
 
 TEST_CASE("Constructor correctly initializes single-octave piano",
           "[constructor]") {
-  Piano piano(glm::dvec2(0, 0), 5, 5, ci::Color("white"), 0, 12);
+  Piano piano(glm::dvec2(0, 0), 5, 5, 0, 12);
 
   SECTION("Sanity check: piano size properly initialized") {
     REQUIRE(piano.GetKeyCount() == 12);
@@ -44,7 +44,7 @@ TEST_CASE("Constructor correctly initializes single-octave piano",
 
 TEST_CASE("Constructor correctly initializes notes on multiple octaves",
           "[constructor]") {
-  Piano piano(glm::dvec2(0, 0), 5, 5, ci::Color("white"), 0, 24);
+  Piano piano(glm::dvec2(0, 0), 5, 5, 0, 24);
 
   SECTION("Sanity check: piano size properly initialized") {
     REQUIRE(piano.GetKeyCount() == 24);
@@ -74,7 +74,7 @@ TEST_CASE("Constructor correctly initializes notes on multiple octaves",
 
 TEST_CASE("Constructor correctly initializes full-sized (88 keys) piano",
           "[constructor]") {
-  Piano piano(glm::dvec2(0, 0), 5, 5, ci::Color("white"), 0, 88);
+  Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
 
   SECTION("First note is A0") {
     Note expected_note(0, 'A', Accidental::Natural);
