@@ -3,6 +3,8 @@
 //
 
 #include "visualizer/piano.h"
+#include "cinder/gl/gl.h"
+#include "cinder/Color.h"
 
 #include "core/music_note.h"
 

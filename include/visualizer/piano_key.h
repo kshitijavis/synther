@@ -22,7 +22,7 @@ class PianoKey {
    */
   const music::Note& GetNote() const;
 
-  void Draw(glm::dvec2 top_left_corner, double width, double height) const;
+  void Draw(const glm::dvec2& top_left_corner, double width, double height) const;
  private:
   music::Note note_;
   __unused ci::Color color_;

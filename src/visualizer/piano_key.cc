@@ -20,10 +20,9 @@ const synther::music::Note& synther::visualizer::PianoKey::GetNote() const {
   return note_;
 }
 
-void synther::visualizer::PianoKey::Draw(glm::dvec2 top_left_corner,
+void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
                                          double width, double height) const {
-  glm::dvec2 bottom_right_corner(top_left_corner + width,
-                                 top_left_corner + height);
+  glm::dvec2 bottom_right_corner = top_left_corner + glm::dvec2(width, height);
   ci::Rectf bar_bounds(top_left_corner, bottom_right_corner);
 
   ci::gl::color(color_);

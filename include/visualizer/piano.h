@@ -52,9 +52,9 @@ class Piano {
 
  private:
   // Visualization
-  __unused glm::dvec2 top_left_corner_;
-  __unused double width_;
-  __unused double height_;
+  glm::dvec2 top_left_corner_;
+  double width_;
+  double height_;
   __unused ci::Color background_color_;
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.6;
@@ -66,9 +66,9 @@ class Piano {
   const music::Accidental kPriority = music::Accidental::Sharp;
   
   // View window
-  __unused int view_first_whitekey_;
-  __unused size_t view_whitekey_count_;
-  __unused static constexpr size_t kDefaultViewWhitekeyCount = 10;
+  int view_first_whitekey_;
+  size_t view_whitekey_count_;
+  const size_t kDefaultViewWhitekeyCount = 10;
 };
 
 } // namespace visualizer
