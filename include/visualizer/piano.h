@@ -32,7 +32,8 @@ class Piano {
    * @param key_count the number of keys on the piano
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
-        int first_semitone, size_t key_count);
+        int first_semitone, size_t key_count,
+        size_t view_whitekey_count = kDefaultViewWhitekeyCount);
 
   /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
@@ -83,7 +84,7 @@ class Piano {
   // View window
   int view_first_note_;
   size_t view_whitekey_count_;
-  const size_t kDefaultViewWhitekeyCount = 20;
+  static constexpr int kDefaultViewWhitekeyCount = 20;
 
   // Helper methods
   /**

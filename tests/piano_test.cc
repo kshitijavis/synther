@@ -88,3 +88,51 @@ TEST_CASE("Constructor correctly initializes full-sized (88 keys) piano",
     REQUIRE(actual_note == expected_note);
   }
 }
+
+TEST_CASE("Constructor correctly initializes piano with offset first_semitone",
+          "[constructor]") {
+  Piano piano(glm::dvec2(0, 0), 5, 5, 10, 88);
+
+  SECTION("First note is G0") {
+    Note expected_note(0, 'G', Accidental::Natural);
+    Note actual_note = piano.GetPianoKey(0).GetNote();
+    REQUIRE(actual_note == expected_note);
+  }
+
+  SECTION("Second note is G0#") {
+    Note expected_note(0, 'G', Accidental::Sharp);
+    Note actual_note = piano.GetPianoKey(1).GetNote();
+    REQUIRE(actual_note == expected_note);
+  }
+}
+
+// The following test cases test the Draw() method. These cases are selected
+// to ensure that no actual Cinder drawing is done. In all the following tests,
+// the method will quit before drawing any object using Cinder. Otherwise,
+// an exception would be thrown, causing the test suite to fail
+TEST_CASE("Draw does not cause unexpected errors after ShiftView",
+          "[shiftview][draw][constructor]") {
+  SECTION("Standard piano, upward shift") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
+    REQUIRE_NOTHROW(piano.ShiftView(150));
+    REQUIRE_NOTHROW(piano.Draw());
+  }
+
+  SECTION("Standard piano, downward shift") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
+    REQUIRE_NOTHROW(piano.ShiftView(-150));
+    REQUIRE_NOTHROW(piano.Draw());
+  }
+
+  SECTION("Standard piano with view size of 0, downward shift") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88,0);
+    REQUIRE_NOTHROW(piano.ShiftView(150));
+    REQUIRE_NOTHROW(piano.Draw());
+  }
+
+  SECTION("Standard piano with view size of 0, downward shift") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88,0);
+    REQUIRE_NOTHROW(piano.ShiftView(-150));
+    REQUIRE_NOTHROW(piano.Draw());
+  }
+}

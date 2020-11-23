@@ -13,11 +13,12 @@ namespace synther {
 namespace visualizer {
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
-             int first_semitone, size_t key_count)
+             int first_semitone, size_t key_count, size_t view_whitekey_count)
     : top_left_corner_(top_left_corner),
       width_(width),
       height_(height),
-      first_semitone_(first_semitone) {
+      first_semitone_(first_semitone),
+      view_whitekey_count_(view_whitekey_count) {
   // Set view_first_wholetone_ and ensure that it represents a white key,
   // i.e. a natural-note
   music::Note first_note(first_semitone, kPriority);
@@ -34,10 +35,6 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
     music::Note to_add(semitone, kPriority);
     keys_.emplace_back(music::Note(semitone, kPriority));
   }
-
-  // Set window size to default, unless there are fewer total
-  // wholetones/white keys on the keyboard than the default
-  view_whitekey_count_ = std::min(CountNaturals(), kDefaultViewWhitekeyCount);
 }
 
 void Piano::Draw() const {
@@ -67,7 +64,7 @@ void Piano::Draw() const {
       // Draw current black key
       glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
       key.Draw(black_top_left, black_key_width, black_key_height);
-      key_index+=2;
+      key_index += 2;
     }
     left_edge += white_key_width;
     white_keys_drawn++;
