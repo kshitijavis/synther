@@ -7,11 +7,11 @@
 #define SYNTHER_PIANO_H
 
 #include <vector>
-#include "cinder/gl/gl.h"
-#include "cinder/Color.h"
 
-#include "visualizer/piano_key.h"
+#include "cinder/Color.h"
+#include "cinder/gl/gl.h"
 #include "core/music_note.h"
+#include "visualizer/piano_key.h"
 
 namespace synther {
 
@@ -34,7 +34,22 @@ class Piano {
   Piano(const glm::dvec2& top_left_corner, double width, double height,
         int first_semitone, size_t key_count);
 
+  /**
+   * Draws the current view of the keyboard. By default, displays 12 white keys
+   *   on the board and all black keys that lie within these bounds. The first
+   *   and last keys on the display will always be white keys.
+   */
   void Draw() const;
+
+  /**
+   * Shifts the view of the keyboard up/down depending on the input parameter
+   * @param displacement an integer representing the distance to shift the
+   *   keyboard view. The magnitude of the input represents the number of white
+   *   keys by which the view will shift.
+   *   A negative input will shift the view down and a positive input will
+   *   shift the view up.
+   */
+  const void ShiftView(int displacement);
 
   /**
    * Get the PianoKey at the specified index
@@ -64,7 +79,7 @@ class Piano {
   std::vector<PianoKey> keys_;
 
   const music::Accidental kPriority = music::Accidental::Sharp;
-  
+
   // View window
   int view_first_note_;
   size_t view_whitekey_count_;
@@ -78,8 +93,8 @@ class Piano {
   const size_t CountNaturals() const;
 };
 
-} // namespace visualizer
+}  // namespace visualizer
 
-} // namespace synther
+}  // namespace synther
 
 #endif  // SYNTHER_PIANO_H

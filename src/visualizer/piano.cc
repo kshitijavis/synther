@@ -73,6 +73,17 @@ void Piano::Draw() const {
   }
 }
 
+const void Piano::ShiftView(int displacement) {
+  size_t distance = abs(displacement);
+  for (size_t keys_shifted = 0; keys_shifted < distance; keys_shifted++) {
+    if (displacement < 0) {
+      view_first_note_--;
+    } else if (displacement > 0) {
+      view_first_note_++;
+    }
+  }
+}
+
 const PianoKey& Piano::GetPianoKey(int index) const {
   return keys_.at(index);
 }
