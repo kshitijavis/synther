@@ -71,6 +71,15 @@ TEST_CASE("Octave/Letter constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetAccidental() == Accidental::Flat);
     REQUIRE(note.GetSemitoneIndex() == 50);
   }
+
+  SECTION("Constructor handles inputs with lower-case character input") {
+    Note note(4, 'c', Accidental::Flat);
+
+    REQUIRE(note.GetOctave() == 4);
+    REQUIRE(note.GetLetter() == 'C');
+    REQUIRE(note.GetAccidental() == Accidental::Flat);
+    REQUIRE(note.GetSemitoneIndex() == 50);
+  }
 }
 
 TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
@@ -154,7 +163,7 @@ TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetSemitoneIndex() == 21);
   }
 
-  SECTION("Border case: E with sharp priority should default to E-natural") {
+  SECTION("Boundary case: E with sharp priority should default to E-natural") {
     Note note(19,Accidental::Sharp);
 
     REQUIRE(note.GetOctave() == 1);
@@ -163,7 +172,7 @@ TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetSemitoneIndex() == 19);
   }
 
-  SECTION("Border case: E-flat with flat priority should default to E-flat") {
+  SECTION("Boundary case: E-flat with flat priority should default to E-flat") {
     Note note(18,Accidental::Flat);
 
     REQUIRE(note.GetOctave() == 1);
@@ -172,7 +181,7 @@ TEST_CASE("Semitone constructor correctly sets fields", "[constructor]") {
     REQUIRE(note.GetSemitoneIndex() == 18);
   }
 
-  SECTION("Border case, F with flat priority should default to F natural") {
+  SECTION("Boundary case, F with flat priority should default to F natural") {
     Note note(20,Accidental::Flat);
 
     REQUIRE(note.GetOctave() == 1);
@@ -219,5 +228,28 @@ TEST_CASE("Semitone equals accurately compares two notes", "[semitoneequals]") {
     Note second(0, 'G', Accidental::Sharp);
 
     REQUIRE(!first.SemitoneEquals(second));
+  }
+}
+
+TEST_CASE("Equals operator accurately compares two notes", "[operator==]") {
+  SECTION("Two identical notes are equal") {
+    Note first(4, 'C', Accidental::Flat);
+    Note second(4, 'C', Accidental::Flat);
+
+    REQUIRE(first == second);
+  }
+
+  SECTION("Two identical notes with mismatched char case are still equal") {
+    Note first(4, 'c', Accidental::Flat);
+    Note second(4, 'C', Accidental::Flat);
+
+    REQUIRE(first == second);
+  }
+
+  SECTION("Two non-identical notes are not equal") {
+    Note first(4, 'D', Accidental::Sharp);
+    Note second(4, 'E', Accidental::Flat);
+
+    REQUIRE(!(first == second));
   }
 }
