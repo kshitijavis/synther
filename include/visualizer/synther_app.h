@@ -39,7 +39,7 @@ class SyntherApp : public ci::app::App {
   // Piano
   Piano piano_;
   static constexpr double kPianoHeight = 300;
-  static constexpr int kFirstSemitoneIndex = 40;
+  static constexpr int kFirstSemitoneIndex = 0;
   static constexpr size_t kKeyCount = 88;
 
   // Voice handling

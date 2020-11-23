@@ -45,6 +45,18 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
 
       v2->start();
       break;
+    case ci::app::KeyEvent::KEY_LEFT:
+      piano_.ShiftView(-10);
+      break;
+    case ci::app::KeyEvent::KEY_RIGHT:
+      piano_.ShiftView(10);
+      break;
+    case ci::app::KeyEvent::KEY_DOWN:
+      piano_.ShiftView(-1);
+      break;
+    case ci::app::KeyEvent::KEY_UP:
+      piano_.ShiftView(1);
+      break;
   }
 }
 

@@ -50,8 +50,8 @@ void Piano::Draw() const {
   double left_edge = top_left_corner_.x;
 
   size_t key_index = view_first_note_;
-  for (size_t white_keys_drawn = 0; white_keys_drawn < view_whitekey_count_;
-       white_keys_drawn++){
+  size_t white_keys_drawn = 0;
+  while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
     const PianoKey key = keys_.at(key_index);
     const music::Note& note = key.GetNote();
 
@@ -70,6 +70,7 @@ void Piano::Draw() const {
       key_index+=2;
     }
     left_edge += white_key_width;
+    white_keys_drawn++;
   }
 }
 

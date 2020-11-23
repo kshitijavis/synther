@@ -83,7 +83,7 @@ class Piano {
   // View window
   int view_first_note_;
   size_t view_whitekey_count_;
-  const size_t kDefaultViewWhitekeyCount = 10;
+  const size_t kDefaultViewWhitekeyCount = 20;
 
   // Helper methods
   /**
