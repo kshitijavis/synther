@@ -27,12 +27,12 @@ class Piano {
    * @param height the height of the piano in pixels
    * @param background_color the background color of the piano
    * @param first_semitone the starting note of the piano, specified by its
-   *   semitone distance from A0, where A0 has a semitone of 0
+   *   semitone distance from A0, where A0 has a semitone of 0. It is
+   *   recommended that first_semitone represents a whole tone
    * @param key_count the number of keys on the piano
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
-        const ci::Color& background_color, int first_semitone,
-        size_t key_count);
+        const ci::Color& background_color, int first_semitone, size_t key_count);
 
   /**
    * Get the PianoKey at the specified index
@@ -48,7 +48,7 @@ class Piano {
    */
   const size_t GetKeyCount() const;
  private:
-  // Visuals
+  // Visualization
   __unused glm::dvec2 top_left_corner_;
   __unused double width_;
   __unused double height_;
@@ -59,6 +59,11 @@ class Piano {
   std::vector<PianoKey> keys_;
 
   const music::Accidental kPriority = music::Accidental::Sharp;
+  
+  // View window
+  __unused int view_first_wholetone_;
+  __unused size_t view_whitekey_count_;
+  __unused const size_t kDefaultViewWhitekeyCount = 10;
 };
 
 } // namespace visualizer
