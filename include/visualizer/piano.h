@@ -69,6 +69,13 @@ class Piano {
   int view_first_whitekey_;
   size_t view_whitekey_count_;
   const size_t kDefaultViewWhitekeyCount = 10;
+
+  // Helper methods
+  /**
+   * Counts the number of natural notes/white keys on the keyboard
+   * @return a size_t representing the number of natural notes on the keyboard
+   */
+  const size_t CountNaturals() const;
 };
 
 } // namespace visualizer

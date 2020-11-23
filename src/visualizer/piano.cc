@@ -28,20 +28,16 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
     view_first_whitekey_ = first_semitone + 1;
   }
 
-  // Initialize keys_ and view_white_key_count_
-  size_t natural_count = 0;
+  // Initialize keys_
   for (int semitone = first_semitone_; semitone < first_semitone_ + key_count;
        semitone++) {
     music::Note to_add(semitone, kPriority);
     keys_.emplace_back(music::Note(semitone, kPriority));
-    // All natural notes are wholetones
-    if (to_add.GetAccidental() == music::Accidental::Natural) {
-      natural_count++;
-    }
   }
+
   // Set window size to default, unless there are fewer total
   // wholetones/white keys on the keyboard than the default
-  view_whitekey_count_ = std::min(natural_count, kDefaultViewWhitekeyCount);
+  view_whitekey_count_ = std::min(CountNaturals(), kDefaultViewWhitekeyCount);
 }
 
 void Piano::Draw() const {
@@ -84,6 +80,16 @@ const PianoKey& Piano::GetPianoKey(int index) const {
 
 const size_t Piano::GetKeyCount() const {
   return keys_.size();
+}
+
+const size_t Piano::CountNaturals() const {
+  size_t natural_count = 0;
+  for (const PianoKey& key : keys_) {
+    if (key.GetNote().GetAccidental() == music::Accidental::Natural) {
+      natural_count++;
+    }
+  }
+  return natural_count;
 }
 
 }  // namespace visualizer
