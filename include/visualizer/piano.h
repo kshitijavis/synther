@@ -34,6 +34,8 @@ class Piano {
   Piano(const glm::dvec2& top_left_corner, double width, double height,
         const ci::Color& background_color, int first_semitone, size_t key_count);
 
+  void Draw() const;
+
   /**
    * Get the PianoKey at the specified index
    * @param index the index of the piano key, where the first key has an index
@@ -47,12 +49,15 @@ class Piano {
    * @return the key count of the piano
    */
   const size_t GetKeyCount() const;
+
  private:
   // Visualization
   __unused glm::dvec2 top_left_corner_;
   __unused double width_;
   __unused double height_;
   __unused ci::Color background_color_;
+  static constexpr double kBlackKeyHeightFactor = 0.6;
+  static constexpr double kBlackKeyWidthFactor = 0.6;
 
   // Data
   int first_semitone_;
@@ -61,9 +66,9 @@ class Piano {
   const music::Accidental kPriority = music::Accidental::Sharp;
   
   // View window
-  __unused int view_first_wholetone_;
+  __unused int view_first_whitekey_;
   __unused size_t view_whitekey_count_;
-  __unused const size_t kDefaultViewWhitekeyCount = 10;
+  __unused static constexpr size_t kDefaultViewWhitekeyCount = 10;
 };
 
 } // namespace visualizer

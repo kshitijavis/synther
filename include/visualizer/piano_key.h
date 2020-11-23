@@ -6,6 +6,7 @@
 #define SYNTHER_PIANO_KEY_H
 
 #include "core/music_note.h"
+#include "cinder/Color.h"
 
 namespace synther {
 
@@ -20,8 +21,11 @@ class PianoKey {
    * @return the Note represented by this PianoKey
    */
   const music::Note& GetNote() const;
+
+  void Draw(glm::dvec2 top_left_corner, double width, double height) const;
  private:
   music::Note note_;
+  __unused ci::Color color_;
 };
 
 } // namespace visualizer
