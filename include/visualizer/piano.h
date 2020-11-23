@@ -57,7 +57,7 @@ class Piano {
   double height_;
   __unused ci::Color background_color_;
   static constexpr double kBlackKeyHeightFactor = 0.6;
-  static constexpr double kBlackKeyWidthFactor = 0.6;
+  static constexpr double kBlackKeyWidthFactor = 0.4;
 
   // Data
   int first_semitone_;
@@ -66,7 +66,7 @@ class Piano {
   const music::Accidental kPriority = music::Accidental::Sharp;
   
   // View window
-  int view_first_whitekey_;
+  int view_first_note_;
   size_t view_whitekey_count_;
   const size_t kDefaultViewWhitekeyCount = 10;
 

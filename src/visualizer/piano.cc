@@ -22,10 +22,10 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   // i.e. a natural-note
   music::Note first_note(first_semitone, kPriority);
   if (first_note.GetAccidental() == music::Accidental::Natural) {
-    view_first_whitekey_ = first_semitone;
+    view_first_note_ = 0;
   } else {
     // The key is not a natural, so shift view up to the next natural semitone
-    view_first_whitekey_ = first_semitone + 1;
+    view_first_note_ = 1;
   }
 
   // Initialize keys_
@@ -49,9 +49,9 @@ void Piano::Draw() const {
   double top_edge = top_left_corner_.y;
   double left_edge = top_left_corner_.x;
 
-  size_t key_index = view_first_whitekey_;
-  size_t white_keys_drawn = 0;
-  while (white_keys_drawn < view_whitekey_count_){
+  size_t key_index = view_first_note_;
+  for (size_t white_keys_drawn = 0; white_keys_drawn < view_whitekey_count_;
+       white_keys_drawn++){
     const PianoKey key = keys_.at(key_index);
     const music::Note& note = key.GetNote();
 
@@ -70,7 +70,6 @@ void Piano::Draw() const {
       key_index+=2;
     }
     left_edge += white_key_width;
-    white_keys_drawn++;
   }
 }
 
