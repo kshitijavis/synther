@@ -17,10 +17,9 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
       width_(width),
       height_(height),
       background_color_(background_color),
-      first_semitone_(first_semitone),
-      key_count_(key_count) {
+      first_semitone_(first_semitone) {
   // Initialize keys_
-  for (int semitone = first_semitone_; semitone < first_semitone_ + key_count_;
+  for (int semitone = first_semitone_; semitone < first_semitone_ + key_count;
        semitone++) {
     keys_.emplace_back(music::Note(semitone, kPriority));
   }
@@ -28,6 +27,10 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
 
 const PianoKey& Piano::GetPianoKey(int index) const {
   return keys_.at(index);
+}
+
+const size_t Piano::GetKeyCount() const {
+  return keys_.size();
 }
 
 }  // namespace visualizer

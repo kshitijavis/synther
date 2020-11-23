@@ -41,16 +41,21 @@ class Piano {
    * @return a PianoKey reference to the piano key at the index
    */
   const PianoKey& GetPianoKey(int index) const;
+
+  /**
+   * Get the number of keys on this piano
+   * @return the key count of the piano
+   */
+  const size_t GetKeyCount() const;
  private:
   // Visuals
-  glm::dvec2 top_left_corner_;
-  double width_;
-  double height_;
-  ci::Color background_color_;
+  __unused glm::dvec2 top_left_corner_;
+  __unused double width_;
+  __unused double height_;
+  __unused ci::Color background_color_;
 
   // Data
   int first_semitone_;
-  size_t key_count_;
   std::vector<PianoKey> keys_;
 
   const music::Accidental kPriority = music::Accidental::Sharp;
