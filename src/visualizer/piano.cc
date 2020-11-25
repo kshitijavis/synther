@@ -4,6 +4,8 @@
 
 #include "visualizer/piano.h"
 
+#include <vector>
+#include "cinder/app/App.h"
 #include "cinder/Color.h"
 #include "cinder/gl/gl.h"
 #include "core/music_note.h"
@@ -11,6 +13,22 @@
 namespace synther {
 
 namespace visualizer {
+
+const std::vector<int> Piano::kBlackKeybinds{
+    ci::app::KeyEvent::KEY_q, ci::app::KeyEvent::KEY_w,
+    ci::app::KeyEvent::KEY_e, ci::app::KeyEvent::KEY_r,
+    ci::app::KeyEvent::KEY_t, ci::app::KeyEvent::KEY_y,
+    ci::app::KeyEvent::KEY_u, ci::app::KeyEvent::KEY_i,
+    ci::app::KeyEvent::KEY_o, ci::app::KeyEvent::KEY_p
+};
+
+const std::vector<int> Piano::kWhiteKeybinds{
+    ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_s,
+    ci::app::KeyEvent::KEY_d, ci::app::KeyEvent::KEY_f,
+    ci::app::KeyEvent::KEY_g, ci::app::KeyEvent::KEY_h,
+    ci::app::KeyEvent::KEY_j, ci::app::KeyEvent::KEY_k,
+    ci::app::KeyEvent::KEY_l, ci::app::KeyEvent::KEY_SEMICOLON
+};
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)

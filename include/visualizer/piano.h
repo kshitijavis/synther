@@ -92,6 +92,9 @@ class Piano {
    * @return a size_t representing the number of natural notes on the keyboard
    */
   const size_t CountNaturals() const;
+
+  static const std::vector<int> kBlackKeybinds;
+  static const std::vector<int> kWhiteKeybinds;
 };
 
 }  // namespace visualizer
