@@ -34,16 +34,15 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
     : top_left_corner_(top_left_corner),
       width_(width),
       height_(height),
-      first_semitone_(first_semitone),
-      view_whitekey_count_(view_whitekey_count) {
+      first_semitone_(first_semitone) {
   // Set view_first_wholetone_ and ensure that it represents a white key,
   // i.e. a natural-note
   music::Note first_note(first_semitone, kPriority);
   if (first_note.GetAccidental() == music::Accidental::Natural) {
-    view_first_note_ = 0;
+    view_first_ = 0;
   } else {
     // The key is not a natural, so shift view up to the next natural semitone
-    view_first_note_ = 1;
+    view_first_ = 1;
   }
 
   // Initialize keys_
@@ -55,6 +54,13 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
                             : PianoKeyType::Black;
     keys_.emplace_back(music::Note(semitone, kPriority), type);
   }
+
+  // Set view_whitekey_count_ to default, unless the white keys on the board are
+  // less than the default
+  view_whitekey_count_ =
+      std::min(CountNaturals(), static_cast<size_t>(kDefaultViewWhitekeyCount));
+
+  SetKeyBinds();
 }
 
 void Piano::Draw() const {
@@ -66,7 +72,7 @@ void Piano::Draw() const {
   double top_edge = top_left_corner_.y;
   double left_edge = top_left_corner_.x;
 
-  size_t key_index = view_first_note_;
+  size_t key_index = view_first_;
   size_t white_keys_drawn = 0;
   while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
     const PianoKey key = keys_.at(key_index);
@@ -91,13 +97,13 @@ void Piano::Draw() const {
   }
 }
 
-const void Piano::ShiftView(int displacement) {
+void Piano::ShiftView(int displacement) {
   size_t distance = abs(displacement);
   for (size_t keys_shifted = 0; keys_shifted < distance; keys_shifted++) {
     if (displacement < 0) {
-      view_first_note_--;
+      view_first_--;
     } else if (displacement > 0) {
-      view_first_note_++;
+      view_first_++;
     }
   }
 }
@@ -125,11 +131,40 @@ const void Piano::SetKeyBinds() {
 
   size_t white_ind = 0;
   size_t black_ind = 0;
-  size_t key_ind = 0;
+  size_t key_ind = view_first_;
+
+  // Add the keybinds
   while (white_ind < kWhiteKeyEvents.size() &&
-         black_ind < kBlackKeyEvents.size() && key_ind < keys_.size()) {
-    __unused const PianoKey& key = keys_.at(key_ind);
+         black_ind < kBlackKeyEvents.size() && key_ind < view_whitekey_count_) {
+    const PianoKey& key = keys_.at(key_ind);
+    if (key.GetType() == PianoKeyType::White) {
+      int white_key_event = kWhiteKeyEvents.at(white_ind);
+      keybinds.emplace(white_key_event, key);
+
+      // Increment both key indices only if we add a white-key mapping
+      // This ensures that black_ind still increments between white keys that
+      // have no black keys between them
+      white_ind++;
+      black_ind++;
+    } else if (key.GetType() == PianoKeyType::Black) {
+      int black_key_event = kBlackKeyEvents.at(black_ind);
+      keybinds.emplace(black_key_event, key);
+    }
+    key_ind++;
   }
+
+  keybinds_ = keybinds;
+}
+
+const music::Note& Piano::PlayKey(int key_event) {
+  auto it = keybinds_.find(key_event);
+  if (it == keybinds_.end()) {
+    throw std::invalid_argument("No piano key bound to the given key_event");
+  }
+
+  // Todo: Update corresponding PianoKey to temporarily change color
+  const PianoKey& key = it->second;
+  return key.GetNote();
 }
 
 }  // namespace visualizer

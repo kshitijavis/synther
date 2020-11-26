@@ -50,7 +50,20 @@ class Piano {
    *   A negative input will shift the view down and a positive input will
    *   shift the view up.
    */
-  const void ShiftView(int displacement);
+  void ShiftView(int displacement);
+
+  /**
+   * "Plays a key" on the keyboard. Handles a ci::app::KeyEvent and "plays"
+   *   the Piano Key corresponding to the KeyEvent. Calling this method will
+   *   temporarily change the color of the key that was played and returns the
+   *   note corresponding the to played key
+   * @param key_event a ci::app::KeyEvent that is bound to a Piano Key on the
+   *   keyboard. Throws an exception if key_event does not have a keybind or if
+   *   key_event is not a ci::app::KeyEvent
+   * @return a const reference to a music::Note mapped to the key that
+   *   was played
+   */
+  const music::Note& PlayKey(int key_event);
 
   /**
    * Get the PianoKey at the specified index
@@ -81,10 +94,11 @@ class Piano {
   const music::Accidental kPriority = music::Accidental::Sharp;
 
   // View window
-  int view_first_note_;
+  int view_first_;
   size_t view_whitekey_count_;
   static constexpr int kDefaultViewWhitekeyCount = 20;
 
+  // Keybinds
   std::map<int, PianoKey> keybinds_;
 
   // Helper methods
