@@ -95,7 +95,7 @@ TEST_CASE("Constructor correctly initializes piano with offset first_semitone",
 }
 
 TEST_CASE("Key Binds are set correctly",
-          "[constructor][keybind][shiftview][playkey]") {
+          "[constructor][keybind][iskeybind][shiftview][playkey]") {
   SECTION(
       "Constructor correctly initializes key binds for standard piano,"
       "with single-octave view") {
@@ -116,8 +116,8 @@ TEST_CASE("Key Binds are set correctly",
         {ci::app::KeyEvent::KEY_i, Note(0, 'G', Accidental::Sharp)}};
 
     for (auto key_bind : key_binds) {
-      auto test = piano.PlayKey(key_bind.first);
-      REQUIRE(test == key_bind.second);
+      REQUIRE(piano.IsKeybind(key_bind.first));
+      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -133,6 +133,7 @@ TEST_CASE("Key Binds are set correctly",
         {ci::app::KeyEvent::KEY_SEMICOLON, Note(1, 'C', Accidental::Natural)}};
 
     for (auto key_bind : key_binds) {
+      REQUIRE(piano.IsKeybind(key_bind.first));
       REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
     }
   }
@@ -154,6 +155,7 @@ TEST_CASE("Key Binds are set correctly",
     };
 
     for (auto key_bind : key_binds) {
+      REQUIRE(piano.IsKeybind(key_bind.first));
       REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
     }
   }

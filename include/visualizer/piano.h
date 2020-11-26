@@ -78,13 +78,22 @@ class Piano {
    *   the Piano Key corresponding to the KeyEvent. Calling this method will
    *   temporarily change the color of the key that was played and returns the
    *   note corresponding the to played key
-   * @param key_event a ci::app::KeyEvent that is bound to a Piano Key on the
-   *   keyboard. Throws an exception if key_event does not have a keybind or if
-   *   key_event is not a ci::app::KeyEvent
+   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
+   *   the keyboard. Throws an exception if key_event does not have a keybind
+   *   or if key_event is not a ci::app::KeyEvent
    * @return a const reference to a music::Note mapped to the key that
    *   was played
    */
-  const music::Note& PlayKey(int key_event);
+  const music::Note& PlayKey(int key_code);
+
+  /**
+   * Checks if the input key_code represents a valid keybind on the piano. In
+   *   other words, checks if the KeyEvent corresponding to the key_code is
+   *   mapped to any PianoKey on the keyboard
+   * @param key_code an int representing ci::app::KeyEvent code
+   * @return true if the input key_code is a valid keybind
+   */
+  bool IsKeybind(int key_code) const;
 
   /**
    * Get the PianoKey at the specified index

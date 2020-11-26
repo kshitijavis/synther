@@ -181,8 +181,8 @@ void Piano::SetKeyBinds() {
   keybinds_ = keybinds;
 }
 
-const music::Note& Piano::PlayKey(int key_event) {
-  auto it = keybinds_.find(key_event);
+const music::Note& Piano::PlayKey(int key_code) {
+  auto it = keybinds_.find(key_code);
   if (it == keybinds_.end()) {
     throw std::invalid_argument("No piano key bound to the given key_event");
   }
@@ -190,6 +190,10 @@ const music::Note& Piano::PlayKey(int key_event) {
   // Todo: Update corresponding PianoKey to temporarily change color
   const PianoKey* key = it->second;
   return key->GetNote();
+}
+
+bool Piano::IsKeybind(int key_code) const {
+  return keybinds_.find(key_code) != keybinds_.end();
 }
 
 void Piano::SetKeyLabels() {
