@@ -30,10 +30,10 @@ void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
   ci::gl::drawStrokedRect(bar_bounds);
 
   glm::dvec2 label_center = top_left_corner + glm::dvec2(width / 2,
-                                                         3.0/4.0 * height);
+                                                         0.75 * height);
   ci::gl::drawStringCentered(std::string(1, label_), label_center,
                              text_color_,
-                             ci::Font("Arial", 11.0f));
+                             ci::Font("Futura-Bold", width / 2));
 }
 
 void synther::visualizer::PianoKey::SetLabel(char label) {

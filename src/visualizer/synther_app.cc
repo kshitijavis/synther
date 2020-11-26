@@ -10,7 +10,7 @@ namespace visualizer {
 SyntherApp::SyntherApp()
     : piano_(glm::dvec2(kSidePadding, kTopPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight,
-             kFirstSemitoneIndex, kKeyCount, 8) {
+             kFirstSemitoneIndex, kKeyCount, kViewWhitekeyCount) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
