@@ -24,12 +24,6 @@ class PianoKey {
   PianoKey(const music::Note& note, const PianoKeyType& type, char label = ' ');
 
   /**
-   * Set the label of the key, which will be displayed when drawing the key
-   * @param label a character to set the label to
-   */
-  void SetLabel(char label);
-
-  /**
    * Gets the Note mapped to this PianoKey
    * @return the Note represented by this PianoKey
    */
@@ -40,6 +34,18 @@ class PianoKey {
    * @return the PianoKeyType represented by this PianoKey
    */
   const PianoKeyType& GetType() const;
+
+  /**
+   * Set the label of the key, which will be displayed when drawing the key
+   * @param label a character to set the label to
+   */
+  void SetLabel(char label);
+
+  /**
+   * Gets the current label of this PianoKey
+   * @return a char representing this PianoKey's label
+   */
+  char GetLabel() const;
 
   /**
    * Draws a Key in the Cinder application.

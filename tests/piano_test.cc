@@ -96,7 +96,8 @@ TEST_CASE("Constructor correctly initializes piano with offset first_semitone",
 
 TEST_CASE("Key Binds are set correctly",
           "[constructor][keybind][shiftview][playkey]") {
-  SECTION("Constructor correctly initializes key binds for standard piano,"
+  SECTION(
+      "Constructor correctly initializes key binds for standard piano,"
       "with single-octave view") {
     Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 8);
 
@@ -112,24 +113,85 @@ TEST_CASE("Key Binds are set correctly",
         {ci::app::KeyEvent::KEY_h, Note(0, 'F', Accidental::Natural)},
         {ci::app::KeyEvent::KEY_u, Note(0, 'F', Accidental::Sharp)},
         {ci::app::KeyEvent::KEY_j, Note(0, 'G', Accidental::Natural)},
-        {ci::app::KeyEvent::KEY_i, Note(0, 'G', Accidental::Sharp)}
-    };
+        {ci::app::KeyEvent::KEY_i, Note(0, 'G', Accidental::Sharp)}};
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      auto test = piano.PlayKey(key_bind.first);
+      REQUIRE(test == key_bind.second);
     }
   }
 
-  SECTION("Constructor correctly initializes key binds for standard piano,"
-          "with larger view") {
+  SECTION(
+      "Constructor correctly initializes key binds for standard piano,"
+      "with larger view") {
     Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 20);
 
     std::map<int, Note> key_binds{
         {ci::app::KeyEvent::KEY_k, Note(1, 'A', Accidental::Natural)},
         {ci::app::KeyEvent::KEY_o, Note(1, 'A', Accidental::Sharp)},
         {ci::app::KeyEvent::KEY_l, Note(1, 'B', Accidental::Natural)},
-        {ci::app::KeyEvent::KEY_SEMICOLON, Note(1, 'C', Accidental::Natural)}
+        {ci::app::KeyEvent::KEY_SEMICOLON, Note(1, 'C', Accidental::Natural)}};
+
+    for (auto key_bind : key_binds) {
+      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+    }
+  }
+
+  SECTION("Standard piano after shifted view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 20);
+    // Shift up to F8 natural
+    piano.ShiftView(47);
+
+    std::map<int, Note> key_binds{
+        {ci::app::KeyEvent::KEY_a, Note(6, 'F', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_w, Note(6, 'F', Accidental::Sharp)},
+        {ci::app::KeyEvent::KEY_s, Note(6, 'G', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_e, Note(6, 'G', Accidental::Sharp)},
+        {ci::app::KeyEvent::KEY_d, Note(7, 'A', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_r, Note(7, 'A', Accidental::Sharp)},
+        {ci::app::KeyEvent::KEY_f, Note(7, 'B', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_g, Note(7, 'C', Accidental::Natural)},
     };
+
+    for (auto key_bind : key_binds) {
+      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+    }
+  }
+}
+
+TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
+  SECTION("Constructor on standard piano with single-octave view") {
+    size_t piano_size = 88;
+    size_t view_whitekey_count = 8;
+    size_t view_first_key = 0;
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, piano_size, view_whitekey_count);
+
+    std::vector<char> expected_labels = {'a', 'w', 's', 'd', 'r', 'f', 't',
+                                         'g', 'h', 'u', 'j', 'i', 'k'};
+
+    size_t view_key_count = 13;
+    size_t label_ind = 0;
+    for (size_t key_ind = 0; key_ind < piano_size; key_ind++) {
+      char expected_label = ' ';
+      if (key_ind >= view_first_key && key_ind < view_key_count) {
+        expected_label = expected_labels.at(label_ind);
+        label_ind++;
+      }
+
+      REQUIRE(piano.GetPianoKey(key_ind).GetLabel() == expected_label);
+    }
+  }
+
+  SECTION(
+      "Constructor correctly initializes key binds for standard piano,"
+      "with larger view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 20);
+
+    std::map<int, Note> key_binds{
+        {ci::app::KeyEvent::KEY_k, Note(1, 'A', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_o, Note(1, 'A', Accidental::Sharp)},
+        {ci::app::KeyEvent::KEY_l, Note(1, 'B', Accidental::Natural)},
+        {ci::app::KeyEvent::KEY_SEMICOLON, Note(1, 'C', Accidental::Natural)}};
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);

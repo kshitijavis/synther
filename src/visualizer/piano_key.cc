@@ -48,3 +48,7 @@ const synther::visualizer::PianoKeyType&
 synther::visualizer::PianoKey::GetType() const {
   return type_;
 }
+
+char synther::visualizer::PianoKey::GetLabel() const {
+  return label_;
+}

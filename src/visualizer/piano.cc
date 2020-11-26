@@ -15,19 +15,21 @@ namespace synther {
 
 namespace visualizer {
 
-const std::vector<int> Piano::kBlackKeyEvents{
-    ci::app::KeyEvent::KEY_q, ci::app::KeyEvent::KEY_w,
-    ci::app::KeyEvent::KEY_e, ci::app::KeyEvent::KEY_r,
-    ci::app::KeyEvent::KEY_t, ci::app::KeyEvent::KEY_y,
-    ci::app::KeyEvent::KEY_u, ci::app::KeyEvent::KEY_i,
-    ci::app::KeyEvent::KEY_o, ci::app::KeyEvent::KEY_p};
+const std::vector<Piano::KeyEvent> Piano::kBlackKeyCodes{
+    {ci::app::KeyEvent::KEY_q, 'q'}, {ci::app::KeyEvent::KEY_w, 'w'},
+    {ci::app::KeyEvent::KEY_e, 'e'}, {ci::app::KeyEvent::KEY_r, 'r'},
+    {ci::app::KeyEvent::KEY_t, 't'}, {ci::app::KeyEvent::KEY_y, 'y'},
+    {ci::app::KeyEvent::KEY_u, 'u'}, {ci::app::KeyEvent::KEY_i, 'i'},
+    {ci::app::KeyEvent::KEY_o, 'o'}, {ci::app::KeyEvent::KEY_p, 'p'}
+};
 
-const std::vector<int> Piano::kWhiteKeyEvents{
-    ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_s,
-    ci::app::KeyEvent::KEY_d, ci::app::KeyEvent::KEY_f,
-    ci::app::KeyEvent::KEY_g, ci::app::KeyEvent::KEY_h,
-    ci::app::KeyEvent::KEY_j, ci::app::KeyEvent::KEY_k,
-    ci::app::KeyEvent::KEY_l, ci::app::KeyEvent::KEY_SEMICOLON};
+const std::vector<Piano::KeyEvent> Piano::kWhiteKeyCodes{
+    {ci::app::KeyEvent::KEY_a, 'a'}, {ci::app::KeyEvent::KEY_s, 's'},
+    {ci::app::KeyEvent::KEY_d, 'd'}, {ci::app::KeyEvent::KEY_f, 'f'},
+    {ci::app::KeyEvent::KEY_g, 'g'}, {ci::app::KeyEvent::KEY_h, 'h'},
+    {ci::app::KeyEvent::KEY_j, 'j'}, {ci::app::KeyEvent::KEY_k, 'k'},
+    {ci::app::KeyEvent::KEY_l, 'l'}, {ci::app::KeyEvent::KEY_SEMICOLON, ';'}
+};
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)
@@ -57,10 +59,10 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
 
   // Set view_whitekey_count_ to default, unless the white keys on the board are
   // less than the default
-  view_whitekey_count_ =
-      std::min(CountNaturals(), view_whitekey_count);
+  view_whitekey_count_ = std::min(CountNaturals(), view_whitekey_count);
 
   SetKeyBinds();
+  SetKeyLabels();
 }
 
 void Piano::Draw() const {
@@ -118,6 +120,7 @@ void Piano::ShiftView(int displacement) {
   }
 
   SetKeyBinds();
+  SetKeyLabels();
 }
 
 const PianoKey& Piano::GetPianoKey(int index) const {
@@ -138,33 +141,35 @@ const size_t Piano::CountNaturals() const {
   return natural_count;
 }
 
-const void Piano::SetKeyBinds() {
+void Piano::SetKeyBinds() {
   std::map<int, PianoKey> keybinds;
 
-  size_t white_ind = 0;
-  size_t black_ind = 0;
-  size_t key_ind = view_first_;
+  size_t white_index = 0;
+  size_t black_index = 0;
+  size_t key_index = view_first_;
+  size_t white_keys_accessed = 0;
 
   // Add the keybinds
-  while (white_ind < kWhiteKeyEvents.size() &&
-         black_ind < kBlackKeyEvents.size() &&
-         key_ind < view_whitekey_count_ + view_first_ &&
-         key_ind < keys_.size()) {
-    const PianoKey& key = keys_.at(key_ind);
+  while (white_index < kWhiteKeyCodes.size() &&
+         black_index < kBlackKeyCodes.size() &&
+         white_keys_accessed < view_whitekey_count_ &&
+         key_index < keys_.size()) {
+    const PianoKey& key = keys_.at(key_index);
     if (key.GetType() == PianoKeyType::White) {
-      int white_key_event = kWhiteKeyEvents.at(white_ind);
-      keybinds.emplace(white_key_event, key);
+      int white_key_code = kWhiteKeyCodes.at(white_index).key_code_;
+      keybinds.emplace(white_key_code, key);
 
       // Increment both key indices only if we add a white-key mapping
-      // This ensures that black_ind still increments between white keys that
-      // have no black keys between them
-      white_ind++;
-      black_ind++;
+      // Ensures that black_ind still increments between white keys that
+      // have no black keys between them (e.g. E and F)
+      white_index++;
+      black_index++;
+      white_keys_accessed++;
     } else if (key.GetType() == PianoKeyType::Black) {
-      int black_key_event = kBlackKeyEvents.at(black_ind);
-      keybinds.emplace(black_key_event, key);
+      int black_key_code = kBlackKeyCodes.at(black_index).key_code_;
+      keybinds.emplace(black_key_code, key);
     }
-    key_ind++;
+    key_index++;
   }
 
   keybinds_ = keybinds;
@@ -179,6 +184,30 @@ const music::Note& Piano::PlayKey(int key_event) {
   // Todo: Update corresponding PianoKey to temporarily change color
   const PianoKey& key = it->second;
   return key.GetNote();
+}
+
+void Piano::SetKeyLabels() {
+  // First empty all key labels
+  for (PianoKey& key : keys_) {
+    key.SetLabel(' ');
+  }
+
+  // Create map of KeyEvents to chars for efficient lookup
+  std::map<int, char> key_events;
+  for (KeyEvent key_event : kWhiteKeyCodes) {
+    key_events[key_event.key_code_] = key_event.key_char_;
+  }
+  for (KeyEvent key_event : kBlackKeyCodes) {
+    key_events[key_event.key_code_] = key_event.key_char_;
+  }
+
+  // Set new key labels
+  for (auto keybind : keybinds_) {
+    int key_code = keybind.first;
+    PianoKey& key = keybind.second;
+    char key_char = key_events.at(key_code);
+    key.SetLabel(key_char);
+  }
 }
 
 }  // namespace visualizer

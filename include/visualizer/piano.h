@@ -113,9 +113,13 @@ class Piano {
   static constexpr int kDefaultViewWhitekeyCount = 20;
 
   // Keybinds
+  struct KeyEvent {
+    int key_code_;
+    char key_char_;
+  };
   std::map<int, PianoKey> keybinds_;
-  static const std::vector<int> kBlackKeyEvents;
-  static const std::vector<int> kWhiteKeyEvents;
+  static const std::vector<KeyEvent> kBlackKeyCodes;
+  static const std::vector<KeyEvent> kWhiteKeyCodes;
 
   // Helper methods
   /**
@@ -132,7 +136,16 @@ class Piano {
    *   keybinds to lie between white keybinds, just as they would on a physical
    *   piano.
    */
-  const void SetKeyBinds();
+  void SetKeyBinds();
+
+  /**
+   * For every key on the keyboard, sets the label of the key to its
+   *   corresponding KeyEvent, which is stored in keybinds_. If the key does
+   *   not have a keybind, sets the label to an empty char
+   */
+  void SetKeyLabels();
+
+
 };
 
 }  // namespace visualizer
