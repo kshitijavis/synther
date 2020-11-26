@@ -86,19 +86,23 @@ void Piano::Draw() const {
 
 void Piano::ShiftView(int displacement) {
   size_t distance = abs(displacement);
+
   for (size_t keys_shifted = 0; keys_shifted < distance; keys_shifted++) {
+    if ((view_first_ <= 0 && displacement < 0) ||
+        (view_first_ >= keys_.size() - 1 && displacement > 0)) {
+      break;
+    }
+
     if (displacement < 0) {
       view_first_--;
       // shift down again if view_first is on black key
-      if (view_first_ >= 0 && view_first_ < keys_.size() &&
-          keys_.at(view_first_).GetType() == PianoKeyType::Black) {
+      if (keys_.at(view_first_).GetType() == PianoKeyType::Black) {
         view_first_--;
       }
     } else if (displacement > 0) {
       view_first_++;
       // shift up again if view_first is on black key
-      if (view_first_ >= 0 && view_first_ < keys_.size() &&
-          keys_.at(view_first_).GetType() == PianoKeyType::Black) {
+      if (keys_.at(view_first_).GetType() == PianoKeyType::Black) {
         view_first_++;
       }
     }

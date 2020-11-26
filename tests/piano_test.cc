@@ -222,33 +222,38 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
   }
 }
 
-// The following test cases test the Draw() method. These cases are selected
-// to ensure that no actual Cinder drawing is done. In all the following
-// tests, the method will quit before drawing any object using Cinder.
-// Otherwise, an exception would be thrown, causing the test suite to fail
-TEST_CASE("Draw does not cause unexpected errors after ShiftView",
-          "[shiftview][draw][constructor]") {
-  SECTION("Standard piano, upward shift") {
-    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
-    REQUIRE_NOTHROW(piano.ShiftView(150));
-    REQUIRE_NOTHROW(piano.Draw());
+// Regression tests on Shiftview after finding numerous unhandled exceptions
+TEST_CASE("Stress-test Shiftview for unexpected errors", "[shiftview]") {
+  Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
+  SECTION("Shift view up and back down") {
+    REQUIRE_NOTHROW(piano.ShiftView(80));
+    REQUIRE_NOTHROW(piano.ShiftView(80));
+    REQUIRE_NOTHROW(piano.ShiftView(-80));
+    REQUIRE_NOTHROW(piano.ShiftView(-80));
   }
 
-  SECTION("Standard piano, downward shift") {
-    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88);
-    REQUIRE_NOTHROW(piano.ShiftView(-150));
-    REQUIRE_NOTHROW(piano.Draw());
+  SECTION("Shift down and back up") {
+    REQUIRE_NOTHROW(piano.ShiftView(-80));
+    REQUIRE_NOTHROW(piano.ShiftView(-80));
+    REQUIRE_NOTHROW(piano.ShiftView(80));
+    REQUIRE_NOTHROW(piano.ShiftView(80));
   }
 
-  SECTION("Standard piano with view size of 0, downward shift") {
-    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 0);
-    REQUIRE_NOTHROW(piano.ShiftView(150));
-    REQUIRE_NOTHROW(piano.Draw());
+  SECTION("Shiftview incrementally up and back down") {
+    for (size_t count = 0; count < 100; count++) {
+      REQUIRE_NOTHROW(piano.ShiftView(1));
+    }
+    for (size_t count = 0; count < 100; count++) {
+      REQUIRE_NOTHROW(piano.ShiftView(-1));
+    }
   }
 
-  SECTION("Standard piano with view size of 0, downward shift") {
-    Piano piano(glm::dvec2(0, 0), 5, 5, 0, 88, 0);
-    REQUIRE_NOTHROW(piano.ShiftView(-150));
-    REQUIRE_NOTHROW(piano.Draw());
+  SECTION("Shiftview incrementally down and back up") {
+    for (size_t count = 0; count < 100; count++) {
+      REQUIRE_NOTHROW(piano.ShiftView(-1));
+    }
+    for (size_t count = 0; count < 100; count++) {
+      REQUIRE_NOTHROW(piano.ShiftView(1));
+    }
   }
 }
