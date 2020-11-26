@@ -63,6 +63,7 @@ class PianoKey {
 
   // Colors
   ci::Color fill_color_;
+  static const ci::Color play_fill_color_;
   ci::Color outline_color_;
   ci::Color text_color_;
 };

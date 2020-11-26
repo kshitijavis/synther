@@ -7,8 +7,12 @@
 #include "visualizer/piano_key.h"
 #include "core/music_note.h"
 
-synther::visualizer::PianoKey::PianoKey(const synther::music::Note& note,
-                                        const PianoKeyType& type, char label)
+namespace synther {
+
+namespace visualizer {
+
+PianoKey::PianoKey(const synther::music::Note& note,
+                   const PianoKeyType& type, char label)
     : note_(note), type_(type), label_(label) {
   if (type == PianoKeyType::White) {
     fill_color_ = ci::Color("white");
@@ -19,8 +23,8 @@ synther::visualizer::PianoKey::PianoKey(const synther::music::Note& note,
   }
 }
 
-void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
-                                         double width, double height) const {
+void PianoKey::Draw(const glm::dvec2& top_left_corner, double width,
+               double height) const {
   glm::dvec2 bottom_right_corner = top_left_corner + glm::dvec2(width, height);
   ci::Rectf bar_bounds(top_left_corner, bottom_right_corner);
 
@@ -29,26 +33,28 @@ void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
   ci::gl::color(outline_color_);
   ci::gl::drawStrokedRect(bar_bounds);
 
-  glm::dvec2 label_center = top_left_corner + glm::dvec2(width / 2,
-                                                         0.75 * height);
-  ci::gl::drawStringCentered(std::string(1, label_), label_center,
-                             text_color_,
+  glm::dvec2 label_center =
+      top_left_corner + glm::dvec2(width / 2, 0.75 * height);
+  ci::gl::drawStringCentered(std::string(1, label_), label_center, text_color_,
                              ci::Font("Futura-Bold", width / 2));
 }
 
-void synther::visualizer::PianoKey::SetLabel(char label) {
+void PianoKey::SetLabel(char label) {
   label_ = label;
 }
 
-const synther::music::Note& synther::visualizer::PianoKey::GetNote() const {
+const synther::music::Note& PianoKey::GetNote() const {
   return note_;
 }
 
-const synther::visualizer::PianoKeyType&
-synther::visualizer::PianoKey::GetType() const {
+const synther::visualizer::PianoKeyType& PianoKey::GetType() const {
   return type_;
 }
 
-char synther::visualizer::PianoKey::GetLabel() const {
+char PianoKey::GetLabel() const {
   return label_;
 }
+
+} // namespace visualizer
+
+} // namespace synther
