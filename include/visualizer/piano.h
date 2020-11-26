@@ -39,11 +39,12 @@ class Piano {
    *   the piano
    * @param width the width of the piano in pixels
    * @param height the height of the piano in pixels
-   * @param background_color the background color of the piano
    * @param first_semitone the starting note of the piano, specified by its
    *   semitone distance from A0, where A0 has a semitone of 0. It is
    *   recommended that first_semitone represents a whole tone
    * @param key_count the number of keys on the piano
+   * @param view_whitekey_count the number of white keys to display on the
+   *   piano when Draw() is called
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
         int first_semitone, size_t key_count,
@@ -117,14 +118,18 @@ class Piano {
   glm::dvec2 top_left_corner_;
   double width_;
   double height_;
-  __unused ci::Color background_color_;
+  static constexpr double kTopPaddingFactor = 0.1;
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.4;
+
+  ci::Color kBackgroundColor = ci::Color("maroon");
+  ci::Color kOutlineColor = ci::Color("peru");
 
   // PianoKeys
   int first_semitone_;
   std::vector<PianoKey> keys_;
   const music::Accidental kPriority = music::Accidental::Sharp;
+  char kOctaveMarkerLetter = 'A';
 
   // View window
   int view_first_;
@@ -163,6 +168,18 @@ class Piano {
    *   not have a keybind, sets the label to an empty char
    */
   void SetKeyLabels();
+
+  /**
+   * Draws all the PianoKeys in the current view
+   */
+  void DrawKeys(const glm::dvec2& top_left_corner, double width,
+                double height) const;
+
+  /**
+   * Draws all the PianoKeys in the current view
+   */
+  void DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
+                double height) const;
 };
 
 }  // namespace visualizer

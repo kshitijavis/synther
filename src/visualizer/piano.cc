@@ -66,37 +66,22 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
 }
 
 void Piano::Draw() const {
-  double white_key_height = height_;
-  double black_key_height = white_key_height * kBlackKeyHeightFactor;
-  double white_key_width = width_ / view_whitekey_count_;
-  double black_key_width = white_key_width * kBlackKeyWidthFactor;
+  glm::vec2 bottom_right_corner =
+      top_left_corner_ + glm::dvec2(width_, height_);
+  ci::Rectf keyboard_bounds(top_left_corner_, bottom_right_corner);
 
-  double top_edge = top_left_corner_.y;
-  double left_edge = top_left_corner_.x;
+  // Draw background
+  ci::gl::color(kBackgroundColor);
+  ci::gl::drawSolidRect(keyboard_bounds);
+  ci::gl::color(kOutlineColor);
+  ci::gl::drawStrokedRect(keyboard_bounds);
 
-  size_t key_index = view_first_;
-  size_t white_keys_drawn = 0;
-  while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
-    const PianoKey key = keys_.at(key_index);
-    const music::Note& note = key.GetNote();
+  glm::dvec2 keys_top_left = top_left_corner_ +
+                             glm::dvec2(0, height_ * kTopPaddingFactor);
+  double keys_height = height_ * (1-kTopPaddingFactor);
 
-    if (note.GetAccidental() == music::Accidental::Natural) {
-      glm::vec2 top_left(left_edge, top_edge);
-      key.Draw(top_left, white_key_width, white_key_height);
-      key_index++;
-    } else {
-      // Draw next white key
-      const PianoKey next_white = keys_.at(key_index + 1);
-      glm::vec2 white_top_left(left_edge, top_edge);
-      next_white.Draw(white_top_left, white_key_width, white_key_height);
-      // Draw current black key
-      glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
-      key.Draw(black_top_left, black_key_width, black_key_height);
-      key_index += 2;
-    }
-    left_edge += white_key_width;
-    white_keys_drawn++;
-  }
+  DrawKeys(keys_top_left, width_, keys_height);
+  DrawOctaveMarkers(top_left_corner_, width_, height_ * kTopPaddingFactor);
 }
 
 void Piano::ShiftView(int displacement) {
@@ -105,14 +90,14 @@ void Piano::ShiftView(int displacement) {
     if (displacement < 0) {
       view_first_--;
       // shift down again if view_first is on black key
-      if (view_first_ >= 0 &&
+      if (view_first_ >= 0 && view_first_ < keys_.size() &&
           keys_.at(view_first_).GetType() == PianoKeyType::Black) {
         view_first_--;
       }
     } else if (displacement > 0) {
       view_first_++;
       // shift up again if view_first is on black key
-      if (view_first_ < keys_.size() &&
+      if (view_first_ >= 0 && view_first_ < keys_.size() &&
           keys_.at(view_first_).GetType() == PianoKeyType::Black) {
         view_first_++;
       }
@@ -146,7 +131,7 @@ void Piano::SetKeyBinds() {
 
   size_t white_index = 0;
   size_t black_index = 0;
-  size_t key_index = view_first_;
+  size_t key_index = std::max(view_first_,0);
   size_t white_keys_accessed = 0;
 
   // Add the keybinds
@@ -221,6 +206,72 @@ void Piano::SetKeyLabels() {
     PianoKey* key = keybind.second;
     char key_char = key_events.at(key_code);
     key->SetLabel(key_char);
+  }
+}
+
+void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
+                     double height) const {
+  double white_key_height = height;
+  double black_key_height = white_key_height * kBlackKeyHeightFactor;
+  double white_key_width = width / view_whitekey_count_;
+  double black_key_width = white_key_width * kBlackKeyWidthFactor;
+
+  double top_edge = top_left_corner.y;
+  double left_edge = top_left_corner.x;
+
+  size_t key_index = std::max(0,view_first_);
+  size_t white_keys_drawn = 0;
+  while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
+    const PianoKey key = keys_.at(key_index);
+
+    if (key.GetType() == PianoKeyType::White) {
+      glm::vec2 top_left(left_edge, top_edge);
+      key.Draw(top_left, white_key_width, white_key_height);
+      key_index++;
+    } else if (key.GetType() == PianoKeyType::Black) {
+      // Draw next white key
+      const PianoKey next_white = keys_.at(key_index + 1);
+      glm::vec2 white_top_left(left_edge, top_edge);
+      next_white.Draw(white_top_left, white_key_width, white_key_height);
+      // Draw current black key
+      glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
+      key.Draw(black_top_left, black_key_width, black_key_height);
+      key_index += 2;
+    }
+    left_edge += white_key_width;
+    white_keys_drawn++;
+  }
+}
+
+void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
+                              double height) const {
+  double white_key_width = width / view_whitekey_count_;
+  double top_edge = top_left_corner.y;
+  double left_edge = top_left_corner.x;
+
+  size_t key_index = std::max(0,view_first_);
+  size_t white_keys_accessed = 0;
+
+  while (white_keys_accessed < view_whitekey_count_ && key_index < keys_.size()) {
+    const PianoKey key = keys_.at(key_index);
+    const music::Note& note = key.GetNote();
+
+    if (toupper(note.GetLetter()) == kOctaveMarkerLetter &&
+        note.GetAccidental() == music::Accidental::Natural) {
+      int octave = note.GetOctave();
+      std::string octave_marker = kOctaveMarkerLetter + std::to_string(octave);
+
+      glm::dvec2 marker_center(left_edge + white_key_width / 2, top_edge);
+      ci::gl::drawStringCentered(octave_marker, marker_center,
+                                 ci::Color("white"),
+                                 ci::Font("Futura-Bold", white_key_width / 2));
+    }
+
+    if (key.GetType() == PianoKeyType::White) {
+      left_edge += white_key_width;
+      white_keys_accessed++;
+    }
+    key_index++;
   }
 }
 

@@ -35,7 +35,7 @@ class SyntherApp : public ci::app::App {
   const double kTopPadding = 30;
 
   // Appearance
-  const std::string kBackgroundColor = "brown";
+  const std::string kBackgroundColor = "midnightblue";
 
   // Piano
   Piano piano_;
