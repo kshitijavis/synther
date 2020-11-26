@@ -65,6 +65,12 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   SetKeyLabels();
 }
 
+void Piano::Update() {
+  for (PianoKey& key : keys_) {
+    key.Update();
+  }
+}
+
 void Piano::Draw() const {
   double white_key_height = height_;
   double black_key_height = white_key_height * kBlackKeyHeightFactor;

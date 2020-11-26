@@ -50,6 +50,13 @@ class Piano {
         size_t view_whitekey_count = kDefaultViewWhitekeyCount);
 
   /**
+   * Updates the current state of the keyboard and all keys on the keyboard.
+   *   Signals the passage of time, allowing piano key colors to reset after
+   *   a certain number of calls to Update()
+   */
+  void Update();
+
+  /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
    *   on the board and all black keys that lie within these bounds. The first
    *   and last keys on the display will always be white keys.
@@ -144,8 +151,6 @@ class Piano {
    *   not have a keybind, sets the label to an empty char
    */
   void SetKeyLabels();
-
-
 };
 
 }  // namespace visualizer
