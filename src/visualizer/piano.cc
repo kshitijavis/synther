@@ -58,7 +58,7 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   // Set view_whitekey_count_ to default, unless the white keys on the board are
   // less than the default
   view_whitekey_count_ =
-      std::min(CountNaturals(), static_cast<size_t>(kDefaultViewWhitekeyCount));
+      std::min(CountNaturals(), view_whitekey_count);
 
   SetKeyBinds();
 }
