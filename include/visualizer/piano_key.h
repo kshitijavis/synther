@@ -16,7 +16,13 @@ enum class PianoKeyType { Black, White };
 
 class PianoKey {
  public:
-  explicit PianoKey(const music::Note& note, const PianoKeyType& type);
+  PianoKey(const music::Note& note, const PianoKeyType& type, char label = ' ');
+
+  /**
+   * Set the label of the key, which will be displayed when drawing the key
+   * @param label a character to set the label to
+   */
+  void SetLabel(char label);
 
   /**
    * Gets the Note mapped to this PianoKey
@@ -36,8 +42,12 @@ class PianoKey {
  private:
   music::Note note_;
   PianoKeyType type_;
+  char label_;
+
+  // Colors
   ci::Color fill_color_;
   ci::Color outline_color_;
+  ci::Color text_color_;
 };
 
 }  // namespace visualizer
