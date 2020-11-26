@@ -142,7 +142,7 @@ const size_t Piano::CountNaturals() const {
 }
 
 void Piano::SetKeyBinds() {
-  std::map<int, PianoKey> keybinds;
+  std::map<int, PianoKey*> keybinds;
 
   size_t white_index = 0;
   size_t black_index = 0;
@@ -154,10 +154,10 @@ void Piano::SetKeyBinds() {
          black_index < kBlackKeyCodes.size() &&
          white_keys_accessed < view_whitekey_count_ &&
          key_index < keys_.size()) {
-    const PianoKey& key = keys_.at(key_index);
+    PianoKey& key = keys_.at(key_index);
     if (key.GetType() == PianoKeyType::White) {
       int white_key_code = kWhiteKeyCodes.at(white_index).key_code_;
-      keybinds.emplace(white_key_code, key);
+      keybinds[white_key_code] = &key;
 
       // Increment both key indices only if we add a white-key mapping
       // Ensures that black_ind still increments between white keys that
@@ -167,7 +167,7 @@ void Piano::SetKeyBinds() {
       white_keys_accessed++;
     } else if (key.GetType() == PianoKeyType::Black) {
       int black_key_code = kBlackKeyCodes.at(black_index).key_code_;
-      keybinds.emplace(black_key_code, key);
+      keybinds[black_key_code] = &key;
     }
     key_index++;
   }
@@ -182,8 +182,8 @@ const music::Note& Piano::PlayKey(int key_event) {
   }
 
   // Todo: Update corresponding PianoKey to temporarily change color
-  const PianoKey& key = it->second;
-  return key.GetNote();
+  const PianoKey* key = it->second;
+  return key->GetNote();
 }
 
 void Piano::SetKeyLabels() {
@@ -204,9 +204,9 @@ void Piano::SetKeyLabels() {
   // Set new key labels
   for (auto keybind : keybinds_) {
     int key_code = keybind.first;
-    PianoKey& key = keybind.second;
+    PianoKey* key = keybind.second;
     char key_char = key_events.at(key_code);
-    key.SetLabel(key_char);
+    key->SetLabel(key_char);
   }
 }
 

@@ -117,7 +117,7 @@ class Piano {
     int key_code_;
     char key_char_;
   };
-  std::map<int, PianoKey> keybinds_;
+  std::map<int, PianoKey*> keybinds_;
   static const std::vector<KeyEvent> kBlackKeyCodes;
   static const std::vector<KeyEvent> kWhiteKeyCodes;
 
