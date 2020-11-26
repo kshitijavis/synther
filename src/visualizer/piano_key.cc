@@ -7,17 +7,14 @@
 #include "visualizer/piano_key.h"
 #include "core/music_note.h"
 
-synther::visualizer::PianoKey::PianoKey(const synther::music::Note& note)
-    : note_(note) {
-  if (note.GetAccidental() == music::Accidental::Natural) {
+synther::visualizer::PianoKey::PianoKey(const synther::music::Note& note,
+                                        const PianoKeyType& type)
+    : note_(note), type_(type) {
+  if (type == PianoKeyType::White) {
     fill_color_ = ci::Color("white");
-  } else {
+  } else if (type == PianoKeyType::Black) {
     fill_color_ = ci::Color("black");
   }
-}
-
-const synther::music::Note& synther::visualizer::PianoKey::GetNote() const {
-  return note_;
 }
 
 void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
@@ -29,4 +26,13 @@ void synther::visualizer::PianoKey::Draw(const glm::dvec2& top_left_corner,
   ci::gl::drawSolidRect(bar_bounds);
   ci::gl::color(outline_color_);
   ci::gl::drawStrokedRect(bar_bounds);
+}
+
+const synther::music::Note& synther::visualizer::PianoKey::GetNote() const {
+  return note_;
+}
+
+const synther::visualizer::PianoKeyType&
+synther::visualizer::PianoKey::GetType() const {
+  return type_;
 }

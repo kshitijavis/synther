@@ -75,16 +75,17 @@ class Piano {
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.4;
 
-  // Data
+  // PianoKeys
   int first_semitone_;
   std::vector<PianoKey> keys_;
-
   const music::Accidental kPriority = music::Accidental::Sharp;
 
   // View window
   int view_first_note_;
   size_t view_whitekey_count_;
   static constexpr int kDefaultViewWhitekeyCount = 20;
+
+  std::map<int, PianoKey> keybinds_;
 
   // Helper methods
   /**
@@ -93,8 +94,10 @@ class Piano {
    */
   const size_t CountNaturals() const;
 
-  static const std::vector<int> kBlackKeybinds;
-  static const std::vector<int> kWhiteKeybinds;
+  const void SetKeyBinds();
+
+  static const std::vector<int> kBlackKeyEvents;
+  static const std::vector<int> kWhiteKeyEvents;
 };
 
 }  // namespace visualizer

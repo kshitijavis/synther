@@ -5,8 +5,9 @@
 #include "visualizer/piano.h"
 
 #include <vector>
-#include "cinder/app/App.h"
+
 #include "cinder/Color.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
 #include "core/music_note.h"
 
@@ -14,21 +15,19 @@ namespace synther {
 
 namespace visualizer {
 
-const std::vector<int> Piano::kBlackKeybinds{
+const std::vector<int> Piano::kBlackKeyEvents{
     ci::app::KeyEvent::KEY_q, ci::app::KeyEvent::KEY_w,
     ci::app::KeyEvent::KEY_e, ci::app::KeyEvent::KEY_r,
     ci::app::KeyEvent::KEY_t, ci::app::KeyEvent::KEY_y,
     ci::app::KeyEvent::KEY_u, ci::app::KeyEvent::KEY_i,
-    ci::app::KeyEvent::KEY_o, ci::app::KeyEvent::KEY_p
-};
+    ci::app::KeyEvent::KEY_o, ci::app::KeyEvent::KEY_p};
 
-const std::vector<int> Piano::kWhiteKeybinds{
+const std::vector<int> Piano::kWhiteKeyEvents{
     ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_s,
     ci::app::KeyEvent::KEY_d, ci::app::KeyEvent::KEY_f,
     ci::app::KeyEvent::KEY_g, ci::app::KeyEvent::KEY_h,
     ci::app::KeyEvent::KEY_j, ci::app::KeyEvent::KEY_k,
-    ci::app::KeyEvent::KEY_l, ci::app::KeyEvent::KEY_SEMICOLON
-};
+    ci::app::KeyEvent::KEY_l, ci::app::KeyEvent::KEY_SEMICOLON};
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)
@@ -51,7 +50,10 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   for (int semitone = first_semitone_; semitone < first_semitone_ + key_count;
        semitone++) {
     music::Note to_add(semitone, kPriority);
-    keys_.emplace_back(music::Note(semitone, kPriority));
+    PianoKeyType type = to_add.GetAccidental() == music::Accidental::Natural
+                            ? PianoKeyType::White
+                            : PianoKeyType::Black;
+    keys_.emplace_back(music::Note(semitone, kPriority), type);
   }
 }
 
@@ -116,6 +118,18 @@ const size_t Piano::CountNaturals() const {
     }
   }
   return natural_count;
+}
+
+const void Piano::SetKeyBinds() {
+  std::map<int, PianoKey> keybinds;
+
+  size_t white_ind = 0;
+  size_t black_ind = 0;
+  size_t key_ind = 0;
+  while (white_ind < kWhiteKeyEvents.size() &&
+         black_ind < kBlackKeyEvents.size() && key_ind < keys_.size()) {
+    __unused const PianoKey& key = keys_.at(key_ind);
+  }
 }
 
 }  // namespace visualizer
