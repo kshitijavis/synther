@@ -102,10 +102,22 @@ void Piano::ShiftView(int displacement) {
   for (size_t keys_shifted = 0; keys_shifted < distance; keys_shifted++) {
     if (displacement < 0) {
       view_first_--;
+      // shift down again if view_first is on black key
+      if (view_first_ >= 0 &&
+          keys_.at(view_first_).GetType() == PianoKeyType::Black) {
+        view_first_--;
+      }
     } else if (displacement > 0) {
       view_first_++;
+      // shift up again if view_first is on black key
+      if (view_first_ < keys_.size() &&
+          keys_.at(view_first_).GetType() == PianoKeyType::Black) {
+        view_first_++;
+      }
     }
   }
+
+  SetKeyBinds();
 }
 
 const PianoKey& Piano::GetPianoKey(int index) const {
@@ -135,7 +147,9 @@ const void Piano::SetKeyBinds() {
 
   // Add the keybinds
   while (white_ind < kWhiteKeyEvents.size() &&
-         black_ind < kBlackKeyEvents.size() && key_ind < view_whitekey_count_) {
+         black_ind < kBlackKeyEvents.size() &&
+         key_ind < view_whitekey_count_ + view_first_ &&
+         key_ind < keys_.size()) {
     const PianoKey& key = keys_.at(key_ind);
     if (key.GetType() == PianoKeyType::White) {
       int white_key_event = kWhiteKeyEvents.at(white_ind);
