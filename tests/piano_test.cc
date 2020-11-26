@@ -117,7 +117,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -134,7 +134,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -156,7 +156,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
     }
   }
 }
@@ -196,7 +196,7 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
         {ci::app::KeyEvent::KEY_SEMICOLON, Note(1, 'C', Accidental::Natural)}};
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -217,7 +217,7 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
     };
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.PlayKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
     }
   }
 }

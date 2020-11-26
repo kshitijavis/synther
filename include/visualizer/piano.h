@@ -50,13 +50,6 @@ class Piano {
         size_t view_whitekey_count = kDefaultViewWhitekeyCount);
 
   /**
-   * Updates the current state of the keyboard and all keys on the keyboard.
-   *   Signals the passage of time, allowing piano key colors to reset after
-   *   a certain number of calls to Update()
-   */
-  void Update();
-
-  /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
    *   on the board and all black keys that lie within these bounds. The first
    *   and last keys on the display will always be white keys.
@@ -77,14 +70,24 @@ class Piano {
    * "Plays a key" on the keyboard. Handles a ci::app::KeyEvent and "plays"
    *   the Piano Key corresponding to the KeyEvent. Calling this method will
    *   temporarily change the color of the key that was played and returns the
-   *   note corresponding the to played key
+   *   note corresponding the to played key. The color of the key will remain
+   *   changed until release_key is called
    * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
    *   the keyboard. Throws an exception if key_event does not have a keybind
-   *   or if key_event is not a ci::app::KeyEvent
+   *   or if key_event is not a valid ci::app::KeyEvent code
    * @return a const reference to a music::Note mapped to the key that
    *   was played
    */
-  const music::Note& PlayKey(int key_code);
+  const music::Note& PressKey(int key_code);
+
+  /**
+   * Releases a pressed key on the keyboard. This will reset the color of the
+   *   key to the standard color (black or white)
+   * @param key_code a ci::ap::KeyEvent code that is bound to a Piano Key on
+   *   the keyboard. Throws and exception if key_event does not have a keybind
+   *   or if key_bind is not a valid ci::app::KeyEvent code
+   */
+  void ReleaseKey(int key_code);
 
   /**
    * Checks if the input key_code represents a valid keybind on the piano. In

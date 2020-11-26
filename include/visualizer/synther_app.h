@@ -25,6 +25,7 @@ class SyntherApp : public ci::app::App {
   void draw() override;
   void mouseDown(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
+  void keyUp(ci::app::KeyEvent event) override;
 
  private:
   // Window & Element positioning

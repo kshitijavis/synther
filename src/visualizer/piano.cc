@@ -65,12 +65,6 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   SetKeyLabels();
 }
 
-void Piano::Update() {
-  for (PianoKey& key : keys_) {
-    key.Update();
-  }
-}
-
 void Piano::Draw() const {
   double white_key_height = height_;
   double black_key_height = white_key_height * kBlackKeyHeightFactor;
@@ -181,15 +175,25 @@ void Piano::SetKeyBinds() {
   keybinds_ = keybinds;
 }
 
-const music::Note& Piano::PlayKey(int key_code) {
+const music::Note& Piano::PressKey(int key_code) {
   auto it = keybinds_.find(key_code);
   if (it == keybinds_.end()) {
     throw std::invalid_argument("No piano key bound to the given key_event");
   }
 
-  // Todo: Update corresponding PianoKey to temporarily change color
-  const PianoKey* key = it->second;
+  PianoKey* key = it->second;
+  key->PressKey();
   return key->GetNote();
+}
+
+void Piano::ReleaseKey(int key_code) {
+  auto it = keybinds_.find(key_code);
+  if (it == keybinds_.end()) {
+    throw std::invalid_argument("No piano key bound to the given key_event");
+  }
+
+  PianoKey* key = it->second;
+  key->ReleaseKey();
 }
 
 bool Piano::IsKeybind(int key_code) const {

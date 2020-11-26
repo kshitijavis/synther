@@ -33,19 +33,16 @@ class PianoKey {
             double height) const;
 
   /**
-   * Updates the state of the PianoKey. If the PianoKey is in a changed-color
-   *   calling update will advance the internal clock of PianoKey. Once a
-   *   certain amount of time (calls to Update()) has passed, the PianoKey
-   *   color will reset to normal
+   * Press the key, which will temporarily change the color of the key. The
+   *   color will remain changed until ReleaseKey() is called
    */
-  void Update();
+  void PressKey();
 
   /**
-   * Updates state of the piano key to temporarily change its color. While
-   *   the key is in this state, the PianoKey color will be different when
-   *   calling Draw()
+   * Press the key, which will temporarily change the color of the key. The
+   *   color will remain changed until ReleaseKey() is called
    */
-  void ChangeColor();
+  void ReleaseKey();
 
   /**
    * Gets the Note mapped to this PianoKey
@@ -77,15 +74,11 @@ class PianoKey {
   char label_;
 
   // Colors
-  ci::Color standard_color_; // Standard, non-pressed color
-  ci::Color fill_color_; // Current display color
+  ci::Color released_color_;             // Standard, non-pressed color
+  ci::Color fill_color_;                 // Current display color
+  static const ci::Color kPressedColor;  // Color after ChangeColor() is called
   ci::Color outline_color_;
   ci::Color text_color_;
-
-  // Temporarily changing color on play
-  int time_to_reset_ = 0;
-  static const ci::Color kChangedColor; // Color after ChangeColor() is called
-  static constexpr int kColorChangeDuration = 5;
 };
 
 }  // namespace visualizer

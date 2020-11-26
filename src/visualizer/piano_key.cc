@@ -12,19 +12,19 @@ namespace synther {
 
 namespace visualizer {
 
-const ci::Color PianoKey::kChangedColor = ci::Color("green");
+const ci::Color PianoKey::kPressedColor = ci::Color("green");
 
 PianoKey::PianoKey(const synther::music::Note& note,
                    const PianoKeyType& type, char label)
     : note_(note), type_(type), label_(label) {
   if (type == PianoKeyType::White) {
-    standard_color_ = ci::Color("white");
+    released_color_ = ci::Color("white");
     text_color_ = ci::Color("black");
   } else if (type == PianoKeyType::Black) {
-    standard_color_ = ci::Color("black");
+    released_color_ = ci::Color("black");
     text_color_ = ci::Color("white");
   }
-  fill_color_ = standard_color_;
+  fill_color_ = released_color_;
 }
 
 void PianoKey::Draw(const glm::dvec2& top_left_corner, double width,
@@ -43,9 +43,12 @@ void PianoKey::Draw(const glm::dvec2& top_left_corner, double width,
                              ci::Font("Futura-Bold", width / 2));
 }
 
-void PianoKey::ChangeColor() {
-  fill_color_ = kChangedColor;
-  time_to_reset_ = kColorChangeDuration;
+void PianoKey::PressKey() {
+  fill_color_ = kPressedColor;
+}
+
+void PianoKey::ReleaseKey() {
+  fill_color_ = released_color_;
 }
 
 void PianoKey::SetLabel(char label) {
@@ -62,15 +65,6 @@ const synther::visualizer::PianoKeyType& PianoKey::GetType() const {
 
 char PianoKey::GetLabel() const {
   return label_;
-}
-
-void PianoKey::Update() {
-  if (time_to_reset_ > 0) {
-    time_to_reset_--;
-  }
-  if (time_to_reset_ == 0) {
-    fill_color_ = standard_color_;
-  }
 }
 
 } // namespace visualizer

@@ -31,6 +31,10 @@ void SyntherApp::mouseDown(ci::app::MouseEvent event) {
 }
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
+  if (piano_.IsKeybind(event.getCode())) {
+    piano_.PressKey(event.getCode());
+  }
+
   ci::audio::SourceFileRef source_file;
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_p:
@@ -57,6 +61,12 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_UP:
       piano_.ShiftView(1);
       break;
+  }
+}
+
+void SyntherApp::keyUp(ci::app::KeyEvent event) {
+  if (piano_.IsKeybind(event.getCode())) {
+    piano_.ReleaseKey(event.getCode());
   }
 }
 
