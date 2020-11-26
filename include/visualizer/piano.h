@@ -17,6 +17,20 @@ namespace synther {
 
 namespace visualizer {
 
+/**
+ * A Piano Keyboard that can be used as a Cinder GUI Component. Can be used
+ * the represent a keyboard of any size, using standard western musical notes.
+ * Once constructed, a keyboard virtually stores all of its notes as PianoKeys
+ * which cannot be changed.
+ *
+ * The keyboard is visualized using "views". A "view"
+ * allows the user to see a subset of the piano keys, which always starts and
+ * ends on a white key. The piano position can be altered.
+ *
+ * The keyboard can also be "played", which temporarily changes the visual
+ * behavior of the PianoKey that was played, and allows the client to access the
+ * note mapped to the key that was played.
+ */
 class Piano {
  public:
   /**
@@ -100,6 +114,8 @@ class Piano {
 
   // Keybinds
   std::map<int, PianoKey> keybinds_;
+  static const std::vector<int> kBlackKeyEvents;
+  static const std::vector<int> kWhiteKeyEvents;
 
   // Helper methods
   /**
@@ -108,10 +124,15 @@ class Piano {
    */
   const size_t CountNaturals() const;
 
+  /**
+   * Maps keys on the piano to cinder KeyEvents. Uses the first row of the
+   *   keyboard (QWERTY..) for black keys and the second row (ASDF...) for
+   *   white keys. Adds keybinds to the private field keybinds_. Maps keys
+   *   using the natural staggered layout of te computer keyboard. This allows
+   *   keybinds to lie between white keybinds, just as they would on a physical
+   *   piano.
+   */
   const void SetKeyBinds();
-
-  static const std::vector<int> kBlackKeyEvents;
-  static const std::vector<int> kWhiteKeyEvents;
 };
 
 }  // namespace visualizer

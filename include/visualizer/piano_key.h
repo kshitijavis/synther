@@ -14,6 +14,11 @@ namespace visualizer {
 
 enum class PianoKeyType { Black, White };
 
+/**
+ * Represents a single PianoKey, which acts as a Cinder GUI component. Every
+ * key stores its corresponding note, PianoKeyType, and label (used during
+ * drawing).
+ */
 class PianoKey {
  public:
   PianoKey(const music::Note& note, const PianoKeyType& type, char label = ' ');
@@ -36,6 +41,12 @@ class PianoKey {
    */
   const PianoKeyType& GetType() const;
 
+  /**
+   * Draws a Key in the Cinder application.
+   * @param top_left_corner screen pixels of the top-left-corner of the key
+   * @param width the width of the key, in pixels
+   * @param height the height of the key, in pixels
+   */
   void Draw(const glm::dvec2& top_left_corner, double width,
             double height) const;
 
