@@ -2,10 +2,11 @@
 // Created by Kshitij Sinha on 11/19/20.
 //
 
-#include <cinder/gl/gl.h>
-#include "cinder/Color.h"
-
 #include "visualizer/piano_key.h"
+
+#include <cinder/gl/gl.h>
+
+#include "cinder/Color.h"
 #include "core/music_note.h"
 
 namespace synther {
@@ -14,8 +15,8 @@ namespace visualizer {
 
 const ci::Color PianoKey::kPressedColor = ci::Color("green");
 
-PianoKey::PianoKey(const synther::music::Note& note,
-                   const PianoKeyType& type, char label)
+PianoKey::PianoKey(const synther::music::Note& note, const PianoKeyType& type,
+                   char label)
     : note_(note), type_(type), label_(label) {
   if (type == PianoKeyType::White) {
     released_color_ = ci::Color("white");
@@ -28,7 +29,7 @@ PianoKey::PianoKey(const synther::music::Note& note,
 }
 
 void PianoKey::Draw(const glm::dvec2& top_left_corner, double width,
-               double height) const {
+                    double height) const {
   glm::dvec2 bottom_right_corner = top_left_corner + glm::dvec2(width, height);
   ci::Rectf bar_bounds(top_left_corner, bottom_right_corner);
 
@@ -67,6 +68,6 @@ char PianoKey::GetLabel() const {
   return label_;
 }
 
-} // namespace visualizer
+}  // namespace visualizer
 
-} // namespace synther
+}  // namespace synther

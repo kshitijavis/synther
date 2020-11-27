@@ -35,14 +35,14 @@ class SyntherApp : public ci::app::App {
   const double kTopPadding = 30;
 
   // Appearance
-  const std::string kBackgroundColor = "midnightblue";
+  const std::string kBackgroundColor = "black";
 
   // Piano
   Piano piano_;
-  static constexpr double kPianoHeight = 300;
+  static constexpr double kPianoHeight = 400;
   static constexpr int kFirstSemitoneIndex = 0;
   static constexpr size_t kKeyCount = 88;
-  static constexpr size_t kViewWhitekeyCount = 15;
+  static constexpr size_t kViewWhitekeyCount = 10;
 
   // Voice handling
   ci::audio::VoiceRef v1;
