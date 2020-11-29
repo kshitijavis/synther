@@ -43,6 +43,8 @@ class SyntherApp : public ci::app::App {
   static constexpr int kFirstSemitoneIndex = 0;
   static constexpr size_t kKeyCount = 88;
   static constexpr size_t kViewWhitekeyCount = 10;
+  static constexpr int kWholetoneDistance = 1;
+  static constexpr int kOctaveDistance = 7;
 
   // Voice handling
   ci::audio::VoiceRef v1;

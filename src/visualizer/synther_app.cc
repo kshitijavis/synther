@@ -35,31 +35,18 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     piano_.PressKey(event.getCode());
   }
 
-  ci::audio::SourceFileRef source_file;
   switch (event.getCode()) {
-    case ci::app::KeyEvent::KEY_p:
-      source_file = ci::audio::load(ci::app::loadAsset("Piano.pp.A6.aiff"));
-      v1 = ci::audio::Voice::create(source_file);
-
-      v1->start();
-      break;
-    case ci::app::KeyEvent::KEY_o:
-      source_file = ci::audio::load(ci::app::loadAsset("Piano.pp.Ab6.aiff"));
-      v2 = ci::audio::Voice::create(source_file);
-
-      v2->start();
-      break;
     case ci::app::KeyEvent::KEY_LEFT:
-      piano_.ShiftView(-7);
+      piano_.ShiftView(-1 * kOctaveDistance);
       break;
     case ci::app::KeyEvent::KEY_RIGHT:
-      piano_.ShiftView(7);
+      piano_.ShiftView(kOctaveDistance);
       break;
     case ci::app::KeyEvent::KEY_DOWN:
-      piano_.ShiftView(-1);
+      piano_.ShiftView(-1 * kWholetoneDistance);
       break;
     case ci::app::KeyEvent::KEY_UP:
-      piano_.ShiftView(1);
+      piano_.ShiftView(kWholetoneDistance);
       break;
   }
 }
