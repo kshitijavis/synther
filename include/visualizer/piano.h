@@ -129,7 +129,7 @@ class Piano {
   int first_semitone_;
   std::vector<PianoKey> keys_;
   const music::Accidental kPriority = music::Accidental::Sharp;
-  char kOctaveMarkerLetter = 'A';
+  char kOctaveMarkerLetter = 'C';
 
   // View window
   int view_first_;
