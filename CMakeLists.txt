@@ -42,7 +42,14 @@ FetchContent_Declare(
         GIT_TAG v2.x
 )
 
-# Adds Catch2 testing library
+FetchContent_Declare(
+        json
+        # Use smaller ArthurSonzogni repo instead of the standard nlohmann repo: specifically for FetchContent
+        GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+        GIT_TAG v3.7.3
+)
+
+# Add catch2 testing library
 FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
     FetchContent_Populate(catch2)
@@ -62,8 +69,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 
 list(APPEND SOURCE_FILES src/core/music_note.cc)
 list(APPEND SOURCE_FILES src/core/recording.cc)
-
-list(APPEND SOURCE_FILES src/audio/player.cc)
+list(APPEND SOURCE_FILES src/core/player.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
 list(APPEND TEST_FILES tests/piano_test.cc)
@@ -82,6 +88,14 @@ ci_make_app(
         INCLUDES        include
         LIBRARIES       catch2
 )
+
+# Add nlohmann/json library
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+target_link_libraries(synther-app nlohmann_json::nlohmann_json)
 
 if(MSVC)
     set_property(TARGET synther-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
