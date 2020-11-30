@@ -46,10 +46,10 @@ class SoundJsonParser {
   /**
    * Converts a string representing a music note into a music::Note object
    * @param note_string. A String representing a music note.
-   *   Expected that the note_string is a string of 2-3 characters, where the
-   *   first character is the note letter, the second character (optional) is
-   *   the accidental (b = Flat, s = Sharp, empty = Natural) and the last
-   *   character is the octave number
+   *   Expected that the note_string is a string of at least 2 characters, where
+   *   the first character is the note letter, the second character (optional)
+   *   is the accidental (b = Flat, s = Sharp, empty = Natural) and the last
+   *   characters are the octave number
    *   Throws exception if note_string does not match the requirements
    * @return a music::Note object identical to the input note_string
    */

@@ -67,13 +67,14 @@ TEST_CASE("Correctly parses note string", "[parsenote]") {
     REQUIRE(parser.ParseNote(note_string) == note);
   }
 
-  SECTION("Invalid note: length too small") {
-    std::string note_string = "C";
-    REQUIRE_THROWS_AS(parser.ParseNote(note_string), std::invalid_argument);
+  SECTION("Note on multi-digit octave with accidental") {
+    std::string note_string = "Cb33";
+    Note note(33, 'C', Accidental::Flat);
+    REQUIRE(parser.ParseNote(note_string) == note);
   }
 
-  SECTION("Invalid note: length too large") {
-    std::string note_string = "Cbs7";
+  SECTION("Invalid note: length too small") {
+    std::string note_string = "C";
     REQUIRE_THROWS_AS(parser.ParseNote(note_string), std::invalid_argument);
   }
 }

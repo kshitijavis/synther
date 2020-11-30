@@ -51,25 +51,27 @@ std::map<music::Note, std::string> SoundJsonParser::GetNotesToFiles() const {
 }
 
 music::Note SoundJsonParser::ParseNote(const std::string& note_string) const {
-  if (note_string.length() < 2 || note_string.length() > 3) {
+  if (note_string.length() < 2) {
     throw std::invalid_argument("note_string does not represent a valid note");
   }
 
   char letter = note_string.at(0);
-  int octave = note_string.at(note_string.length() - 1) - '0';
-  music::Accidental accidental = music::Accidental::Natural;
+  music::Accidental accidental;
 
-  // Parse optional accidental
-  if (note_string.length() > 2) {
-    switch (note_string.at(1)) {
-      case 'b':
-        accidental = music::Accidental::Flat;
-        break;
-      case 's':
-        accidental = music::Accidental::Sharp;
-        break;
-    }
+  switch (note_string.at(1)) {
+    case 'b':
+      accidental = music::Accidental::Flat;
+      break;
+    case 's':
+      accidental = music::Accidental::Sharp;
+      break;
+    default:
+      accidental = music::Accidental::Natural;
   }
+
+  size_t last_index = note_string.find_last_not_of("0123456789");
+  std::string octave_digits = note_string.substr(last_index + 1);
+  int octave = std::stoi(octave_digits);
 
   return {octave, letter, accidental};
 }
