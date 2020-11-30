@@ -64,6 +64,14 @@ class Note {
   bool operator==(const Note& rhs) const;
 
   /**
+   * Compares two notes, enabling Note object to be used as key in std::map
+   * @param rhs the Note to compare to
+   * @return true if the semitone of the current object is less than the
+   *   semitone of rhs
+   */
+  bool operator<(const Note& rhs) const;
+
+  /**
    * Compares two notes by their semitone index. The semitone index acts as a
    *   unique ID for any note. Bear in mind that this comparison allows two
    *   seemingly-different notes to be equal (e.g. C-sharp and D-flat)

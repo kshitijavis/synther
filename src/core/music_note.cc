@@ -85,6 +85,10 @@ bool Note::operator==(const Note& rhs) const {
          semitone_index_ == rhs.semitone_index_;
 }
 
+bool Note::operator<(const Note& rhs) const {
+  return GetSemitoneIndex() < rhs.GetSemitoneIndex();
+}
+
 }  // namespace music
 
 }  // namespace synther

@@ -44,10 +44,21 @@ std::string SoundJsonParser::GetName(const std::string& key) const {
   return name;
 }
 
-std::map<music::Note, std::string> SoundJsonParser::GetNotesToFiles() const {
-  std::map<music::Note, std::string> note_to_file;
+std::map<music::Note, std::string> SoundJsonParser::GetSemitoneFiles() const {
+  std::map<music::Note, std::string> note_files;
+  // Get row note string to filename map from JSON
+  std::map<std::string, std::string> note_pairs =
+      sound_details_.at(kSoundFilesKey)
+          .get<std::map<std::string, std::string>>();
 
-  return note_to_file;
+  // Convert every note string to a music::Note
+  for (const auto& note_pair : note_pairs) {
+    music::Note note = ParseNote(note_pair.first);
+    std::string filename = note_pair.second;
+    note_files.emplace(note, filename);
+  }
+
+  return note_files;
 }
 
 music::Note SoundJsonParser::ParseNote(const std::string& note_string) const {

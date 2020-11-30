@@ -41,7 +41,7 @@ class SoundJsonParser {
    */
   std::string GetPerformerName() const;
 
-  std::map<music::Note, std::string> GetNotesToFiles() const;
+  std::map<music::Note, std::string> GetSemitoneFiles() const;
 
   /**
    * Converts a string representing a music note into a music::Note object

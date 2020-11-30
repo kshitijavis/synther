@@ -4,14 +4,15 @@
 
 #include <catch2/catch.hpp>
 #include <fstream>
+#include <map>
 #include <string>
 
-#include "core/sound_json_parser.h"
 #include "core/music_note.h"
+#include "core/sound_json_parser.h"
 
 using synther::audio::SoundJsonParser;
-using synther::music::Note;
 using synther::music::Accidental;
+using synther::music::Note;
 
 TEST_CASE("Correctly parses simple key-value pairs",
           "[getinstrumentname][getorganizationname][getperformername]") {
@@ -29,7 +30,21 @@ TEST_CASE("Correctly parses filenames", "[getfilenames]") {
   SECTION("JSON containing notes for standard piano (88 files)") {
     std::fstream json("../assets/sounds/piano/details.json");
     SoundJsonParser parser(json);
-    parser.GetNotesToFiles();
+    std::map<Note, std::string> actual = parser.GetSemitoneFiles();
+    std::map<Note, std::string> expected_subset{
+        {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.wav"},
+        {Note(2, 'G', Accidental::Flat), "Piano.ff.Gb2.wav"},
+        {Note(6, 'E', Accidental::Flat), "Piano.ff.Eb6.wav"},
+        {Note(8, 'C', Accidental::Natural), "Piano.ff.C8.wav"},
+        {Note(7, 'F', Accidental::Natural), "Piano.ff.F7.wav"},
+        {Note(6, 'D', Accidental::Flat), "Piano.ff.Db6.wav"},
+    };
+
+    for (const auto& expected_pair : expected_subset) {
+      Note note = expected_pair.first;
+      std::string expected_filename = expected_pair.second;
+      REQUIRE(actual.at(note) == expected_filename);
+    }
   }
 }
 
