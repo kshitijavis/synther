@@ -2,6 +2,9 @@
 
 #include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"
+#include "core/sound_json_parser.h"
+
+#include <iostream>
 
 namespace synther {
 
@@ -59,6 +62,13 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
 
 void SyntherApp::SetupInstrument(const std::string& json_path) {
   auto data = ci::app::loadAsset(json_path);
+  std::fstream json(ci::app::getAssetPath(json_path).string());
+  if (!json.is_open()) {
+    return;
+  }
+
+  audio::SoundJsonParser parser(json);
+
 }
 
 }  // namespace visualizer

@@ -77,10 +77,11 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 list(APPEND SOURCE_FILES src/core/music_note.cc)
 list(APPEND SOURCE_FILES src/core/recording.cc)
 list(APPEND SOURCE_FILES src/core/player.cc)
-list(APPEND SOURCE_FILES src/core/soundfile_parser.cc)
+list(APPEND SOURCE_FILES src/core/sound_json_parser.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
 list(APPEND TEST_FILES tests/piano_test.cc)
+list(APPEND TEST_FILES tests/soundsfile_parser_test.cc)
 
 ci_make_app(
         APP_NAME        synther-app
@@ -95,7 +96,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
-        LIBRARIES       catch2
+        LIBRARIES       catch2 nlohmann_json::nlohmann_json
 )
 
 if(MSVC)
