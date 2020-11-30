@@ -20,7 +20,7 @@ const std::string SoundJsonParser::kOrganizationKey = "organization";
 const std::string SoundJsonParser::kPerformerKey = "performer";
 const std::string SoundJsonParser::kSoundFilesKey = "soundFiles";
 
-SoundJsonParser::SoundJsonParser(std::istream& json){
+SoundJsonParser::SoundJsonParser(std::istream& json) {
   json >> sound_details_;
 }
 
@@ -44,10 +44,34 @@ std::string SoundJsonParser::GetName(const std::string& key) const {
   return name;
 }
 
-std::map<music::Note, std::string> SoundJsonParser::GetSoundFiles()
-    const {
-  std::map<music::Note, std::string> sound_files;
-  return sound_files;
+std::map<music::Note, std::string> SoundJsonParser::GetNotesToFiles() const {
+  std::map<music::Note, std::string> note_to_file;
+
+  return note_to_file;
+}
+
+music::Note SoundJsonParser::ParseNote(const std::string& note_string) const {
+  if (note_string.length() < 2 || note_string.length() > 3) {
+    throw std::invalid_argument("note_string does not represent a valid note");
+  }
+
+  char letter = note_string.at(0);
+  int octave = note_string.at(note_string.length() - 1) - '0';
+  music::Accidental accidental = music::Accidental::Natural;
+
+  // Parse optional accidental
+  if (note_string.length() > 2) {
+    switch (note_string.at(1)) {
+      case 'b':
+        accidental = music::Accidental::Flat;
+        break;
+      case 's':
+        accidental = music::Accidental::Sharp;
+        break;
+    }
+  }
+
+  return {octave, letter, accidental};
 }
 
 }  // namespace audio

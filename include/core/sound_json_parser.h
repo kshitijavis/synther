@@ -41,7 +41,19 @@ class SoundJsonParser {
    */
   std::string GetPerformerName() const;
 
-  std::map<music::Note, std::string> GetSoundFiles() const;
+  std::map<music::Note, std::string> GetNotesToFiles() const;
+
+  /**
+   * Converts a string representing a music note into a music::Note object
+   * @param note_string. A String representing a music note.
+   *   Expected that the note_string is a string of 2-3 characters, where the
+   *   first character is the note letter, the second character (optional) is
+   *   the accidental (b = Flat, s = Sharp, empty = Natural) and the last
+   *   character is the octave number
+   *   Throws exception if note_string does not match the requirements
+   * @return a music::Note object identical to the input note_string
+   */
+  music::Note ParseNote(const std::string& note_string) const;
 
  private:
   json sound_details_;
