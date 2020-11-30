@@ -122,8 +122,9 @@ class Piano {
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.4;
 
-  ci::Color kBackgroundColor = ci::Color("gray");
-  ci::Color kOutlineColor = ci::Color("white");
+  const ci::Color kBackgroundColor = ci::Color("gray");
+  const ci::Color kOutlineColor = ci::Color("white");
+  const std::string kFontName = "Futura-Bold";
 
   // PianoKeys
   int first_semitone_;

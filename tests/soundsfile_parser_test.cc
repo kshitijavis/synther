@@ -30,7 +30,7 @@ TEST_CASE("Correctly parses filenames", "[getfilenames]") {
   SECTION("JSON containing notes for standard piano (88 files)") {
     std::fstream json("../assets/sounds/piano/details.json");
     SoundJsonParser parser(json);
-    std::map<Note, std::string> actual = parser.GetSemitoneFiles();
+    std::map<Note, std::string> actual = parser.GetNoteFiles();
     std::map<Note, std::string> expected_subset{
         {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.wav"},
         {Note(2, 'G', Accidental::Flat), "Piano.ff.Gb2.wav"},

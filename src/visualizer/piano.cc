@@ -265,10 +265,10 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
       int octave = note.GetOctave();
       std::string octave_marker = kOctaveMarkerLetter + std::to_string(octave);
 
-      glm::dvec2 marker_center(left_edge + white_key_width / 2, top_edge * 1.1);
+      glm::dvec2 marker_center(left_edge + white_key_width / 2, top_edge);
       ci::gl::drawStringCentered(octave_marker, marker_center,
                                  ci::Color("white"),
-                                 ci::Font("Futura-Bold", height));
+                                 ci::Font(kFontName, height));
     }
 
     if (key.GetType() == PianoKeyType::White) {

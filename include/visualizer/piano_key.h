@@ -79,6 +79,9 @@ class PianoKey {
   static const ci::Color kPressedColor;  // Color after ChangeColor() is called
   ci::Color outline_color_;
   ci::Color text_color_;
+
+  // Text
+  const std::string kFontName = "Futura-Bold";
 };
 
 }  // namespace visualizer

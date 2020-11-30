@@ -1,23 +1,27 @@
 #include "visualizer/synther_app.h"
 
+#include <iostream>
+#include <string>
+
 #include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"
+#include "core/music_note.h"
 #include "core/sound_json_parser.h"
-
-#include <iostream>
 
 namespace synther {
 
 namespace visualizer {
 
 SyntherApp::SyntherApp()
-    : piano_(glm::dvec2(kSidePadding, kTopPadding),
-             kWindowWidth - 2 * kSidePadding, kPianoHeight,
-             kFirstSemitoneIndex, kKeyCount, kViewWhitekeyCount) {
+    : piano_(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
+                                          kInstrumentTextPadding),
+             kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
+             kKeyCount, kViewWhitekeyCount) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
 void SyntherApp::setup() {
+  SetupInstrument(kDefaultSoundPath + kJsonFilename);
 }
 
 void SyntherApp::update() {
@@ -26,6 +30,11 @@ void SyntherApp::update() {
 void SyntherApp::draw() {
   ci::Color8u background_color(ci::Color(kBackgroundColor.c_str()));
   ci::gl::clear(background_color);
+
+  // Draw instrument text
+  glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
+  ci::gl::drawStringCentered(instrument_, instrument_text_center, kInstrumentTextColor.c_str(),
+                             ci::Font(kFontName, kInstrumentTextHeight));
 
   piano_.Draw();
 }
@@ -68,7 +77,8 @@ void SyntherApp::SetupInstrument(const std::string& json_path) {
   }
 
   audio::SoundJsonParser parser(json);
-
+  instrument_ = parser.GetInstrumentName();
+  std::map<music::Note, std::string> note_files = parser.GetNoteFiles();
 }
 
 }  // namespace visualizer

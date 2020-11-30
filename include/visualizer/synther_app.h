@@ -4,9 +4,8 @@
 
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/audio/audio.h"
-
+#include "cinder/gl/gl.h"
 #include "visualizer/piano.h"
 
 namespace synther {
@@ -36,6 +35,12 @@ class SyntherApp : public ci::app::App {
 
   // Appearance
   const std::string kBackgroundColor = "black";
+  const std::string kFontName = "Futura-Bold";
+
+  // Instrument text
+  const double kInstrumentTextHeight = 50;
+  const double kInstrumentTextPadding = 30;
+  const std::string kInstrumentTextColor = "white";
 
   // Piano
   Piano piano_;
@@ -48,14 +53,11 @@ class SyntherApp : public ci::app::App {
 
   // Audio
   const std::string kDefaultSoundPath = "sounds/piano/";
-  const std::string json_filename_ = "details.json";
+  const std::string kJsonFilename = "details.json";
   std::string instrument_;
-  std::string organization_;
 
   // Helper methods
-  void SetupInstrument(
-      const std::__1::basic_string<char, std::__1::char_traits<char>,
-                                   std::__1::allocator<char>> &json_path);
+  void SetupInstrument(const std::string& json_path);
 };
 
 }  // namespace visualizer

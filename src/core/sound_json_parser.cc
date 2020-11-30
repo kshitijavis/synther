@@ -44,7 +44,7 @@ std::string SoundJsonParser::GetName(const std::string& key) const {
   return name;
 }
 
-std::map<music::Note, std::string> SoundJsonParser::GetSemitoneFiles() const {
+std::map<music::Note, std::string> SoundJsonParser::GetNoteFiles() const {
   std::map<music::Note, std::string> note_files;
   // Get row note string to filename map from JSON
   std::map<std::string, std::string> note_pairs =

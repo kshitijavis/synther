@@ -41,7 +41,7 @@ void PianoKey::Draw(const glm::dvec2& top_left_corner, double width,
   glm::dvec2 label_center =
       top_left_corner + glm::dvec2(width / 2, 0.75 * height);
   ci::gl::drawStringCentered(std::string(1, label_), label_center, text_color_,
-                             ci::Font("Futura-Bold", width / 2));
+                             ci::Font(kFontName, width / 2));
 }
 
 void PianoKey::PressKey() {
