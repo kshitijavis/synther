@@ -11,7 +11,7 @@ namespace synther {
 namespace music {
 
 const std::map<char, int> Note::kWholetoneIndices{
-    {'A', 0}, {'B', 2}, {'C', 3}, {'D', 5}, {'E', 7}, {'F', 8}, {'G', 10}};
+    {'C', 0}, {'D', 2}, {'E', 4}, {'F', 5}, {'G', 7}, {'A', 9}, {'B', 11}};
 
 Note::Note(int octave, char letter, Accidental accidental)
     : octave_(octave), accidental_(accidental) {
