@@ -164,29 +164,30 @@ void Piano::SetKeyBinds() {
   keybinds_ = keybinds;
 }
 
-const music::Note& Piano::PressKey(int key_code) {
-  auto it = keybinds_.find(key_code);
-  if (it == keybinds_.end()) {
-    throw std::invalid_argument("No piano key bound to the given key_event");
-  }
+const music::Note& Piano::GetNote(int key_code) {
+  return GetKey(key_code).GetNote();
+}
 
-  PianoKey* key = it->second;
-  key->PressKey();
-  return key->GetNote();
+void Piano::PressKey(int key_code) {
+  GetKey(key_code).PressKey();
 }
 
 void Piano::ReleaseKey(int key_code) {
-  auto it = keybinds_.find(key_code);
-  if (it == keybinds_.end()) {
-    throw std::invalid_argument("No piano key bound to the given key_event");
-  }
-
-  PianoKey* key = it->second;
-  key->ReleaseKey();
+  GetKey(key_code).ReleaseKey();
 }
 
 bool Piano::IsKeybind(int key_code) const {
   return keybinds_.find(key_code) != keybinds_.end();
+}
+
+PianoKey& Piano::GetKey(int key_code) {
+  auto it = keybinds_.find(key_code);
+  if (it == keybinds_.end()) {
+    throw std::invalid_argument("No piano key bound to the given key_event");
+  }
+
+  PianoKey* key = it->second;
+  return *key;
 }
 
 void Piano::SetKeyLabels() {

@@ -33,6 +33,13 @@ void Player::PlayNote(const music::Note& note) {
   }
 }
 
+void Player::StopNote(const music::Note& note) {
+  int semitone = note.GetSemitoneIndex();
+  if (voices_.find(semitone) != voices_.end()) {
+    voices_.at(semitone)->stop();
+  }
+}
+
 }  // namespace audio
 
 }  // namespace synther

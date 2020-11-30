@@ -68,6 +68,15 @@ class Piano {
   void ShiftView(int displacement);
 
   /**
+   * Get the music::Note mapped to a key_code on the piano
+   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
+   *   the keyboard. Throws an exception if key_event does not have a keybind
+   *   or if key_event is not a valid ci::app::KeyEvent code
+   * @return a const reference to a music::Note mapped to the given key
+   */
+  const music::Note& GetNote(int key_code);
+
+  /**
    * "Plays a key" on the keyboard. Handles a ci::app::KeyEvent and "plays"
    *   the Piano Key corresponding to the KeyEvent. Calling this method will
    *   temporarily change the color of the key that was played and returns the
@@ -76,10 +85,8 @@ class Piano {
    * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
    *   the keyboard. Throws an exception if key_event does not have a keybind
    *   or if key_event is not a valid ci::app::KeyEvent code
-   * @return a const reference to a music::Note mapped to the key that
-   *   was played
    */
-  const music::Note& PressKey(int key_code);
+  void PressKey(int key_code);
 
   /**
    * Releases a pressed key on the keyboard. This will reset the color of the
@@ -164,6 +171,15 @@ class Piano {
   void SetKeyBinds();
 
   /**
+   * Get the music::Note mapped to a key_code on the piano
+   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
+   *   the keyboard. Throws an exception if key_event does not have a keybind
+   *   or if key_event is not a valid ci::app::KeyEvent code
+   * @return a const reference to a music::Note mapped to the given key
+   */
+  PianoKey& GetKey(int key_code);
+
+  /**
    * For every key on the keyboard, sets the label of the key to its
    *   corresponding KeyEvent, which is stored in keybinds_. If the key does
    *   not have a keybind, sets the label to an empty char
@@ -180,7 +196,7 @@ class Piano {
    * Draws all the PianoKeys in the current view
    */
   void DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
-                double height) const;
+                         double height) const;
 };
 
 }  // namespace visualizer

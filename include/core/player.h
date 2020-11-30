@@ -24,6 +24,8 @@ class Player {
 
   void PlayNote(const music::Note& note);
 
+  void StopNote(const music::Note& note);
+
  private:
   // Maps semitones to voices
   std::map<int, ci::audio::VoiceRef> voices_;

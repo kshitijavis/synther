@@ -117,7 +117,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
     }
   }
 
@@ -134,7 +134,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
     }
   }
 
@@ -156,7 +156,7 @@ TEST_CASE("Key Binds are set correctly",
 
     for (auto key_bind : key_binds) {
       REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.PressKey(key_bind.first) == key_bind.second);
+      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
     }
   }
 }
