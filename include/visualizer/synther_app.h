@@ -46,12 +46,16 @@ class SyntherApp : public ci::app::App {
   static constexpr int kWholetoneDistance = 1;
   static constexpr int kOctaveDistance = 7;
 
-  // Voice handling
-  ci::audio::VoiceRef v1;
-  ci::audio::VoiceRef v2;
+  // Audio
+  const std::string kDefaultSoundPath = "sounds/piano/";
+  const std::string json_filename_ = "details.json";
+  std::string instrument_;
+  std::string organization_;
 
-  // Voice processing
-
+  // Helper methods
+  void SetupInstrument(
+      const std::__1::basic_string<char, std::__1::char_traits<char>,
+                                   std::__1::allocator<char>> &json_path);
 };
 
 }  // namespace visualizer

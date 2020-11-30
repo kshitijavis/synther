@@ -57,6 +57,10 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
   }
 }
 
+void SyntherApp::SetupInstrument(const std::string& json_path) {
+  auto data = ci::app::loadAsset(json_path);
+}
+
 }  // namespace visualizer
 
 }  // namespace synther

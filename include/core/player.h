@@ -5,13 +5,12 @@
 #ifndef SYNTHER_PLAYER_H
 #define SYNTHER_PLAYER_H
 
-#include <nlohmann/json.hpp>
 
 namespace synther {
 
 namespace audio {
 
-class player {};
+class Player {};
 
 } // namespace audio
 
