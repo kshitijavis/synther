@@ -4,9 +4,10 @@
 
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"
+
 #include "visualizer/piano.h"
+#include "core/player.h"
 
 namespace synther {
 
@@ -55,9 +56,10 @@ class SyntherApp : public ci::app::App {
   const std::string kDefaultSoundPath = "sounds/piano/";
   const std::string kJsonFilename = "details.json";
   std::string instrument_;
+  audio::Player player_;
 
   // Helper methods
-  void SetupInstrument(const std::string& json_path);
+  void SetupInstrument(const std::string& asset_directory);
 };
 
 }  // namespace visualizer

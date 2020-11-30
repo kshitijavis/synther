@@ -19,7 +19,7 @@ SyntherApp::SyntherApp()
 }
 
 void SyntherApp::setup() {
-  SetupInstrument(kDefaultSoundPath + kJsonFilename);
+  SetupInstrument(kDefaultSoundPath);
 }
 
 void SyntherApp::update() {
@@ -42,7 +42,8 @@ void SyntherApp::mouseDown(ci::app::MouseEvent event) {
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
   if (piano_.IsKeybind(event.getCode())) {
-    piano_.PressKey(event.getCode());
+    const music::Note& note = piano_.PressKey(event.getCode());
+    player_.PlayNote(note);
   }
 
   switch (event.getCode()) {
@@ -67,16 +68,20 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
   }
 }
 
-void SyntherApp::SetupInstrument(const std::string& json_path) {
-  auto data = ci::app::loadAsset(json_path);
+void SyntherApp::SetupInstrument(const std::string& asset_directory) {
+  std::string json_path = asset_directory + kJsonFilename;
+
+  // Load json and build parser
   std::fstream json(ci::app::getAssetPath(json_path).string());
   if (!json.is_open()) {
     return;
   }
-
   audio::SoundJsonParser parser(json);
+
   instrument_ = parser.GetInstrumentName();
   std::map<music::Note, std::string> note_files = parser.GetNoteFiles();
+
+  player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
 }
 
 }  // namespace visualizer
