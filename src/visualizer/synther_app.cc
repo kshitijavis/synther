@@ -1,9 +1,7 @@
 #include "visualizer/synther_app.h"
 
-#include <iostream>
 #include <string>
 
-#include "cinder/audio/audio.h"
 #include "cinder/gl/gl.h"
 #include "core/music_note.h"
 #include "core/sound_json_parser.h"
