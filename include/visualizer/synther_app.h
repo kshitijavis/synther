@@ -20,11 +20,37 @@ class SyntherApp : public ci::app::App {
  public:
   SyntherApp();
 
+  /**
+   * Sets up the application to its default state
+   */
   void setup() override;
+
+  /**
+   * Updates the state of the application
+   */
   void update() override;
+
+  /**
+   * Draws all the components of the app on a window on the computer screen
+   */
   void draw() override;
+
+  /**
+   * Handle event when the mouse is pressed down
+   * @param event a MouseEvent representing the state of the mouse
+   */
   void mouseDown(ci::app::MouseEvent event) override;
+
+  /**
+   * Handle event when a key on the keyboard is pressed down
+   * @param event a KeyEvent representing the pressed Key
+   */
   void keyDown(ci::app::KeyEvent event) override;
+
+  /**
+   * Handle event when a key on the keyboard is released
+   * @param event event a KeyEvent representing the released Key
+   */
   void keyUp(ci::app::KeyEvent event) override;
 
  private:
@@ -59,6 +85,12 @@ class SyntherApp : public ci::app::App {
   audio::Player player_;
 
   // Helper methods
+  /**
+   * Updates the state of the app to reflect a change in instrument
+   * @param asset_directory the directory containing the instrument's sound
+   *   files. The directory must contain a details.json file with information
+   *   about the authors and note names of the sound files
+   */
   void SetupInstrument(const std::string& asset_directory);
 };
 
