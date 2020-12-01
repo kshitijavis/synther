@@ -36,7 +36,7 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     music::Note note = note_file.first;
     int semitone = note.GetSemitoneIndex();
 
-    PlayerGraph components{gain, buffer_player};
+    PlayerComponent components{gain, buffer_player};
     players_[semitone] = components;
   }
 
@@ -47,9 +47,12 @@ void Player::PlayNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
 
   if (players_.find(semitone) != players_.end()) {
-    ci::audio::BufferPlayerNodeRef player = players_.at(semitone).buffer_player_;
-    if (!player->isEnabled()) {
-      player->start();
+    PlayerComponent player = players_.at(semitone);
+    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
+    if (!(buffer_player->isEnabled())) {
+      ci::audio::GainNodeRef gain = player.gain_;
+      gain->getParam()->setValue(1);
+      buffer_player->start();
     }
   }
 }
@@ -57,7 +60,18 @@ void Player::PlayNote(const music::Note& note) {
 void Player::StopNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
   if (players_.find(semitone) != players_.end()) {
-    players_.at(semitone).buffer_player_->stop();
+    PlayerComponent& player = players_.at(semitone);
+    ci::audio::GainNodeRef gain = player.gain_;
+    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
+
+    if (buffer_player->isEnabled()) {
+      auto param = gain->getParam();
+      if (param->getNumEvents() == 0) {
+        gain->getParam()->applyRamp(0, 1);
+      }
+      auto ctx = ci::audio::Context::master();
+      buffer_player->stop(ctx->getNumProcessedSeconds() + 1);
+    }
   }
 }
 
