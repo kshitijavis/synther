@@ -15,10 +15,6 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
   auto ctx = ci::audio::Context::master();
 
   for (const auto& note_file : note_files) {
-    // Get map-key
-    music::Note note = note_file.first;
-    int semitone = note.GetSemitoneIndex();
-
     // Load file
     std::string filename = note_file.second;
     std::string sourcefile_path = asset_directory + filename;
@@ -30,25 +26,38 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
         ctx->makeNode(new ci::audio::BufferPlayerNode());
     buffer_player->loadBuffer(source_file);
 
-    // Connect buffer player to audio graph
-    buffer_player >> ctx->getOutput();
+    // Create a gain node for volume control (init at max volume)
+    ci::audio::GainNodeRef gain = ctx->makeNode(new ci::audio::GainNode(1));
 
-    buffer_players_[semitone] = buffer_player;
+    // Connect player components to audio graph
+    buffer_player >> gain >> ctx->getOutput();
+
+    // Map the player components to a note semitone
+    music::Note note = note_file.first;
+    int semitone = note.GetSemitoneIndex();
+
+    PlayerGraph components{gain, buffer_player};
+    players_[semitone] = components;
   }
+
   ctx->enable();
 }
 
 void Player::PlayNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
-  if (buffer_players_.find(semitone) != buffer_players_.end()) {
-    buffer_players_.at(semitone)->start();
+
+  if (players_.find(semitone) != players_.end()) {
+    ci::audio::BufferPlayerNodeRef player = players_.at(semitone).buffer_player_;
+    if (!player->isEnabled()) {
+      player->start();
+    }
   }
 }
 
 void Player::StopNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
-  if (buffer_players_.find(semitone) != buffer_players_.end()) {
-    buffer_players_.at(semitone)->stop();
+  if (players_.find(semitone) != players_.end()) {
+    players_.at(semitone).buffer_player_->stop();
   }
 }
 

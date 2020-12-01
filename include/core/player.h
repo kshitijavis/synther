@@ -27,8 +27,12 @@ class Player {
   void StopNote(const music::Note& note);
 
  private:
+  struct PlayerGraph {
+    ci::audio::GainNodeRef gain_;
+    ci::audio::BufferPlayerNodeRef buffer_player_;
+  };
   // Maps semitones to voices
-  std::map<int, ci::audio::BufferPlayerNodeRef> buffer_players_;
+  std::map<int, PlayerGraph> players_;
 };
 
 }  // namespace audio
