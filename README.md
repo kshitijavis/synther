@@ -5,4 +5,4 @@ Fill this in before the final project deadline. Someone who has _no familiarity_
 # Sources
 ## Sound Samples
 * Philharmonia Orchestra
-* Ivy Audio
+* University of Iowa Electronic Music Studios
