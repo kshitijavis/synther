@@ -28,7 +28,7 @@ class Player {
 
  private:
   // Maps semitones to voices
-  std::map<int, ci::audio::VoiceRef> voices_;
+  std::map<int, ci::audio::BufferPlayerNodeRef> buffer_players_;
 };
 
 }  // namespace audio
