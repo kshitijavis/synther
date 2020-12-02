@@ -27,12 +27,14 @@ class Player {
   void StopNote(const music::Note& note);
 
  private:
-  struct PlayerComponent {
+  struct NoteVoice {
     ci::audio::GainNodeRef gain_;
     ci::audio::BufferPlayerNodeRef buffer_player_;
+    bool is_playing_;
   };
   // Maps semitones to voices
-  std::map<int, PlayerComponent> players_;
+  std::map<int, NoteVoice> players_;
+  static constexpr double kResonateTime = 0.3; // in seconds
 };
 
 }  // namespace audio

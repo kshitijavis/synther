@@ -36,7 +36,7 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     music::Note note = note_file.first;
     int semitone = note.GetSemitoneIndex();
 
-    PlayerComponent components{gain, buffer_player};
+    NoteVoice components{gain, buffer_player, false};
     players_[semitone] = components;
   }
 
@@ -47,10 +47,12 @@ void Player::PlayNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
 
   if (players_.find(semitone) != players_.end()) {
-    PlayerComponent player = players_.at(semitone);
-    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
-    if (!(buffer_player->isEnabled())) {
-      ci::audio::GainNodeRef gain = player.gain_;
+    NoteVoice& voice = players_.at(semitone);
+    ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
+
+    if (!(voice.is_playing_)) {
+      voice.is_playing_ = true;
+      ci::audio::GainNodeRef gain = voice.gain_;
       gain->getParam()->setValue(1);
       buffer_player->start();
     }
@@ -59,18 +61,22 @@ void Player::PlayNote(const music::Note& note) {
 
 void Player::StopNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
-  if (players_.find(semitone) != players_.end()) {
-    PlayerComponent& player = players_.at(semitone);
-    ci::audio::GainNodeRef gain = player.gain_;
-    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
 
-    if (buffer_player->isEnabled()) {
+  if (players_.find(semitone) != players_.end()) {
+    NoteVoice& voice = players_.at(semitone);
+    ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
+
+    if (voice.is_playing_) {
+      voice.is_playing_ = false;
+
+      ci::audio::GainNodeRef gain = voice.gain_;
       auto param = gain->getParam();
       if (param->getNumEvents() == 0) {
-        gain->getParam()->applyRamp(0, 1);
+        gain->getParam()->applyRamp(0, kResonateTime);
       }
+
       auto ctx = ci::audio::Context::master();
-      buffer_player->stop(ctx->getNumProcessedSeconds() + 1);
+      buffer_player->stop(ctx->getNumProcessedSeconds() + kResonateTime);
     }
   }
 }
