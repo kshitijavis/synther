@@ -34,7 +34,7 @@ class Player {
   };
   // Maps semitones to voices
   std::map<int, NoteVoice> players_;
-  static constexpr double kResonateTime = 0.3; // in seconds
+  static constexpr double kResonateTime = 0.5; // in seconds
 };
 
 }  // namespace audio

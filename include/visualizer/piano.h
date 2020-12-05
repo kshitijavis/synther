@@ -48,7 +48,7 @@ class Piano {
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
         int first_semitone, size_t key_count,
-        size_t view_whitekey_count = kDefaultViewWhitekeyCount);
+        size_t view_whitekey_count = 20);
 
   /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
@@ -142,7 +142,6 @@ class Piano {
   // View window
   int view_first_;
   size_t view_whitekey_count_;
-  static constexpr int kDefaultViewWhitekeyCount = 20;
 
   // Keybinds
   struct KeyEvent {

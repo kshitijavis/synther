@@ -75,6 +75,8 @@ class SyntherApp : public ci::app::App {
   static constexpr int kFirstSemitoneIndex = 9;
   static constexpr size_t kKeyCount = 88;
   static constexpr size_t kViewWhitekeyCount = 10;
+
+  // Constants to specify how much to move the keyboard on ShiftView()
   static constexpr int kWholetoneDistance = 1;
   static constexpr int kOctaveDistance = 7;
 
