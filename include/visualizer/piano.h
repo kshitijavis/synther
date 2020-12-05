@@ -44,8 +44,8 @@ class Piano {
  private:
   // Visuals
   glm::dvec2 top_left_corner_;
-  double width_;
-  double height_;
+  __unused double width_;
+  __unused double height_;
   ci::Color background_color_;
 
   // Data
