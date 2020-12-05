@@ -77,7 +77,6 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
 
 std::string SyntherApp::RequestInstrumentDirectory() {
   ci::fs::path assets_directory = ci::app::getAssetPath(".");
-  std::cout << assets_directory << std::endl;
   ci::fs::path sounds_directory = ci::app::getAssetPath("sounds");
   ci::fs::path instrument_full_path = getFolderPath(sounds_directory);
   std::string instrument_asset_path =
@@ -87,7 +86,6 @@ std::string SyntherApp::RequestInstrumentDirectory() {
 }
 
 void SyntherApp::SetupInstrument(const std::string& asset_directory) {
-  std::cout << asset_directory << +"\n";
   std::string json_path = asset_directory + kJsonFilename;
 
   // Load json and build parser
