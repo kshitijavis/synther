@@ -82,12 +82,21 @@ class SyntherApp : public ci::app::App {
   static constexpr int kOctaveDistance = 7;
 
   // Audio
-  const std::string kDefaultSoundPath = "sounds/piano/";
+  const std::string kDefaultSoundJson = "sounds/piano/";
   const std::string kJsonFilename = "details.json";
   std::string instrument_;
   audio::Player player_;
 
   // Helper methods
+  /**
+   * Prompts the user to select a directory and returns the relative path
+   *   to that directory from the assets/ folder. Opens the file explorer in
+   *   assets/sounds/
+   * @return a relative path from the assets/ directory to the user's selected
+   *   directory
+   */
+  std::string RequestInstrumentDirectory();
+
   /**
    * Updates the state of the app to reflect a change in instrument
    * @param asset_directory the directory containing the instrument's sound

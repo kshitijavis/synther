@@ -19,7 +19,7 @@ SyntherApp::SyntherApp()
 }
 
 void SyntherApp::setup() {
-  SetupInstrument(kDefaultSoundPath);
+  SetupInstrument(kDefaultSoundJson);
 }
 
 void SyntherApp::update() {
@@ -31,7 +31,8 @@ void SyntherApp::draw() {
 
   // Draw instrument text
   glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
-  ci::gl::drawStringCentered(instrument_, instrument_text_center, kInstrumentTextColor,
+  ci::gl::drawStringCentered(instrument_, instrument_text_center,
+                             kInstrumentTextColor,
                              ci::Font(kFontName, kInstrumentTextHeight));
 
   piano_.Draw();
@@ -60,6 +61,9 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_UP:
       piano_.ShiftView(kWholetoneDistance);
       break;
+    case ci::app::KeyEvent::KEY_n:
+      std::string instrument_asset_path = RequestInstrumentDirectory();
+      SetupInstrument(instrument_asset_path);
   }
 }
 
@@ -71,7 +75,19 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
   }
 }
 
+std::string SyntherApp::RequestInstrumentDirectory() {
+  ci::fs::path assets_directory = ci::app::getAssetPath(".");
+  std::cout << assets_directory << std::endl;
+  ci::fs::path sounds_directory = ci::app::getAssetPath("sounds");
+  ci::fs::path instrument_full_path = getFolderPath(sounds_directory);
+  std::string instrument_asset_path =
+      ci::fs::relative(instrument_full_path, assets_directory).string() +
+      "/";
+  return instrument_asset_path;
+}
+
 void SyntherApp::SetupInstrument(const std::string& asset_directory) {
+  std::cout << asset_directory << +"\n";
   std::string json_path = asset_directory + kJsonFilename;
 
   // Load json and build parser
