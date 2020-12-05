@@ -31,7 +31,7 @@ void SyntherApp::draw() {
 
   // Draw instrument text
   glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
-  ci::gl::drawStringCentered(instrument_, instrument_text_center, kInstrumentTextColor.c_str(),
+  ci::gl::drawStringCentered(instrument_, instrument_text_center, kInstrumentTextColor,
                              ci::Font(kFontName, kInstrumentTextHeight));
 
   piano_.Draw();

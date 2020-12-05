@@ -58,16 +58,17 @@ class SyntherApp : public ci::app::App {
   const double kWindowHeight = 700;
   const double kWindowWidth = 1100;
   const double kSidePadding = 30;
-  const double kTopPadding = 30;
+  const double kTopPadding = 50;
 
   // Appearance
   const std::string kBackgroundColor = "black";
-  const std::string kFontName = "Futura-Bold";
+  const std::string kFontName = "SignPainter-HouseScript";
 
   // Instrument text
-  const double kInstrumentTextHeight = 50;
+  const double kInstrumentTextHeight = 80;
   const double kInstrumentTextPadding = 30;
-  const std::string kInstrumentTextColor = "white";
+  // Metallic gold
+  const ci::Color kInstrumentTextColor = ci::Color::hex(0xD4AF37);
 
   // Piano
   Piano piano_;

@@ -8,6 +8,7 @@
 
 #include "cinder/Color.h"
 #include "cinder/app/App.h"
+#include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
 #include "core/music_note.h"
 
@@ -20,16 +21,14 @@ const std::vector<Piano::KeyEvent> Piano::kBlackKeyCodes{
     {ci::app::KeyEvent::KEY_e, 'e'}, {ci::app::KeyEvent::KEY_r, 'r'},
     {ci::app::KeyEvent::KEY_t, 't'}, {ci::app::KeyEvent::KEY_y, 'y'},
     {ci::app::KeyEvent::KEY_u, 'u'}, {ci::app::KeyEvent::KEY_i, 'i'},
-    {ci::app::KeyEvent::KEY_o, 'o'}, {ci::app::KeyEvent::KEY_p, 'p'}
-};
+    {ci::app::KeyEvent::KEY_o, 'o'}, {ci::app::KeyEvent::KEY_p, 'p'}};
 
 const std::vector<Piano::KeyEvent> Piano::kWhiteKeyCodes{
     {ci::app::KeyEvent::KEY_a, 'a'}, {ci::app::KeyEvent::KEY_s, 's'},
     {ci::app::KeyEvent::KEY_d, 'd'}, {ci::app::KeyEvent::KEY_f, 'f'},
     {ci::app::KeyEvent::KEY_g, 'g'}, {ci::app::KeyEvent::KEY_h, 'h'},
     {ci::app::KeyEvent::KEY_j, 'j'}, {ci::app::KeyEvent::KEY_k, 'k'},
-    {ci::app::KeyEvent::KEY_l, 'l'}, {ci::app::KeyEvent::KEY_SEMICOLON, ';'}
-};
+    {ci::app::KeyEvent::KEY_l, 'l'}, {ci::app::KeyEvent::KEY_SEMICOLON, ';'}};
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)
@@ -76,9 +75,9 @@ void Piano::Draw() const {
   ci::gl::color(kOutlineColor);
   ci::gl::drawStrokedRect(keyboard_bounds);
 
-  glm::dvec2 keys_top_left = top_left_corner_ +
-                             glm::dvec2(0, height_ * kTopPaddingFactor);
-  double keys_height = height_ * (1-kTopPaddingFactor);
+  glm::dvec2 keys_top_left =
+      top_left_corner_ + glm::dvec2(0, height_ * kTopPaddingFactor);
+  double keys_height = height_ * (1 - kTopPaddingFactor);
 
   DrawKeys(keys_top_left, width_, keys_height);
   DrawOctaveMarkers(top_left_corner_, width_, height_ * kTopPaddingFactor);
@@ -135,7 +134,7 @@ void Piano::SetKeyBinds() {
 
   size_t white_index = 0;
   size_t black_index = 0;
-  size_t key_index = std::max(view_first_,0);
+  size_t key_index = std::max(view_first_, 0);
   size_t white_keys_accessed = 0;
 
   // Add the keybinds
@@ -193,7 +192,7 @@ PianoKey& Piano::GetKey(int key_code) {
 void Piano::SetKeyLabels() {
   // First empty all key labels
   for (PianoKey& key : keys_) {
-    key.SetLabel(' ');
+    key.SetLabel(" ");
   }
 
   // Create map of KeyEvents to chars for efficient lookup
@@ -206,41 +205,46 @@ void Piano::SetKeyLabels() {
   }
 
   // Set new key labels
-  for (auto keybind : keybinds_) {
+  for (const auto& keybind : keybinds_) {
     int key_code = keybind.first;
     PianoKey* key = keybind.second;
-    char key_char = key_events.at(key_code);
-    key->SetLabel(key_char);
+    char key_char = std::toupper(key_events.at(key_code));
+    key->SetLabel(std::string(1, key_char));
   }
 }
 
 void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
                      double height) const {
+  // Set key sizes
   double white_key_height = height;
   double black_key_height = white_key_height * kBlackKeyHeightFactor;
   double white_key_width = width / view_whitekey_count_;
   double black_key_width = white_key_width * kBlackKeyWidthFactor;
 
+  // Loop through every key, drawing black keys after adjacent white keys
+  // so the black key appears on top
   double top_edge = top_left_corner.y;
   double left_edge = top_left_corner.x;
 
-  size_t key_index = std::max(0,view_first_);
+  size_t key_index = std::max(0, view_first_);
   size_t white_keys_drawn = 0;
   while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
     const PianoKey key = keys_.at(key_index);
 
     if (key.GetType() == PianoKeyType::White) {
       glm::vec2 top_left(left_edge, top_edge);
-      key.Draw(top_left, white_key_width, white_key_height);
+      key.DrawWithLabel(top_left, white_key_width, white_key_height, kFontName);
       key_index++;
     } else if (key.GetType() == PianoKeyType::Black) {
       // Draw next white key
       const PianoKey next_white = keys_.at(key_index + 1);
       glm::vec2 white_top_left(left_edge, top_edge);
-      next_white.Draw(white_top_left, white_key_width, white_key_height);
+      next_white.DrawWithLabel(white_top_left, white_key_width,
+                               white_key_height, kFontName);
       // Draw current black key
       glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
-      key.Draw(black_top_left, black_key_width, black_key_height);
+      key.DrawWithLabel(black_top_left, black_key_width, black_key_height,
+                        kFontName);
       key_index += 2;
     }
     left_edge += white_key_width;
@@ -254,10 +258,11 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
   double top_edge = top_left_corner.y;
   double left_edge = top_left_corner.x;
 
-  size_t key_index = std::max(0,view_first_);
+  size_t key_index = std::max(0, view_first_);
   size_t white_keys_accessed = 0;
 
-  while (white_keys_accessed < view_whitekey_count_ && key_index < keys_.size()) {
+  while (white_keys_accessed < view_whitekey_count_ &&
+         key_index < keys_.size()) {
     const PianoKey key = keys_.at(key_index);
     const music::Note& note = key.GetNote();
 
@@ -266,7 +271,8 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
       int octave = note.GetOctave();
       std::string octave_marker = kOctaveMarkerLetter + std::to_string(octave);
 
-      glm::dvec2 marker_center(left_edge + white_key_width / 2, top_edge);
+      glm::dvec2 marker_center(left_edge + white_key_width / 2,
+                               top_edge + height * 0.05);
       ci::gl::drawStringCentered(octave_marker, marker_center,
                                  ci::Color("white"),
                                  ci::Font(kFontName, height));

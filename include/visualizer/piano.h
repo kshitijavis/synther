@@ -131,7 +131,7 @@ class Piano {
 
   const ci::Color kBackgroundColor = ci::Color("gray");
   const ci::Color kOutlineColor = ci::Color("white");
-  const std::string kFontName = "Futura-Bold";
+  const std::string kFontName = "ToppanBunkyuGothicPr6N-DB";
 
   // PianoKeys
   int first_semitone_;
@@ -187,12 +187,19 @@ class Piano {
 
   /**
    * Draws all the PianoKeys in the current view
+   * @param top_left_corner a vector representing the top left corner of the
+   *   leftmost key
+   * @param width the width of the keyboard
+   * @param height the height of the keyboard
    */
   void DrawKeys(const glm::dvec2& top_left_corner, double width,
                 double height) const;
 
   /**
    * Draws all the PianoKeys in the current view
+   * @param the top left corner of the keyboard
+   * @param the width of the entire marker drawing location
+   * @param the height of the entire marker drawing location
    */
   void DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
                          double height) const;
