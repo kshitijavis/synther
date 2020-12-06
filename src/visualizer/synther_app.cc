@@ -61,9 +61,14 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_UP:
       piano_.ShiftView(kWholetoneDistance);
       break;
-    case ci::app::KeyEvent::KEY_n:
+    case ci::app::KeyEvent::KEY_n: {
       std::string instrument_asset_path = RequestInstrumentDirectory();
       SetupInstrument(instrument_asset_path);
+      break;
+    }
+    case ci::app::KeyEvent::KEY_c:
+      ToggleSustainPedal();
+      break;
   }
 }
 
@@ -97,6 +102,14 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
 
   instrument_ = parser.GetInstrumentName();
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
+}
+
+void SyntherApp::ToggleSustainPedal() {
+  if (player_.GetResonation() == kStandardResonation) {
+    player_.SetResonation(kSustainedResonation);
+  } else {
+    player_.SetResonation(kStandardResonation);
+  }
 }
 
 }  // namespace visualizer

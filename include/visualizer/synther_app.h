@@ -87,6 +87,7 @@ class SyntherApp : public ci::app::App {
   std::string instrument_;
   audio::Player player_;
   static constexpr double kStandardResonation = 0.4;
+  static constexpr double kSustainedResonation = 5.0;
 
   // Helper methods
   /**
@@ -105,6 +106,12 @@ class SyntherApp : public ci::app::App {
    *   about the authors and note names of the sound files
    */
   void SetupInstrument(const std::string& asset_directory);
+
+  /**
+   * Toggles the resonate duration of the player. If duration is currently set
+   *   to standard, switches to sustained, and vice versa.
+   */
+  void ToggleSustainPedal();
 };
 
 }  // namespace visualizer

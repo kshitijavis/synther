@@ -85,6 +85,14 @@ void Player::StopNote(const music::Note& note) {
   }
 }
 
+void Player::SetResonation(double resonate_duration) {
+  resonate_duration_ = resonate_duration;
+}
+
+double Player::GetResonation() const {
+  return resonate_duration_;
+}
+
 }  // namespace audio
 
 }  // namespace synther
