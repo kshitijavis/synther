@@ -14,7 +14,7 @@ SyntherApp::SyntherApp()
     : piano_(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
-             kKeyCount, kViewWhitekeyCount) {
+             kKeyCount, kViewWhitekeyCount), player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
@@ -96,8 +96,6 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
   audio::SoundJsonParser parser(json);
 
   instrument_ = parser.GetInstrumentName();
-  std::map<music::Note, std::string> note_files = parser.GetNoteFiles();
-
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
 }
 

@@ -86,6 +86,7 @@ class SyntherApp : public ci::app::App {
   const std::string kJsonFilename = "details.json";
   std::string instrument_;
   audio::Player player_;
+  static constexpr double kStandardResonation = 0.4;
 
   // Helper methods
   /**

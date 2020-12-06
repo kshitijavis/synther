@@ -10,14 +10,18 @@ namespace synther {
 
 namespace audio {
 
+Player::Player(double resonate_duration)
+    : resonate_duration_(resonate_duration) {
+}
+
 void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
-                         const std::string& asset_directory) {
+                         const std::string& instrument_directory) {
   auto ctx = ci::audio::Context::master();
 
   for (const auto& note_file : note_files) {
     // Load file
     std::string filename = note_file.second;
-    std::string sourcefile_path = asset_directory + filename;
+    std::string sourcefile_path = instrument_directory + filename;
     ci::audio::SourceFileRef source_file =
         ci::audio::load(ci::app::loadAsset(sourcefile_path));
 
@@ -72,11 +76,11 @@ void Player::StopNote(const music::Note& note) {
       ci::audio::GainNodeRef gain = voice.gain_;
       auto param = gain->getParam();
       if (param->getNumEvents() == 0) {
-        gain->getParam()->applyRamp(0, kResonateTime);
+        gain->getParam()->applyRamp(0, resonate_duration_);
       }
 
       auto ctx = ci::audio::Context::master();
-      buffer_player->stop(ctx->getNumProcessedSeconds() + kResonateTime);
+      buffer_player->stop(ctx->getNumProcessedSeconds() + resonate_duration_);
     }
   }
 }
