@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "cinder/audio/audio.h"
 #include "core/music_note.h"
@@ -68,6 +69,14 @@ class Player {
    * @return the current resonate duration of the player
    */
   double GetResonation() const;
+
+  /**
+   * Gets a vector of all the notes that are playable in the current state of
+   *   the player. In other words, returns a vector of all of notes currently
+   *   mapped to voices
+   * @return a vector of all the playable notes in the player
+   */
+  std::vector<music::Note> GetNotes() const;
 
  private:
   struct NoteVoice {

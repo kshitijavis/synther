@@ -22,8 +22,13 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     // Load file
     std::string filename = note_file.second;
     std::string sourcefile_path = instrument_directory + filename;
-    ci::audio::SourceFileRef source_file =
-        ci::audio::load(ci::app::loadAsset(sourcefile_path));
+    ci::audio::SourceFileRef source_file;
+    try {
+      source_file = ci::audio::load(ci::app::loadAsset(sourcefile_path));
+    } catch (const ci::app::AssetLoadExc& e) {
+      // Skip the unloadable sound file
+      continue;
+    }
 
     // Create buffer player from file
     ci::audio::BufferPlayerNodeRef buffer_player =
@@ -91,6 +96,16 @@ void Player::SetResonation(double resonate_duration) {
 
 double Player::GetResonation() const {
   return resonate_duration_;
+}
+
+std::vector<music::Note> Player::GetNotes() const {
+  std::vector<music::Note> notes;
+  music::Accidental priority = music::Accidental::Sharp;
+  for (const auto& note_file : players_) {
+    int semitone = note_file.first;
+    notes.emplace_back(semitone, priority);
+  }
+  return notes;
 }
 
 }  // namespace audio
