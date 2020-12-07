@@ -16,6 +16,7 @@ Player::Player(double resonate_duration)
 
 void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
                          const std::string& instrument_directory) {
+  std::map<int, NoteVoice> voices;
   auto ctx = ci::audio::Context::master();
 
   for (const auto& note_file : note_files) {
@@ -46,17 +47,17 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     int semitone = note.GetSemitoneIndex();
 
     NoteVoice components{gain, buffer_player, false};
-    players_[semitone] = components;
+    voices[semitone] = components;
   }
-
   ctx->enable();
+  voices_ = voices;
 }
 
 void Player::PlayNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
 
-  if (players_.find(semitone) != players_.end()) {
-    NoteVoice& voice = players_.at(semitone);
+  if (voices_.find(semitone) != voices_.end()) {
+    NoteVoice& voice = voices_.at(semitone);
     ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
 
     if (!(voice.is_playing_)) {
@@ -71,8 +72,8 @@ void Player::PlayNote(const music::Note& note) {
 void Player::StopNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
 
-  if (players_.find(semitone) != players_.end()) {
-    NoteVoice& voice = players_.at(semitone);
+  if (voices_.find(semitone) != voices_.end()) {
+    NoteVoice& voice = voices_.at(semitone);
     ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
 
     if (voice.is_playing_) {
@@ -101,7 +102,7 @@ double Player::GetResonation() const {
 std::vector<music::Note> Player::GetNotes() const {
   std::vector<music::Note> notes;
   music::Accidental priority = music::Accidental::Sharp;
-  for (const auto& note_file : players_) {
+  for (const auto& note_file : voices_) {
     int semitone = note_file.first;
     notes.emplace_back(semitone, priority);
   }

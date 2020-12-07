@@ -14,7 +14,8 @@ SyntherApp::SyntherApp()
     : piano_(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
-             kKeyCount, kViewWhitekeyCount), player_(kStandardResonation) {
+             kKeyCount, kViewWhitekeyCount),
+      player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
@@ -64,6 +65,7 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_n: {
       std::string instrument_asset_path = RequestInstrumentDirectory();
       SetupInstrument(instrument_asset_path);
+      BuildPianoFromPlayer();
       break;
     }
     case ci::app::KeyEvent::KEY_c:
@@ -85,8 +87,7 @@ std::string SyntherApp::RequestInstrumentDirectory() {
   ci::fs::path sounds_directory = ci::app::getAssetPath("sounds");
   ci::fs::path instrument_full_path = getFolderPath(sounds_directory);
   std::string instrument_asset_path =
-      ci::fs::relative(instrument_full_path, assets_directory).string() +
-      "/";
+      ci::fs::relative(instrument_full_path, assets_directory).string() + "/";
   return instrument_asset_path;
 }
 
@@ -102,6 +103,22 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
 
   instrument_ = parser.GetInstrumentName();
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
+}
+
+void SyntherApp::BuildPianoFromPlayer() {
+  std::vector<music::Note> notes = player_.GetNotes();
+  // If player has no notes, then the piano cannot be initialized
+  if (notes.size() == 0) {
+    return;
+  }
+
+  auto first_note = std::min_element(notes.begin(), notes.end());
+  int first_semitone = first_note->GetSemitoneIndex();
+  int note_count = notes.size();
+  piano_ = Piano(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
+                                               kInstrumentTextPadding),
+                  kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
+                  note_count, kViewWhitekeyCount);
 }
 
 void SyntherApp::ToggleSustainPedal() {

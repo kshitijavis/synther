@@ -85,7 +85,7 @@ class Player {
     bool is_playing_;
   };
   // Maps semitones to voices
-  std::map<int, NoteVoice> players_;
+  std::map<int, NoteVoice> voices_;
   double resonate_duration_;
 };
 

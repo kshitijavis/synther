@@ -30,20 +30,25 @@ const std::vector<Piano::KeyEvent> Piano::kWhiteKeyCodes{
     {ci::app::KeyEvent::KEY_j, 'j'}, {ci::app::KeyEvent::KEY_k, 'k'},
     {ci::app::KeyEvent::KEY_l, 'l'}, {ci::app::KeyEvent::KEY_SEMICOLON, ';'}};
 
+const std::string Piano::kBackgroundColor = "gray";
+const std::string Piano::kOutlineColor = "white";
+const std::string Piano::kOctaveMarkerColor = "white";
+const std::string Piano::kFontName = "ToppanBunkyuGothicPr6N-DB";
+
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)
     : top_left_corner_(top_left_corner),
       width_(width),
       height_(height),
       first_semitone_(first_semitone) {
-  // Set view_first_wholetone_ and ensure that it represents a white key,
+  // Set view_first_index_ and ensure that it represents a white key,
   // i.e. a natural-note
   music::Note first_note(first_semitone, kPriority);
   if (first_note.GetAccidental() == music::Accidental::Natural) {
-    view_first_ = 0;
+    view_first_index_ = 0;
   } else {
     // The key is not a natural, so shift view up to the next natural semitone
-    view_first_ = 1;
+    view_first_index_ = 1;
   }
 
   // Initialize keys_
@@ -70,9 +75,9 @@ void Piano::Draw() const {
   ci::Rectf keyboard_bounds(top_left_corner_, bottom_right_corner);
 
   // Draw background
-  ci::gl::color(kBackgroundColor);
+  ci::gl::color(ci::Color(kBackgroundColor.c_str()));
   ci::gl::drawSolidRect(keyboard_bounds);
-  ci::gl::color(kOutlineColor);
+  ci::gl::color(ci::Color(kOutlineColor.c_str()));
   ci::gl::drawStrokedRect(keyboard_bounds);
 
   glm::dvec2 keys_top_left =
@@ -87,22 +92,22 @@ void Piano::ShiftView(int displacement) {
   size_t distance = abs(displacement);
 
   for (size_t keys_shifted = 0; keys_shifted < distance; keys_shifted++) {
-    if ((view_first_ <= 0 && displacement < 0) ||
-        (view_first_ >= keys_.size() - 1 && displacement > 0)) {
+    if ((view_first_index_ <= 0 && displacement < 0) ||
+        (view_first_index_ >= keys_.size() - 1 && displacement > 0)) {
       break;
     }
 
     if (displacement < 0) {
-      view_first_--;
+      view_first_index_--;
       // shift down again if view_first is on black key
-      if (keys_.at(view_first_).GetType() == PianoKeyType::Black) {
-        view_first_--;
+      if (keys_.at(view_first_index_).GetType() == PianoKeyType::Black) {
+        view_first_index_--;
       }
     } else if (displacement > 0) {
-      view_first_++;
+      view_first_index_++;
       // shift up again if view_first is on black key
-      if (keys_.at(view_first_).GetType() == PianoKeyType::Black) {
-        view_first_++;
+      if (keys_.at(view_first_index_).GetType() == PianoKeyType::Black) {
+        view_first_index_++;
       }
     }
   }
@@ -134,7 +139,7 @@ void Piano::SetKeyBinds() {
 
   size_t white_index = 0;
   size_t black_index = 0;
-  size_t key_index = std::max(view_first_, 0);
+  size_t key_index = std::max(view_first_index_, 0);
   size_t white_keys_accessed = 0;
 
   // Add the keybinds
@@ -226,7 +231,7 @@ void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
   double top_edge = top_left_corner.y;
   double left_edge = top_left_corner.x;
 
-  size_t key_index = std::max(0, view_first_);
+  size_t key_index = std::max(0, view_first_index_);
   size_t white_keys_drawn = 0;
   while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
     const PianoKey key = keys_.at(key_index);
@@ -258,7 +263,7 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
   double top_edge = top_left_corner.y;
   double left_edge = top_left_corner.x;
 
-  size_t key_index = std::max(0, view_first_);
+  size_t key_index = std::max(0, view_first_index_);
   size_t white_keys_accessed = 0;
 
   while (white_keys_accessed < view_whitekey_count_ &&
@@ -274,7 +279,7 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
       glm::dvec2 marker_center(left_edge + white_key_width / 2,
                                top_edge + height * 0.05);
       ci::gl::drawStringCentered(octave_marker, marker_center,
-                                 ci::Color("white"),
+                                 ci::Color(kOctaveMarkerColor.c_str()),
                                  ci::Font(kFontName, height));
     }
 

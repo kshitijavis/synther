@@ -129,18 +129,19 @@ class Piano {
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.4;
 
-  const ci::Color kBackgroundColor = ci::Color("gray");
-  const ci::Color kOutlineColor = ci::Color("white");
-  const std::string kFontName = "ToppanBunkyuGothicPr6N-DB";
+  static const std::string kBackgroundColor;
+  static const std::string kOutlineColor;
+  static const std::string kOctaveMarkerColor;
+  static const std::string kFontName;
 
   // PianoKeys
   int first_semitone_;
   std::vector<PianoKey> keys_;
-  const music::Accidental kPriority = music::Accidental::Sharp;
+  static const music::Accidental kPriority = music::Accidental::Sharp;
   char kOctaveMarkerLetter = 'C';
 
   // View window
-  int view_first_;
+  int view_first_index_;
   size_t view_whitekey_count_;
 
   // Keybinds
