@@ -26,7 +26,7 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     ci::audio::SourceFileRef source_file;
     try {
       source_file = ci::audio::load(ci::app::loadAsset(sourcefile_path));
-    } catch (const ci::app::AssetLoadExc& e) {
+    } catch (const std::exception& e) {
       // Skip the unloadable sound file
       continue;
     }
