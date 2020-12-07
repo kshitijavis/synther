@@ -60,10 +60,11 @@ void Player::PlayNote(const music::Note& note) {
     NoteVoice& voice = voices_.at(semitone);
     ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
 
+    // Set voice to start playing sound
     if (!(voice.is_playing_)) {
       voice.is_playing_ = true;
       ci::audio::GainNodeRef gain = voice.gain_;
-      gain->getParam()->setValue(1);
+      gain->getParam()->setValue(1); // Turn gain/volume up all the way
       buffer_player->start();
     }
   }
@@ -81,10 +82,15 @@ void Player::StopNote(const music::Note& note) {
 
       ci::audio::GainNodeRef gain = voice.gain_;
       auto param = gain->getParam();
+
+      // Only apply ramp if the node isn't already subject to another event
       if (param->getNumEvents() == 0) {
+        // Fade the sound to 0 over a set duration
         gain->getParam()->applyRamp(0, resonate_duration_);
       }
 
+      // Tell buffer player to stop after the note completely fades away,
+      // preventing unnecessary computational load
       auto ctx = ci::audio::Context::master();
       buffer_player->stop(ctx->getNumProcessedSeconds() + resonate_duration_);
     }
@@ -97,6 +103,7 @@ void Player::SetResonateDuration(double resonate_duration) {
   if (resonate_duration < resonate_duration_) {
     for (const auto& voice_pair : voices_) {
       NoteVoice voice = voice_pair.second;
+
       // Only update params for voices that are "resonating", i.e. enabled but
       // not playing
       if (voice.buffer_player_->isEnabled() && !voice.is_playing_) {
@@ -108,7 +115,7 @@ void Player::SetResonateDuration(double resonate_duration) {
     }
   }
 
-  resonate_duration_ = resonate_duration;
+  resonate_duration_ = resonate_duration; // Update state
 }
 
 double Player::GetResonateDuration() const {
