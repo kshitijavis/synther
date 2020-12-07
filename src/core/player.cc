@@ -91,11 +91,27 @@ void Player::StopNote(const music::Note& note) {
   }
 }
 
-void Player::SetResonation(double resonate_duration) {
+void Player::SetResonateDuration(double resonate_duration) {
+  // If the new resonate duration is shorter than the current duration,
+  // update any enabled voices to fade away with the new, shorter duration
+  if (resonate_duration < resonate_duration_) {
+    for (const auto& voice_pair : voices_) {
+      NoteVoice voice = voice_pair.second;
+      // Only update params for voices that are "resonating", i.e. enabled but
+      // not playing
+      if (voice.buffer_player_->isEnabled() && !voice.is_playing_) {
+        ci::audio::GainNodeRef gain = voice.gain_;
+        auto gain_param = gain->getParam();
+        gain_param->reset();  // reset param to avoid overlapping events
+        gain_param->applyRamp(0, resonate_duration);
+      }
+    }
+  }
+
   resonate_duration_ = resonate_duration;
 }
 
-double Player::GetResonation() const {
+double Player::GetResonateDuration() const {
   return resonate_duration_;
 }
 

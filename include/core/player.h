@@ -52,7 +52,7 @@ class Player {
    *   will resonate for a small amount of time to mimic a classic piano.
    *   During this time, the note will slowly fade away, completely stopping
    *   only after the resonation duration has passed.
-   *   The duration of the resonation can be changed by calling SetResonation()
+   *   The duration of the resonation can be changed by calling SetResonateDuration()
    * @param note a music::Note representing the note to stop playing
    */
   void StopNote(const music::Note& note);
@@ -62,13 +62,13 @@ class Player {
    *   note will continue to sound after StopNote() is called.
    * @param resonate_duration the duration to set the resonation of the player.
    */
-  void SetResonation(double resonate_duration);
+  void SetResonateDuration(double resonate_duration);
 
   /**
    * Get the current resonate duration of the player
    * @return the current resonate duration of the player
    */
-  double GetResonation() const;
+  double GetResonateDuration() const;
 
   /**
    * Gets a vector of all the notes that are playable in the current state of
