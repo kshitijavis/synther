@@ -1,0 +1,4 @@
+for filename in *.aiff
+do
+  rm $filename
+done
