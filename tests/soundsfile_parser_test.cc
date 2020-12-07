@@ -32,12 +32,12 @@ TEST_CASE("Correctly parses filenames", "[getfilenames]") {
     SoundJsonParser parser(json);
     std::map<Note, std::string> actual = parser.GetNoteFiles();
     std::map<Note, std::string> expected_subset{
-        {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.wav"},
-        {Note(2, 'G', Accidental::Flat), "Piano.ff.Gb2.wav"},
-        {Note(6, 'E', Accidental::Flat), "Piano.ff.Eb6.wav"},
-        {Note(8, 'C', Accidental::Natural), "Piano.ff.C8.wav"},
-        {Note(7, 'F', Accidental::Natural), "Piano.ff.F7.wav"},
-        {Note(6, 'D', Accidental::Flat), "Piano.ff.Db6.wav"},
+        {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.mp3"},
+        {Note(2, 'G', Accidental::Flat), "Piano.ff.Gb2.mp3"},
+        {Note(6, 'E', Accidental::Flat), "Piano.ff.Eb6.mp3"},
+        {Note(8, 'C', Accidental::Natural), "Piano.ff.C8.mp3"},
+        {Note(7, 'F', Accidental::Natural), "Piano.ff.F7.mp3"},
+        {Note(6, 'D', Accidental::Flat), "Piano.ff.Db6.mp3"},
     };
 
     for (const auto& expected_pair : expected_subset) {

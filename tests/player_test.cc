@@ -19,13 +19,13 @@ TEST_CASE("SetUpVoices stores all notes mapped to valid filename",
     Player player(.5);
     std::string instrument_directory = "sounds/piano/";
     std::map<Note, std::string> note_files{
-        {Note(0, 'A', Accidental::Natural), "Piano.ff.A0.wav"},
-        {Note(1, 'A', Accidental::Natural), "Piano.ff.A1.wav"},
-        {Note(2, 'A', Accidental::Natural), "Piano.ff.A2.wav"},
-        {Note(3, 'A', Accidental::Natural), "Piano.ff.A3.wav"},
-        {Note(4, 'A', Accidental::Natural), "Piano.ff.A4.wav"},
-        {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.wav"},
-        {Note(6, 'A', Accidental::Natural), "Piano.ff.A6.wav"},
+        {Note(0, 'A', Accidental::Natural), "Piano.ff.A0.mp3"},
+        {Note(1, 'A', Accidental::Natural), "Piano.ff.A1.mp3"},
+        {Note(2, 'A', Accidental::Natural), "Piano.ff.A2.mp3"},
+        {Note(3, 'A', Accidental::Natural), "Piano.ff.A3.mp3"},
+        {Note(4, 'A', Accidental::Natural), "Piano.ff.A4.mp3"},
+        {Note(5, 'A', Accidental::Natural), "Piano.ff.A5.mp3"},
+        {Note(6, 'A', Accidental::Natural), "Piano.ff.A6.mp3"},
     };
 
     player.SetUpVoices(note_files, instrument_directory);

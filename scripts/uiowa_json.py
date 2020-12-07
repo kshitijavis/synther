@@ -12,7 +12,7 @@ soundFiles = {}
 
 # Map note names to sound files
 for filename in os.listdir(directory):
-    if not filename.endswith(".wav"):
+    if not filename.endswith(".mp3"):
         continue
     match = re.search(notePattern, filename)
     notename = match.group()
