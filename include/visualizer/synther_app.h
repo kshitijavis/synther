@@ -56,13 +56,13 @@ class SyntherApp : public ci::app::App {
 
  private:
   // Window & Element positioning
-  const double kWindowHeight = 700;
-  const double kWindowWidth = 1100;
-  const double kSidePadding = 30;
-  const double kTopPadding = 50;
-  const double kBottomPadding = 25;
-  const double kInstrumentTextPadding = 0;
-  const double kInstrumentTextHeight = 100;
+  static constexpr double kWindowHeight = 700;
+  static constexpr double kWindowWidth = 1100;
+  static constexpr double kSidePadding = 30;
+  static constexpr double kTopPadding = 50;
+  static constexpr double kBottomPadding = 25;
+  static constexpr double kInstrumentTextPadding = 0;
+  static constexpr double kInstrumentTextHeight = 100;
   static constexpr double kPianoHeight = 450;
   static constexpr double kPedalHeight = 50;
   static constexpr double kPedalWidth = 100;
@@ -92,10 +92,10 @@ class SyntherApp : public ci::app::App {
   const std::string kPedalSecondaryColor = "black";
 
   // Audio
-  const std::string kDefaultSoundJson = "sounds/piano/";
-  const std::string kJsonFilename = "details.json";
   std::string instrument_;
   audio::Player player_;
+  const std::string kDefaultSoundJson = "sounds/piano/";
+  const std::string kJsonFilename = "details.json";
   static constexpr double kStandardResonation = 0.4;
   static constexpr double kSustainedResonation = 5.0;
 
