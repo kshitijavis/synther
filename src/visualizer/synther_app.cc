@@ -15,8 +15,10 @@ SyntherApp::SyntherApp()
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
              kKeyCount, kViewWhitekeyCount),
-      sustain_pedal_(kPedalPrimaryColor, kPedalSecondaryColor, "Sustain",
-                     kFontName),
+      sustain_pedal_(glm::dvec2((kWindowWidth - kPedalWidth) / 2,
+                                kBottomPadding - kPedalHeight),
+                     kPedalWidth, kPianoHeight, kPedalPrimaryColor,
+                     kPedalSecondaryColor, "Sustain", kFontName),
       player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }

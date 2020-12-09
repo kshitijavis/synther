@@ -8,6 +8,7 @@
 #include <string>
 
 #include "cinder/Color.h"
+#include "cinder/gl/gl.h"
 
 namespace synther {
 
@@ -24,6 +25,10 @@ class Pedal {
  public:
   /**
    * Create a pedal with state required for displaying
+   * @param top_left_corner pixel coordinates of the top left corner of the
+   *   pedal
+   * @param width the width of the pedal in pixels
+   * @param height the height of the pedal in pixels
    * @param primary_color the color normally used for the background of the
    *   pedal. When the pedal is pressed, primary_color will become the color
    *   of the text and outline
@@ -33,13 +38,25 @@ class Pedal {
    * @param label the label of the pedal that will be displayed when drawn
    * @param font_name the name of the font used to display the label
    */
-  Pedal(const ci::Color& primary_color, const ci::Color& highlight_color,
+  Pedal(const glm::dvec2& top_left_corner, double width, double height,
+        const ci::Color& primary_color, const ci::Color& highlight_color,
         const std::string& label, const std::string& font_name);
 
+  /**
+   * Draws the pedal to a Cinder application
+   */
+  void Draw() const;
+
  private:
-  std::string label_;
+  // Positioning
+  glm::dvec2 top_left_corner_;
+  double width_;
+  double height_;
+
+  // Aesthetics
   ci::Color primary_color_;    // Background color of pedal
   ci::Color highlight_color_;  // Color of text and outline
+  std::string label_;
   std::string font_name_;
 };
 
