@@ -60,16 +60,17 @@ class SyntherApp : public ci::app::App {
   const double kWindowWidth = 1100;
   const double kSidePadding = 30;
   const double kTopPadding = 50;
-  const double kBottomPadding = 50;
+  const double kBottomPadding = 25;
   const double kInstrumentTextPadding = 0;
   const double kInstrumentTextHeight = 100;
   static constexpr double kPianoHeight = 450;
-  static constexpr double kPedalHeight = 100;
+  static constexpr double kPedalHeight = 50;
   static constexpr double kPedalWidth = 100;
 
   // Appearance
   const std::string kBackgroundColor = "black";
-  const std::string kFontName = "SignPainter-HouseScript";
+  const std::string kMainFontName = "ToppanBunkyuGothicPr6N-DB";
+  const std::string kInstrumentFontName = "SignPainter-HouseScript";
 
   // Metallic gold
   const ci::Color kInstrumentTextColor = ci::Color::hex(0xD4AF37);
@@ -86,8 +87,9 @@ class SyntherApp : public ci::app::App {
 
   // Pedals
   Pedal sustain_pedal_;
-  const ci::Color kPedalPrimaryColor = ci::Color("green");
-  const ci::Color kPedalSecondaryColor = ci::Color("black");
+  const std::string kSustainPedalLabel = "S";
+  const std::string kPedalPrimaryColor = "gold";
+  const std::string kPedalSecondaryColor = "black";
 
   // Audio
   const std::string kDefaultSoundJson = "sounds/piano/";

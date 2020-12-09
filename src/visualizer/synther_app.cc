@@ -15,16 +15,20 @@ SyntherApp::SyntherApp()
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
              kKeyCount, kViewWhitekeyCount),
-      sustain_pedal_(glm::dvec2((kWindowWidth - kPedalWidth) / 2,
-                                kBottomPadding - kPedalHeight),
-                     kPedalWidth, kPianoHeight, kPedalPrimaryColor,
-                     kPedalSecondaryColor, "Sustain", kFontName),
       player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
 void SyntherApp::setup() {
   SetupInstrument(kDefaultSoundJson);
+
+  // Setup sustain pedal
+  glm::dvec2 sustain_top_left((kWindowWidth - kPedalWidth) / 2,
+                              kWindowHeight - (kBottomPadding + kPedalHeight));
+  ci::Color primary(kPedalPrimaryColor.c_str());
+  ci::Color secondary(kPedalSecondaryColor.c_str());
+  sustain_pedal_ = Pedal(sustain_top_left, kPedalWidth, kPedalHeight, primary,
+                         secondary, kSustainPedalLabel, kMainFontName);
 }
 
 void SyntherApp::update() {
@@ -38,8 +42,9 @@ void SyntherApp::draw() {
   glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
   ci::gl::drawStringCentered(instrument_, instrument_text_center,
                              kInstrumentTextColor,
-                             ci::Font(kFontName, kInstrumentTextHeight));
+                             ci::Font(kInstrumentFontName, kInstrumentTextHeight));
 
+  sustain_pedal_.Draw();
   piano_.Draw();
 }
 

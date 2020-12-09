@@ -44,6 +44,8 @@ void PianoKey::DrawWithLabel(const glm::dvec2& top_left_corner, double width,
                              const std::string& font_name) const {
   Draw(top_left_corner, width, height);
 
+  // Ensure that the text is resized to fit both the width and the height of
+  // the piano key
   double font_size = std::min(width / 2, height);
   glm::dvec2 label_top_center =
       top_left_corner + glm::dvec2(0.5 * width, 0.9 * (height - font_size));
