@@ -78,7 +78,9 @@ class Pedal {
   ci::Color secondary_color_;
   std::string label_;
   std::string font_name_;
+
   double kFontSizeFactor = 0.6;
+  double kCornerRadius = 10;
 
   // Functionality
   bool is_pressed_;

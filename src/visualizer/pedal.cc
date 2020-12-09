@@ -32,9 +32,9 @@ void Pedal::Draw() const {
   ci::Rectf bar_bounds(top_left_corner_, bottom_right_corner);
 
   ci::gl::color(background_color);
-  ci::gl::drawSolidRect(bar_bounds);
+  ci::gl::drawSolidRoundedRect(bar_bounds, kCornerRadius);
   ci::gl::color(highlight_color);
-  ci::gl::drawStrokedRect(bar_bounds);
+  ci::gl::drawStrokedRoundedRect(bar_bounds, kCornerRadius);
 
   // Ensure that the label is resized to fit both the width and the height
   // of the rectangle
