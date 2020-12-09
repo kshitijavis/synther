@@ -132,8 +132,10 @@ void SyntherApp::BuildPianoFromPlayer() {
 
 void SyntherApp::ToggleSustainPedal() {
   if (player_.GetResonateDuration() == kStandardResonation) {
+    sustain_pedal_.Press();
     player_.SetResonateDuration(kSustainedResonation);
   } else {
+    sustain_pedal_.Release();
     player_.SetResonateDuration(kStandardResonation);
   }
 }

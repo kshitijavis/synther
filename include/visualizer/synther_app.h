@@ -87,7 +87,7 @@ class SyntherApp : public ci::app::App {
 
   // Pedals
   Pedal sustain_pedal_;
-  const std::string kSustainPedalLabel = "S";
+  const std::string kSustainPedalLabel = "sus";
   const std::string kPedalPrimaryColor = "gold";
   const std::string kPedalSecondaryColor = "black";
 

@@ -44,6 +44,18 @@ void Pedal::Draw() const {
   ci::gl::drawStringCentered(label_, label_top_center, highlight_color,
                              ci::Font(font_name_, font_size));
 }
+
+void Pedal::Press() {
+  is_pressed_ = true;
+}
+
+void Pedal::Release() {
+  is_pressed_ = false;
+}
+
+bool Pedal::IsPressed() const {
+  return is_pressed_;
+}
 }  // namespace visualizer
 
 }  // namespace synther

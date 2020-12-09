@@ -49,6 +49,24 @@ class Pedal {
    */
   void Draw() const;
 
+  /**
+   * Updates state of pedal to pressed. The pedal colors will invert to
+   *   signify the pressed state
+   */
+  void Press();
+
+  /**
+   * Updates state of pedal to released. The pedal colors will now revert to
+   *   the standard colors used at construction
+   */
+  void Release();
+
+  /**
+   * Checks if the pedal is pressed
+   * @return true if the pedal is pressed, false otherwise
+   */
+  bool IsPressed() const;
+
  private:
   // Positioning
   glm::dvec2 top_left_corner_;
