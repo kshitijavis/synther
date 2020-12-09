@@ -7,6 +7,7 @@
 #include "cinder/gl/gl.h"
 
 #include "visualizer/piano.h"
+#include "visualizer/pedal.h"
 #include "core/player.h"
 
 namespace synther {
@@ -80,6 +81,11 @@ class SyntherApp : public ci::app::App {
   // Constants to specify how much to move the keyboard on ShiftView()
   static constexpr int kWholetoneDistance = 1;
   static constexpr int kOctaveDistance = 7;
+
+  // Pedals
+  Pedal sustain_pedal_;
+  const ci::Color kPedalPrimaryColor = ci::Color("green");
+  const ci::Color kPedalSecondaryColor = ci::Color("black");
 
   // Audio
   const std::string kDefaultSoundJson = "sounds/piano/";

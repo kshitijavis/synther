@@ -15,6 +15,8 @@ SyntherApp::SyntherApp()
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
              kKeyCount, kViewWhitekeyCount),
+      sustain_pedal_(kPedalPrimaryColor, kPedalSecondaryColor, "Sustain",
+                     kFontName),
       player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
@@ -116,9 +118,9 @@ void SyntherApp::BuildPianoFromPlayer() {
   int first_semitone = first_note->GetSemitoneIndex();
   int note_count = notes.size();
   piano_ = Piano(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
-                                               kInstrumentTextPadding),
-                  kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
-                  note_count, kViewWhitekeyCount);
+                                              kInstrumentTextPadding),
+                 kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
+                 note_count, kViewWhitekeyCount);
 }
 
 void SyntherApp::ToggleSustainPedal() {
