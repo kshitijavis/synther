@@ -56,6 +56,17 @@ void Pedal::Release() {
 bool Pedal::IsPressed() const {
   return is_pressed_;
 }
+bool Pedal::IsInBounds(const glm::dvec2& position) const {
+  double left_edge = top_left_corner_.x;
+  double right_edge = top_left_corner_.x + width_;
+  double top_edge = top_left_corner_.y;
+  double bottom_edge = top_left_corner_.y + height_;
+
+  bool is_x_in_bounds = left_edge < position.x && position.x < right_edge;
+  bool is_y_in_bounds = top_edge < position.y && position.y < bottom_edge;
+
+  return is_x_in_bounds && is_y_in_bounds;
+}
 }  // namespace visualizer
 
 }  // namespace synther

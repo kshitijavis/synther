@@ -41,13 +41,22 @@ class Pedal {
    * @param font_name the name of the font used to display the label
    */
   Pedal(const glm::dvec2& top_left_corner, double width, double height,
-        const ci::Color& primary_color, const ci::Color& seconadary_color,
+        const ci::Color& primary_color, const ci::Color& secondary_color,
         const std::string& label, const std::string& font_name);
 
   /**
    * Draws the pedal to a Cinder application
    */
   void Draw() const;
+
+  /**
+   * Checks if a specified position vector (in pixels) is within the bounds
+   *   of the pedal rectangle
+   * @param position a vector representing a position (in pixels)
+   * @return true if the position vector inside the pedal rectangle, false
+   *   otherwise
+   */
+  bool IsInBounds(const glm::dvec2& position) const;
 
   /**
    * Updates state of pedal to pressed. The pedal colors will invert to

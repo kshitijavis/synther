@@ -49,6 +49,9 @@ void SyntherApp::draw() {
 }
 
 void SyntherApp::mouseDown(ci::app::MouseEvent event) {
+  if (sustain_pedal_.IsInBounds(event.getPos())) {
+    ToggleSustainPedal();
+  }
 }
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
@@ -77,7 +80,7 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
       BuildPianoFromPlayer();
       break;
     }
-    case ci::app::KeyEvent::KEY_c:
+    case ci::app::KeyEvent::KEY_SPACE:
       ToggleSustainPedal();
       break;
   }

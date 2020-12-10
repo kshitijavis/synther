@@ -65,7 +65,7 @@ class SyntherApp : public ci::app::App {
   static constexpr double kInstrumentTextHeight = 100;
   static constexpr double kPianoHeight = 450;
   static constexpr double kPedalHeight = 50;
-  static constexpr double kPedalWidth = 100;
+  static constexpr double kPedalWidth = 200;
 
   // Appearance
   const std::string kBackgroundColor = "black";
@@ -87,7 +87,7 @@ class SyntherApp : public ci::app::App {
 
   // Pedals
   Pedal sustain_pedal_;
-  const std::string kSustainPedalLabel = "sus";
+  const std::string kSustainPedalLabel = "Sustain";
   const std::string kPedalPrimaryColor = "gold";
   const std::string kPedalSecondaryColor = "black";
 
