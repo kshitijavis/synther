@@ -62,8 +62,8 @@ bool Pedal::IsInBounds(const glm::dvec2& position) const {
   double top_edge = top_left_corner_.y;
   double bottom_edge = top_left_corner_.y + height_;
 
-  bool is_x_in_bounds = left_edge < position.x && position.x < right_edge;
-  bool is_y_in_bounds = top_edge < position.y && position.y < bottom_edge;
+  bool is_x_in_bounds = left_edge <= position.x && position.x <= right_edge;
+  bool is_y_in_bounds = top_edge <= position.y && position.y <= bottom_edge;
 
   return is_x_in_bounds && is_y_in_bounds;
 }
