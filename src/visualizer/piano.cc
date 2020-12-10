@@ -129,14 +129,13 @@ const size_t Piano::GetKeyCount() const {
 }
 
 const size_t Piano::CountWhiteKeys() const {
-  // Todo: Count whitekeys instead of naturals
-  size_t natural_count = 0;
+  size_t white_key_count = 0;
   for (const PianoKey& key : keys_) {
-    if (key.GetNote().GetAccidental() == music::Accidental::Natural) {
-      natural_count++;
+    if (key.GetType() == PianoKeyType::White) {
+      white_key_count++;
     }
   }
-  return natural_count;
+  return white_key_count;
 }
 
 void Piano::SetKeyBinds() {
