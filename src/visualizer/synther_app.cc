@@ -31,9 +31,6 @@ void SyntherApp::setup() {
                          secondary, kSustainPedalLabel, kMainFontName);
 }
 
-void SyntherApp::update() {
-}
-
 void SyntherApp::draw() {
   ci::Color8u background_color(ci::Color(kBackgroundColor.c_str()));
   ci::gl::clear(background_color);

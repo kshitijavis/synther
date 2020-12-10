@@ -27,11 +27,6 @@ class SyntherApp : public ci::app::App {
   void setup() override;
 
   /**
-   * Updates the state of the application
-   */
-  void update() override;
-
-  /**
    * Draws all the components of the app on a window on the computer screen
    */
   void draw() override;
