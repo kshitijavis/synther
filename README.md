@@ -33,7 +33,7 @@ _Synther_ allows you to move the keyboard view to play all 88 keys of the keyboa
 | `n`        | Opens File Explorer, allowing you to change the musical instrument |
 
 ### Changing Instruments
-Pressing `n` on the keyboard opens up the File Explorer/Finder with a list of directories containing instrument sound files. To change instruments, simply select the instrument's folder and press `open` in File Explorer
+Pressing `n` on the keyboard opens up the File Explorer/Finder with a list of directories containing instrument sound files. To change instruments, simply select the instrument's folder and press `open` in File Explorer. Note that many instruments have a smaller range than the Acoustic Piano. Therefore, not all keys on the keyboard will be visible for all instruments.
 
 # Credits
 ## Sound Files
