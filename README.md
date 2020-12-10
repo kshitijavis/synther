@@ -1,8 +1,6 @@
-Fill this in before the final project deadline. Someone who has _no familiarity_ with your project should be able to read this and understand:
-* what your project does
-* how to set it up and run it
+Welcome to _Synther_, an intuitive, fully-functional, virtual keyboard. Offering support for over 15 instruments, _Synther_ emulates a synthesizer and brings music production and experimentation to your computer! The goal of _Synther_ is provide a musical experience that looks and feels like a real piano through C++ and the Cinder library.
 
 # Sources
-## Sound Samples
+## Sound Files
 * Philharmonia Orchestra
 * Ivy Audio
