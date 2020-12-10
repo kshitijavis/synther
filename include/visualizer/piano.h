@@ -139,6 +139,7 @@ class Piano {
   std::vector<PianoKey> keys_;
   static const music::Accidental kPriority = music::Accidental::Sharp;
   char kOctaveMarkerLetter = 'C';
+  static constexpr double kOctaveMakerSizeFactor = 0.7;
 
   // View window
   int view_first_index_;

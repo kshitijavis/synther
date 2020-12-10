@@ -77,8 +77,6 @@ void Piano::Draw() const {
 
   ci::gl::color(ci::Color(kBackgroundColor.c_str()));
   ci::gl::drawSolidRect(keyboard_bounds);
-  ci::gl::color(ci::Color(kOutlineColor.c_str()));
-  ci::gl::drawStrokedRect(keyboard_bounds);
 
   // Draw keys
   glm::dvec2 keys_top_left =
@@ -282,12 +280,12 @@ void Piano::DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
         note.GetAccidental() == music::Accidental::Natural) {
       int octave = note.GetOctave();
       std::string octave_marker = kOctaveMarkerLetter + std::to_string(octave);
-
+      double font_size = height * kOctaveMakerSizeFactor;
       glm::dvec2 marker_center(left_edge + white_key_width / 2,
-                               top_edge + height * 0.05);
+                               top_edge + (height - font_size) / 2);
       ci::gl::drawStringCentered(octave_marker, marker_center,
                                  ci::Color(kOctaveMarkerColor.c_str()),
-                                 ci::Font(kFontName, height));
+                                 ci::Font(kFontName, font_size));
     }
 
     if (key.GetType() == PianoKeyType::White) {
