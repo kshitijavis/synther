@@ -24,9 +24,11 @@ Pedal::Pedal(const glm::dvec2& top_left_corner, double width, double height,
 }
 
 void Pedal::Draw() const {
+  // Colors switch is pedal is pressed
   ci::Color background_color = is_pressed_ ? primary_color_ : secondary_color_;
   ci::Color highlight_color = is_pressed_ ? secondary_color_ : primary_color_;
 
+  // Draw pedal rectangle
   glm::dvec2 bottom_right_corner =
       top_left_corner_ + glm::dvec2(width_, height_);
   ci::Rectf bar_bounds(top_left_corner_, bottom_right_corner);
@@ -36,9 +38,10 @@ void Pedal::Draw() const {
   ci::gl::color(highlight_color);
   ci::gl::drawStrokedRoundedRect(bar_bounds, kCornerRadius);
 
-  // Ensure that the label is resized to fit both the width and the height
-  // of the rectangle
+  // Draw pedal label
+  // Size the label to fit both the the width and height of the rectangle
   double font_size = std::min(width_ / 2, height_) * kFontSizeFactor;
+
   glm::dvec2 label_top_center =
       top_left_corner_ + glm::dvec2(0.5 * width_, (height_ - font_size) / 2);
   ci::gl::drawStringCentered(label_, label_top_center, highlight_color,
@@ -56,6 +59,7 @@ void Pedal::Release() {
 bool Pedal::IsPressed() const {
   return is_pressed_;
 }
+
 bool Pedal::IsInBounds(const glm::dvec2& position) const {
   double left_edge = top_left_corner_.x;
   double right_edge = top_left_corner_.x + width_;

@@ -118,7 +118,7 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
 }
 
 void SyntherApp::BuildPianoFromPlayer() {
-  std::vector<music::Note> notes = player_.GetNotes();
+  std::vector<music::Note> notes = player_.GetPlayableNotes();
   // If player has no notes, then the piano cannot be initialized
   if (notes.size() == 0) {
     return;

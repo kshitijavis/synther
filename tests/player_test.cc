@@ -40,7 +40,7 @@ TEST_CASE("SetUpVoices stores all notes mapped to valid filename",
         {Note(6, 'A', Accidental::Natural)},
     };
 
-    REQUIRE(player.GetNotes() == expected_notes);
+    REQUIRE(player.GetPlayableNotes() == expected_notes);
   }
 
   SECTION("Skips any invalid filenames") {
@@ -60,6 +60,6 @@ TEST_CASE("SetUpVoices stores all notes mapped to valid filename",
 
     std::vector<Note> expected_notes;
 
-    REQUIRE(player.GetNotes() == expected_notes);
+    REQUIRE(player.GetPlayableNotes() == expected_notes);
   }
 }

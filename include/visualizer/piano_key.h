@@ -38,7 +38,8 @@ class PianoKey {
    * @param top_left_corner screen pixels of the top-left-corner of the key
    * @param width the width of the key, in pixels
    * @param height the height of the key, in pixels
-   * @param the texture font for displaying the label
+   * @param font_name the name of the font used to draw the label. Must be
+   *   a cinder::Font
    */
   void DrawWithLabel(const glm::dvec2& top_left_corner, double width,
             double height, const std::string& font_name) const;
@@ -85,11 +86,12 @@ class PianoKey {
   std::string label_;
 
   // Colors
-  ci::Color released_color_;             // Standard, non-pressed color
-  ci::Color fill_color_;                 // Current display color
-  static const ci::Color kPressedColor;  // Color after ChangeColor() is called
+  ci::Color fill_color_;                 // Current color used for displaying
   ci::Color outline_color_;
   ci::Color text_color_;
+
+  ci::Color released_color_;             // Standard, non-pressed Color
+  static const ci::Color kPressedColor;  // Color after PressKey() is called
 };
 
 }  // namespace visualizer

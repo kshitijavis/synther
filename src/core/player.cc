@@ -122,7 +122,7 @@ double Player::GetResonateDuration() const {
   return resonate_duration_;
 }
 
-std::vector<music::Note> Player::GetNotes() const {
+std::vector<music::Note> Player::GetPlayableNotes() const {
   std::vector<music::Note> notes;
   music::Accidental priority = music::Accidental::Sharp;
   for (const auto& note_file : voices_) {
