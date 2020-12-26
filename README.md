@@ -16,7 +16,7 @@ This project requires the Cinder framework. First, we need to set up Cinder. The
 * Follow the [Instructions](https://www.libcinder.org/docs/guides/cmake/cmake.html#building-libcinder-with-cmake) for building LibCinder with CMake
 * * Alternatively, if using the CLion IDE, navigate to ~/Cinder and select `Run` -> `Build`
 ### Running the Project
-* Create a directory caled `my-projects` in `~/Cinder`. Navigate to `my-projects` and clone this repository inside.
+* Create a directory called `my-projects` in `~/Cinder`. Navigate to `my-projects` and clone this repository inside.
 * From here, you can run the cloned project in CLion
 
 # Gameplay
