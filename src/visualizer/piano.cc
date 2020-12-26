@@ -64,8 +64,6 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   // Set view_whitekey_count_ to the input parameters, unless there are fewer
   // white keys on the keyboard than specified by the input
   view_whitekey_count_ = std::min(CountWhiteKeys(), view_whitekey_count);
-
-  SetKeyLabels();
 }
 
 void Piano::Draw() const {
@@ -111,9 +109,6 @@ void Piano::ShiftView(int displacement) {
       }
     }
   }
-
-  // Reset labels
-  SetKeyLabels();
 }
 
 const PianoKey& Piano::GetPianoKey(int index) const {
@@ -167,7 +162,7 @@ PianoKey& Piano::GetKey(const music::Note& note) {
   return keys_.at(key_index);
 }
 
-void Piano::SetKeyLabels() {
+void Piano::SetKeyLabels(const std::vector<music::Note, char>& key_labels) {
   // First empty all key labels
   for (PianoKey& key : keys_) {
     key.SetLabel(" ");

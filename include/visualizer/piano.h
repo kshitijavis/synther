@@ -156,11 +156,13 @@ class Piano {
   const size_t CountWhiteKeys() const;
 
   /**
-   * For every key on the keyboard, sets the label of the key to its
-   *   corresponding KeyEvent, which is stored in keybinds_. If the key does
-   *   not have a keybind, sets the label to an empty char
+   * Sets the labels of the keys on the keyboard. Given a map of music notes to
+   *   characters
+   * @param key_labels a map of music notes to characters. Every Piano Key
+   *   corresponding to a music note will be given a label (given by the map
+   *   values)
    */
-  void SetKeyLabels();
+  void SetKeyLabels(const std::vector<music::Note, char>& key_labels);
 
   /**
    * Draws all the PianoKeys in the current view
