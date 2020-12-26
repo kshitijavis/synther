@@ -2,6 +2,8 @@
 # Description
 Welcome to _Synther_, an interactive, intuitive, virtual keyboard. Offering support for over 15 instruments, _Synther_ emulates a synthesizer and brings music production and experimentation to your computer! The goal of _Synther_ is provide a musical experience that looks and feels like a real piano, through C++ and the Cinder library.
 
+This project was inspired by my final project for CS126 (Software Design Studio) at the University of Illinois-Urbana Champaign.
+
 # Installation
 This project is currently stable for MacOS. Other platforms have yet to be tested.
 
