@@ -14,15 +14,21 @@ SyntherApp::SyntherApp()
     : piano_(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
                                           kInstrumentTextPadding),
              kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
-             kKeyCount, kViewWhitekeyCount) {
+             kKeyCount, kViewWhitekeyCount),
+      player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
 void SyntherApp::setup() {
-  SetupInstrument(kDefaultSoundPath);
-}
+  SetupInstrument(kDefaultSoundJson);
 
-void SyntherApp::update() {
+  // Setup sustain pedal
+  glm::dvec2 sustain_top_left((kWindowWidth - kPedalWidth) / 2,
+                              kWindowHeight - (kBottomPadding + kPedalHeight));
+  ci::Color primary(kPedalPrimaryColor.c_str());
+  ci::Color secondary(kPedalSecondaryColor.c_str());
+  sustain_pedal_ = Pedal(sustain_top_left, kPedalWidth, kPedalHeight, primary,
+                         secondary, kSustainPedalLabel, kMainFontName);
 }
 
 void SyntherApp::draw() {
@@ -31,13 +37,18 @@ void SyntherApp::draw() {
 
   // Draw instrument text
   glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
-  ci::gl::drawStringCentered(instrument_, instrument_text_center, kInstrumentTextColor.c_str(),
-                             ci::Font(kFontName, kInstrumentTextHeight));
+  ci::gl::drawStringCentered(instrument_, instrument_text_center,
+                             kInstrumentTextColor,
+                             ci::Font(kInstrumentFontName, kInstrumentTextHeight));
 
+  sustain_pedal_.Draw();
   piano_.Draw();
 }
 
 void SyntherApp::mouseDown(ci::app::MouseEvent event) {
+  if (sustain_pedal_.IsInBounds(event.getPos())) {
+    ToggleSustainPedal();
+  }
 }
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
@@ -60,6 +71,15 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_UP:
       piano_.ShiftView(kWholetoneDistance);
       break;
+    case ci::app::KeyEvent::KEY_n: {
+      std::string instrument_asset_path = RequestInstrumentDirectory();
+      SetupInstrument(instrument_asset_path);
+      BuildPianoFromPlayer();
+      break;
+    }
+    case ci::app::KeyEvent::KEY_SPACE:
+      ToggleSustainPedal();
+      break;
   }
 }
 
@@ -69,6 +89,15 @@ void SyntherApp::keyUp(ci::app::KeyEvent event) {
     const music::Note& note = piano_.GetNote(event.getCode());
     player_.StopNote(note);
   }
+}
+
+std::string SyntherApp::RequestInstrumentDirectory() {
+  ci::fs::path assets_directory = ci::app::getAssetPath(".");
+  ci::fs::path sounds_directory = ci::app::getAssetPath("sounds");
+  ci::fs::path instrument_full_path = getFolderPath(sounds_directory);
+  std::string instrument_asset_path =
+      ci::fs::relative(instrument_full_path, assets_directory).string() + "/";
+  return instrument_asset_path;
 }
 
 void SyntherApp::SetupInstrument(const std::string& asset_directory) {
@@ -82,9 +111,33 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
   audio::SoundJsonParser parser(json);
 
   instrument_ = parser.GetInstrumentName();
-  std::map<music::Note, std::string> note_files = parser.GetNoteFiles();
-
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
+}
+
+void SyntherApp::BuildPianoFromPlayer() {
+  std::vector<music::Note> notes = player_.GetPlayableNotes();
+  // If player has no notes, then the piano cannot be initialized
+  if (notes.size() == 0) {
+    return;
+  }
+
+  auto first_note = std::min_element(notes.begin(), notes.end());
+  int first_semitone = first_note->GetSemitoneIndex();
+  int note_count = notes.size();
+  piano_ = Piano(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
+                                              kInstrumentTextPadding),
+                 kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
+                 note_count, kViewWhitekeyCount);
+}
+
+void SyntherApp::ToggleSustainPedal() {
+  if (player_.GetResonateDuration() == kStandardResonation) {
+    sustain_pedal_.Press();
+    player_.SetResonateDuration(kSustainedResonation);
+  } else {
+    sustain_pedal_.Release();
+    player_.SetResonateDuration(kStandardResonation);
+  }
 }
 
 }  // namespace visualizer

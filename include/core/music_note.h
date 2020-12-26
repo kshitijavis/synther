@@ -19,9 +19,9 @@ enum class Accidental { Sharp, Flat, Natural };
  *   is on the standard Western musical scale.
  *
  * Alternatively, a Note can also be defined by its semitone-index with respect
- *   to some base note. In this implementation, the base note, A0, has the
+ *   to some base note. In this implementation, the base note, C0, has the
  *   semitone-index of 0. All other notes on the scale can be defined by their
- *   semitone distance from A0
+ *   semitone distance from C0
  *
  * Regardless of the method of construction, a Note will keep track of its
  *   octave, letter, accidental, and semitone-index, each of which can be
@@ -43,8 +43,8 @@ class Note {
 
   /**
    * Constructs a note using its semitone-index, which is the Note's semitone
-   *   distance from A0
-   * @param semitone_index the semitone-index of the note with respect to A0
+   *   distance from C0
+   * @param semitone_index the semitone-index of the note with respect to C0
    * @param priority the Accidental that will be given priority, if the note's
    *   semitone requires an accidental. Must be Sharp or Flat
    *   Since any note can have multiple names, (B-flat is the same as A-sharp),
@@ -100,7 +100,7 @@ class Note {
 
   /**
    * Get the note's semitone index, which defines the semitone ID of the note,
-   *   such that the index of A0 = 0
+   *   such that the index of C0 = 0
    * @return a size_t representing the note's semitone index
    */
   int GetSemitoneIndex() const;
@@ -111,7 +111,7 @@ class Note {
   Accidental accidental_;
 
   // A numerical 'code' that represents note's semitone.
-  // 0-index starts from the note A0.
+  // 0-index starts from the note C0.
   // Every increase in a semitone increases the note's index by 1
   int semitone_index_;
 

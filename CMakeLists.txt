@@ -72,16 +72,18 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/synther_app.cc
         src/visualizer/piano.cc
-        src/visualizer/piano_key.cc)
+        src/visualizer/piano_key.cc
+        src/visualizer/pedal.cc)
 
 list(APPEND SOURCE_FILES src/core/music_note.cc)
-list(APPEND SOURCE_FILES src/core/recording.cc)
 list(APPEND SOURCE_FILES src/core/player.cc)
 list(APPEND SOURCE_FILES src/core/sound_json_parser.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
 list(APPEND TEST_FILES tests/piano_test.cc)
 list(APPEND TEST_FILES tests/soundsfile_parser_test.cc)
+list(APPEND TEST_FILES tests/player_test.cc)
+list(APPEND TEST_FILES tests/pedal_test.cc)
 
 ci_make_app(
         APP_NAME        synther-app

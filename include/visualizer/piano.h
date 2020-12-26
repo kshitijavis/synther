@@ -19,13 +19,13 @@ namespace visualizer {
 
 /**
  * A Piano Keyboard that can be used as a Cinder GUI Component. Can be used
- * the represent a keyboard of any size, using standard western musical notes.
- * Once constructed, a keyboard virtually stores all of its notes as PianoKeys
+ * to represent a keyboard of any size, using standard western musical notes.
+ * Once constructed, a keyboard virtually stores all of its notes as PianoKeys,
  * which cannot be changed.
  *
- * The keyboard is visualized using "views". A "view"
- * allows the user to see a subset of the piano keys, which always starts and
- * ends on a white key. The piano position can be altered.
+ * The keyboard is visualized using "views". A view allows the user to see a
+ * subset of the piano keys, which always starts and ends on a white key.
+ * The view position can be altered using public methods.
  *
  * The keyboard can also be "played", which temporarily changes the visual
  * behavior of the PianoKey that was played, and allows the client to access the
@@ -36,19 +36,19 @@ class Piano {
   /**
    * Constructs a piano for visualization
    * @param top_left_corner the screen coordinates of the top left corner of
-   *   the piano
+   *   the piano, in pixels
    * @param width the width of the piano in pixels
    * @param height the height of the piano in pixels
    * @param first_semitone the starting note of the piano, specified by its
-   *   semitone distance from A0, where A0 has a semitone of 0. It is
-   *   recommended that first_semitone represents a whole tone
+   *   semitone distance from C0, where C0 has a semitone of 0.
+   *   It is recommended that first_semitone represents a white key
    * @param key_count the number of keys on the piano
    * @param view_whitekey_count the number of white keys to display on the
    *   piano when Draw() is called
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
         int first_semitone, size_t key_count,
-        size_t view_whitekey_count = kDefaultViewWhitekeyCount);
+        size_t view_whitekey_count = 20);
 
   /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
@@ -62,8 +62,8 @@ class Piano {
    * @param displacement an integer representing the distance to shift the
    *   keyboard view. The magnitude of the input represents the number of white
    *   keys by which the view will shift.
-   *   A negative input will shift the view down and a positive input will
-   *   shift the view up.
+   *   A negative input will shift the view downwards and a positive input will
+   *   shift the view upwards.
    */
   void ShiftView(int displacement);
 
@@ -92,7 +92,7 @@ class Piano {
    * Releases a pressed key on the keyboard. This will reset the color of the
    *   key to the standard color (black or white)
    * @param key_code a ci::ap::KeyEvent code that is bound to a Piano Key on
-   *   the keyboard. Throws and exception if key_event does not have a keybind
+   *   the keyboard. Throws an exception if key_event does not have a keybind
    *   or if key_bind is not a valid ci::app::KeyEvent code
    */
   void ReleaseKey(int key_code);
@@ -129,20 +129,21 @@ class Piano {
   static constexpr double kBlackKeyHeightFactor = 0.6;
   static constexpr double kBlackKeyWidthFactor = 0.4;
 
-  const ci::Color kBackgroundColor = ci::Color("gray");
-  const ci::Color kOutlineColor = ci::Color("white");
-  const std::string kFontName = "Futura-Bold";
+  static const std::string kBackgroundColor;
+  static const std::string kOutlineColor;
+  static const std::string kOctaveMarkerColor;
+  static const std::string kFontName;
 
   // PianoKeys
   int first_semitone_;
   std::vector<PianoKey> keys_;
-  const music::Accidental kPriority = music::Accidental::Sharp;
+  static const music::Accidental kPriority = music::Accidental::Sharp;
   char kOctaveMarkerLetter = 'C';
+  static constexpr double kOctaveMakerSizeFactor = 0.7;
 
   // View window
-  int view_first_;
+  int view_first_index_;
   size_t view_whitekey_count_;
-  static constexpr int kDefaultViewWhitekeyCount = 20;
 
   // Keybinds
   struct KeyEvent {
@@ -158,7 +159,7 @@ class Piano {
    * Counts the number of natural notes/white keys on the keyboard
    * @return a size_t representing the number of natural notes on the keyboard
    */
-  const size_t CountNaturals() const;
+  const size_t CountWhiteKeys() const;
 
   /**
    * Maps keys on the piano to cinder KeyEvents. Uses the first row of the
@@ -188,12 +189,19 @@ class Piano {
 
   /**
    * Draws all the PianoKeys in the current view
+   * @param top_left_corner a vector representing the top left corner of the
+   *   leftmost key
+   * @param width the width of the keyboard
+   * @param height the height of the keyboard
    */
   void DrawKeys(const glm::dvec2& top_left_corner, double width,
                 double height) const;
 
   /**
    * Draws all the PianoKeys in the current view
+   * @param the top left corner of the keyboard
+   * @param the width of the entire marker drawing location
+   * @param the height of the entire marker drawing location
    */
   void DrawOctaveMarkers(const glm::dvec2& top_left_corner, double width,
                          double height) const;

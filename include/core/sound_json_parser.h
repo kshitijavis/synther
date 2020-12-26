@@ -19,28 +19,40 @@ using json = nlohmann::json;
 
 class SoundJsonParser {
  public:
+  /**
+   * Construct a parser using a stream of instrument JSON data
+   * @param json a stream of JSON data with information about a set of
+   *   instrument sound files. The JSON must contain keys for "instrument",
+   *   "organization", "performer", and "soundFiles"
+   */
   explicit SoundJsonParser(std::istream& json);
 
   /**
-   * Retruns the name of the instrument, as specified in the JSON file
+   * Return the name of the instrument, as specified in the JSON file
    * @return the name of the instrument
    */
   std::string GetInstrumentName() const;
 
   /**
-   * Retruns the name of the organization who produced the sound files, as
-   * specified in the JSON file
+   * Return the name of the organization who produced the sound files, as
+   *   specified in the JSON file
    * @return the name of the organization
    */
   std::string GetOrganizationName() const;
 
   /**
-   * Retruns the name of the performer who produced the sound files, as
-   * specified in the JSON file
+   * Return the name of the performer who produced the sound files, as
+   *   specified in the JSON file
    * @return the name of the performer
    */
   std::string GetPerformerName() const;
 
+  /**
+   * Returns a map containing information about notes and filenames
+   * @return A map from music::Notes to strings representing filenames. Every
+   *   note in the map will corresponding to a filename, as instructed by
+   *   the JSON used at construction
+   */
   std::map<music::Note, std::string> GetNoteFiles() const;
 
   /**
@@ -53,11 +65,10 @@ class SoundJsonParser {
    *   Throws exception if note_string does not match the requirements
    * @return a music::Note object identical to the input note_string
    */
-  music::Note ParseNote(const std::string& note_string) const;
+  music::Note ParseNoteString(const std::string& note_string) const;
 
  private:
   json sound_details_;
-  std::string directory_path_;
 
   static const std::string kInstrumentKey;
   static const std::string kOrganizationKey;

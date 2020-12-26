@@ -10,16 +10,26 @@ namespace synther {
 
 namespace audio {
 
+Player::Player(double resonate_duration)
+    : resonate_duration_(resonate_duration) {
+}
+
 void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
-                         const std::string& asset_directory) {
+                         const std::string& instrument_directory) {
+  std::map<int, NoteVoice> voices;
   auto ctx = ci::audio::Context::master();
 
   for (const auto& note_file : note_files) {
     // Load file
     std::string filename = note_file.second;
-    std::string sourcefile_path = asset_directory + filename;
-    ci::audio::SourceFileRef source_file =
-        ci::audio::load(ci::app::loadAsset(sourcefile_path));
+    std::string sourcefile_path = instrument_directory + filename;
+    ci::audio::SourceFileRef source_file;
+    try {
+      source_file = ci::audio::load(ci::app::loadAsset(sourcefile_path));
+    } catch (const std::exception& e) {
+      // Skip the unloadable sound file
+      continue;
+    }
 
     // Create buffer player from file
     ci::audio::BufferPlayerNodeRef buffer_player =
@@ -36,22 +46,25 @@ void Player::SetUpVoices(const std::map<music::Note, std::string>& note_files,
     music::Note note = note_file.first;
     int semitone = note.GetSemitoneIndex();
 
-    PlayerComponent components{gain, buffer_player};
-    players_[semitone] = components;
+    NoteVoice components{gain, buffer_player, false};
+    voices[semitone] = components;
   }
-
   ctx->enable();
+  voices_ = voices;
 }
 
 void Player::PlayNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
 
-  if (players_.find(semitone) != players_.end()) {
-    PlayerComponent player = players_.at(semitone);
-    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
-    if (!(buffer_player->isEnabled())) {
-      ci::audio::GainNodeRef gain = player.gain_;
-      gain->getParam()->setValue(1);
+  if (voices_.find(semitone) != voices_.end()) {
+    NoteVoice& voice = voices_.at(semitone);
+    ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
+
+    // Set voice to start playing sound
+    if (!(voice.is_playing_)) {
+      voice.is_playing_ = true;
+      ci::audio::GainNodeRef gain = voice.gain_;
+      gain->getParam()->setValue(1); // Turn gain/volume up all the way
       buffer_player->start();
     }
   }
@@ -59,20 +72,64 @@ void Player::PlayNote(const music::Note& note) {
 
 void Player::StopNote(const music::Note& note) {
   int semitone = note.GetSemitoneIndex();
-  if (players_.find(semitone) != players_.end()) {
-    PlayerComponent& player = players_.at(semitone);
-    ci::audio::GainNodeRef gain = player.gain_;
-    ci::audio::BufferPlayerNodeRef buffer_player = player.buffer_player_;
 
-    if (buffer_player->isEnabled()) {
+  if (voices_.find(semitone) != voices_.end()) {
+    NoteVoice& voice = voices_.at(semitone);
+    ci::audio::BufferPlayerNodeRef buffer_player = voice.buffer_player_;
+
+    if (voice.is_playing_) {
+      voice.is_playing_ = false;
+
+      ci::audio::GainNodeRef gain = voice.gain_;
       auto param = gain->getParam();
+
+      // Only apply ramp if the node isn't already subject to another event
       if (param->getNumEvents() == 0) {
-        gain->getParam()->applyRamp(0, 1);
+        // Fade the sound to 0 over a set duration
+        gain->getParam()->applyRamp(0, resonate_duration_);
       }
+
+      // Tell buffer player to stop after the note completely fades away,
+      // preventing unnecessary computational load
       auto ctx = ci::audio::Context::master();
-      buffer_player->stop(ctx->getNumProcessedSeconds() + 1);
+      buffer_player->stop(ctx->getNumProcessedSeconds() + resonate_duration_);
     }
   }
+}
+
+void Player::SetResonateDuration(double resonate_duration) {
+  // If the new resonate duration is shorter than the current duration,
+  // update any enabled voices to fade away with the new, shorter duration
+  if (resonate_duration < resonate_duration_) {
+    for (const auto& voice_pair : voices_) {
+      NoteVoice voice = voice_pair.second;
+
+      // Only update params for voices that are "resonating", i.e. enabled but
+      // not playing
+      if (voice.buffer_player_->isEnabled() && !voice.is_playing_) {
+        ci::audio::GainNodeRef gain = voice.gain_;
+        auto gain_param = gain->getParam();
+        gain_param->reset();  // reset param to avoid overlapping events
+        gain_param->applyRamp(0, resonate_duration);
+      }
+    }
+  }
+
+  resonate_duration_ = resonate_duration; // Update state
+}
+
+double Player::GetResonateDuration() const {
+  return resonate_duration_;
+}
+
+std::vector<music::Note> Player::GetPlayableNotes() const {
+  std::vector<music::Note> notes;
+  music::Accidental priority = music::Accidental::Sharp;
+  for (const auto& note_file : voices_) {
+    int semitone = note_file.first;
+    notes.emplace_back(semitone, priority);
+  }
+  return notes;
 }
 
 }  // namespace audio

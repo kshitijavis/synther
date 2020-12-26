@@ -29,11 +29,11 @@ std::string SoundJsonParser::GetInstrumentName() const {
 }
 
 std::string SoundJsonParser::GetOrganizationName() const {
-  return sound_details_.at(kOrganizationKey);
+  return GetName(kOrganizationKey);
 }
 
 std::string SoundJsonParser::GetPerformerName() const {
-  return sound_details_.at(kPerformerKey);
+  return GetName(kPerformerKey);
 }
 
 std::string SoundJsonParser::GetName(const std::string& key) const {
@@ -46,14 +46,14 @@ std::string SoundJsonParser::GetName(const std::string& key) const {
 
 std::map<music::Note, std::string> SoundJsonParser::GetNoteFiles() const {
   std::map<music::Note, std::string> note_files;
-  // Get row note string to filename map from JSON
+  // Get raw note string to filename map from JSON
   std::map<std::string, std::string> note_pairs =
       sound_details_.at(kSoundFilesKey)
           .get<std::map<std::string, std::string>>();
 
   // Convert every note string to a music::Note
   for (const auto& note_pair : note_pairs) {
-    music::Note note = ParseNote(note_pair.first);
+    music::Note note = ParseNoteString(note_pair.first);
     std::string filename = note_pair.second;
     note_files.emplace(note, filename);
   }
@@ -61,14 +61,16 @@ std::map<music::Note, std::string> SoundJsonParser::GetNoteFiles() const {
   return note_files;
 }
 
-music::Note SoundJsonParser::ParseNote(const std::string& note_string) const {
+music::Note SoundJsonParser::ParseNoteString(
+    const std::string& note_string) const {
   if (note_string.length() < 2) {
     throw std::invalid_argument("note_string does not represent a valid note");
   }
-
+  // Get letter from beginning of string
   char letter = note_string.at(0);
-  music::Accidental accidental;
 
+  // Get optional accidental from middle of string
+  music::Accidental accidental;
   switch (note_string.at(1)) {
     case 'b':
       accidental = music::Accidental::Flat;
@@ -80,11 +82,12 @@ music::Note SoundJsonParser::ParseNote(const std::string& note_string) const {
       accidental = music::Accidental::Natural;
   }
 
+  // Get octave number from end of string
   size_t last_index = note_string.find_last_not_of("0123456789");
   std::string octave_digits = note_string.substr(last_index + 1);
   int octave = std::stoi(octave_digits);
 
-  return {octave, letter, accidental};
+  return {octave, letter, accidental}; // Construct and return a music::Note
 }
 
 }  // namespace audio

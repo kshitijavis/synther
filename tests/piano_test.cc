@@ -168,13 +168,13 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
     size_t view_first_key = 0;
     Piano piano(glm::dvec2(0, 0), 5, 5, 9, piano_size, view_whitekey_count);
 
-    std::vector<char> expected_labels = {'a', 'w', 's', 'd', 'r', 'f', 't',
-                                         'g', 'h', 'u', 'j', 'i', 'k'};
+    std::vector<std::string> expected_labels = {
+        "A", "W", "S", "D", "R", "F", "T", "G", "H", "U", "J", "I", "K"};
 
     size_t view_key_count = 13;
     size_t label_ind = 0;
     for (size_t key_ind = 0; key_ind < piano_size; key_ind++) {
-      char expected_label = ' ';
+      std::string expected_label = " ";
       if (key_ind >= view_first_key && key_ind < view_key_count) {
         expected_label = expected_labels.at(label_ind);
         label_ind++;

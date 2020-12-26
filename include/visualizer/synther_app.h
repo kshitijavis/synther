@@ -7,6 +7,7 @@
 #include "cinder/gl/gl.h"
 
 #include "visualizer/piano.h"
+#include "visualizer/pedal.h"
 #include "core/player.h"
 
 namespace synther {
@@ -24,11 +25,6 @@ class SyntherApp : public ci::app::App {
    * Sets up the application to its default state
    */
   void setup() override;
-
-  /**
-   * Updates the state of the application
-   */
-  void update() override;
 
   /**
    * Draws all the components of the app on a window on the computer screen
@@ -55,36 +51,59 @@ class SyntherApp : public ci::app::App {
 
  private:
   // Window & Element positioning
-  const double kWindowHeight = 700;
-  const double kWindowWidth = 1100;
-  const double kSidePadding = 30;
-  const double kTopPadding = 30;
+  static constexpr double kWindowHeight = 700;
+  static constexpr double kWindowWidth = 1100;
+  static constexpr double kSidePadding = 30;
+  static constexpr double kTopPadding = 50;
+  static constexpr double kBottomPadding = 25;
+  static constexpr double kInstrumentTextPadding = 0;
+  static constexpr double kInstrumentTextHeight = 100;
+  static constexpr double kPianoHeight = 450;
+  static constexpr double kPedalHeight = 50;
+  static constexpr double kPedalWidth = 200;
 
   // Appearance
   const std::string kBackgroundColor = "black";
-  const std::string kFontName = "Futura-Bold";
+  const std::string kMainFontName = "ToppanBunkyuGothicPr6N-DB";
+  const std::string kInstrumentFontName = "SignPainter-HouseScript";
 
-  // Instrument text
-  const double kInstrumentTextHeight = 50;
-  const double kInstrumentTextPadding = 30;
-  const std::string kInstrumentTextColor = "white";
+  // Metallic gold
+  const ci::Color kInstrumentTextColor = ci::Color::hex(0xD4AF37);
 
   // Piano
   Piano piano_;
-  static constexpr double kPianoHeight = 400;
   static constexpr int kFirstSemitoneIndex = 9;
   static constexpr size_t kKeyCount = 88;
   static constexpr size_t kViewWhitekeyCount = 10;
+
+  // Constants to specify how much to move the keyboard on ShiftView()
   static constexpr int kWholetoneDistance = 1;
   static constexpr int kOctaveDistance = 7;
 
+  // Pedals
+  Pedal sustain_pedal_;
+  const std::string kSustainPedalLabel = "Sustain";
+  const std::string kPedalPrimaryColor = "gold";
+  const std::string kPedalSecondaryColor = "black";
+
   // Audio
-  const std::string kDefaultSoundPath = "sounds/piano/";
-  const std::string kJsonFilename = "details.json";
   std::string instrument_;
   audio::Player player_;
+  const std::string kDefaultSoundJson = "sounds/piano/";
+  const std::string kJsonFilename = "details.json";
+  static constexpr double kStandardResonation = 0.4;
+  static constexpr double kSustainedResonation = 5.0;
 
   // Helper methods
+  /**
+   * Prompts the user to select a directory and returns the relative path
+   *   to that directory from the assets/ folder. Opens the file explorer in
+   *   assets/sounds/
+   * @return a relative path from the assets/ directory to the user's selected
+   *   directory
+   */
+  std::string RequestInstrumentDirectory();
+
   /**
    * Updates the state of the app to reflect a change in instrument
    * @param asset_directory the directory containing the instrument's sound
@@ -92,6 +111,19 @@ class SyntherApp : public ci::app::App {
    *   about the authors and note names of the sound files
    */
   void SetupInstrument(const std::string& asset_directory);
+
+  /**
+   * Sets up the piano based on the current state of the player. Uses
+   *   the player's starting note and the number of notes stored in the player
+   *   to create a corresponding piano
+   */
+  void BuildPianoFromPlayer();
+
+  /**
+   * Toggles the resonate duration of the player. If duration is currently set
+   *   to standard, switches to sustained, and vice versa.
+   */
+  void ToggleSustainPedal();
 };
 
 }  // namespace visualizer
