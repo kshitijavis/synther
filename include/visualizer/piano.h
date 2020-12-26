@@ -47,8 +47,7 @@ class Piano {
    *   piano when Draw() is called
    */
   Piano(const glm::dvec2& top_left_corner, double width, double height,
-        int first_semitone, size_t key_count,
-        size_t view_whitekey_count = 20);
+        int first_semitone, size_t key_count, size_t view_whitekey_count = 20);
 
   /**
    * Draws the current view of the keyboard. By default, displays 12 white keys
@@ -113,6 +112,13 @@ class Piano {
    * @return a PianoKey reference to the piano key at the index
    */
   const PianoKey& GetPianoKey(int index) const;
+
+  /**
+   * Gets a vector of all the PianoKeys that will be rendered when Draw() is
+   *   called
+   * @return a vector of all the PianoKeys in the current keyboard view
+   */
+  std::vector<PianoKey> GetPianoKeysInView() const;
 
   /**
    * Get the number of keys on this piano

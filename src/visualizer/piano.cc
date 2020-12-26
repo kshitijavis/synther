@@ -122,6 +122,25 @@ const PianoKey& Piano::GetPianoKey(int index) const {
   return keys_.at(index);
 }
 
+std::vector<PianoKey> Piano::GetPianoKeysInView() const {
+  // Unoptimized solution: loop through keys by the number of white keys in view
+  std::vector<PianoKey> keys_in_view;
+
+  size_t key_index = std::max(0, view_first_index_);
+  size_t white_keys_drawn = 0;
+  while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
+    const PianoKey& key = keys_.at(key_index);
+    keys_in_view.push_back(key);
+
+    if (key.GetType() == PianoKeyType::White) {
+      white_keys_drawn++;
+    }
+    key_index++;
+  }
+
+  return keys_in_view;
+}
+
 const size_t Piano::GetKeyCount() const {
   return keys_.size();
 }

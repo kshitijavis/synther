@@ -9,10 +9,12 @@
 #include "cinder/Color.h"
 #include "cinder/app/App.h"
 #include "core/music_note.h"
+#include "visualizer/piano_key.h"
 
 using synther::music::Accidental;
 using synther::music::Note;
 using synther::visualizer::Piano;
+using synther::visualizer::PianoKey;
 
 TEST_CASE("Constructor correctly initializes single-octave piano",
           "[constructor]") {
@@ -181,6 +183,63 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
       }
 
       REQUIRE(piano.GetPianoKey(key_ind).GetLabel() == expected_label);
+    }
+  }
+}
+
+TEST_CASE("Correctly collects and returns all PianoKeys in view",
+          "[constructor][getpianokeysinview][shiftview]") {
+  SECTION("Single-octave view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 8);
+
+    std::vector<Note> expected_notes_in_view{
+        Note(0, 'A', Accidental::Natural), Note(0, 'A', Accidental::Sharp),
+        Note(0, 'B', Accidental::Natural), Note(1, 'C', Accidental::Natural),
+        Note(1, 'C', Accidental::Sharp),   Note(1, 'D', Accidental::Natural),
+        Note(1, 'D', Accidental::Sharp),   Note(1, 'E', Accidental::Natural),
+        Note(1, 'F', Accidental::Natural), Note(1, 'F', Accidental::Sharp),
+        Note(1, 'G', Accidental::Natural), Note(1, 'G', Accidental::Sharp),
+        Note(1, 'A', Accidental::Natural)};
+
+    std::vector<PianoKey> actual_keys_in_view = piano.GetPianoKeysInView();
+
+    REQUIRE(expected_notes_in_view.size() == actual_keys_in_view.size());
+    for (int ind = 0; ind < expected_notes_in_view.size(); ind++) {
+      const Note& expected_note = expected_notes_in_view.at(ind);
+      const Note& actual_note = actual_keys_in_view.at(ind).GetNote();
+      REQUIRE(expected_note == actual_note);
+    }
+  }
+
+  SECTION("Standard Piano with larger view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 16);
+
+    REQUIRE(piano.GetPianoKeysInView().size() == 27);
+  }
+
+  SECTION("Standard piano after shifted view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
+    // Shift up to F7 natural
+    piano.ShiftView(47);
+
+    std::vector<Note> expected_notes_in_view{
+        Note(7, 'F', Accidental::Natural),
+        Note(7, 'F', Accidental::Sharp),
+        Note(7, 'G', Accidental::Natural),
+        Note(7, 'G', Accidental::Sharp),
+        Note(7, 'A', Accidental::Natural),
+        Note(7, 'A', Accidental::Sharp),
+        Note(7, 'B', Accidental::Natural),
+        Note(8, 'C', Accidental::Natural),
+    };
+
+    std::vector<PianoKey> actual_keys_in_view = piano.GetPianoKeysInView();
+
+    REQUIRE(expected_notes_in_view.size() == actual_keys_in_view.size());
+    for (int ind = 0; ind < expected_notes_in_view.size(); ind++) {
+      const Note& expected_note = expected_notes_in_view.at(ind);
+      const Note& actual_note = actual_keys_in_view.at(ind).GetNote();
+      REQUIRE(expected_note == actual_note);
     }
   }
 }
