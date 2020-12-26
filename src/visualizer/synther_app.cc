@@ -86,9 +86,10 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
 }
 
 void SyntherApp::keyUp(ci::app::KeyEvent event) {
-  if (piano_.IsKeybind(event.getCode())) {
-    piano_.ReleaseKey(event.getCode());
-    const music::Note& note = piano_.GetNote(event.getCode());
+  if (keybinder_.IsKeybind(event.getCode())) {
+    const visualizer::PianoKey& piano_key = keybinder_.PressKey(event.getCode());
+    const music::Note& note = piano_key.GetNote();
+    piano_.ReleaseKey(note);
     player_.StopNote(note);
   }
 }
