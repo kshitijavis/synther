@@ -20,6 +20,7 @@ SyntherApp::SyntherApp()
 }
 
 void SyntherApp::setup() {
+  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
   SetupInstrument(kDefaultSoundJson);
 
   // Setup sustain pedal

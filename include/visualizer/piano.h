@@ -96,6 +96,12 @@ class Piano {
    */
   void ReleaseKey(int key_code);
 
+  void PressKey(const music::Note& note);
+
+  void ReleaseKey(const music::Note& note);
+
+  PianoKey& GetKey(const music::Note& note);
+
   /**
    * Checks if the input key_code represents a valid keybind on the piano. In
    *   other words, checks if the KeyEvent corresponding to the key_code is

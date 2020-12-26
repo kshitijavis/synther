@@ -218,6 +218,20 @@ PianoKey& Piano::GetKey(int key_code) {
   return *key;
 }
 
+void Piano::PressKey(const music::Note& note) {
+  GetKey(note).PressKey();
+}
+
+void Piano::ReleaseKey(const music::Note& note) {
+  GetKey(note).ReleaseKey();
+}
+
+PianoKey& Piano::GetKey(const music::Note& note) {
+  size_t semitone_index = note.GetSemitoneIndex();
+  size_t key_index = semitone_index - first_semitone_;
+  return keys_.at(key_index);
+}
+
 void Piano::SetKeyLabels() {
   // First empty all key labels
   for (PianoKey& key : keys_) {

@@ -7,6 +7,7 @@
 #include "cinder/gl/gl.h"
 
 #include "visualizer/piano.h"
+#include "core/piano_keybinder.h"
 #include "visualizer/pedal.h"
 #include "core/player.h"
 
@@ -72,6 +73,7 @@ class SyntherApp : public ci::app::App {
 
   // Piano
   Piano piano_;
+  PianoKeybinder keybinder_;
   static constexpr int kFirstSemitoneIndex = 9;
   static constexpr size_t kKeyCount = 88;
   static constexpr size_t kViewWhitekeyCount = 10;
