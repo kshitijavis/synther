@@ -67,49 +67,31 @@ class Piano {
   void ShiftView(int displacement);
 
   /**
-   * Get the music::Note mapped to a key_code on the piano
-   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
-   *   the keyboard. Throws an exception if key_event does not have a keybind
-   *   or if key_event is not a valid ci::app::KeyEvent code
-   * @return a const reference to a music::Note mapped to the given key
+   * "Plays a key" on the keyboard. corresponding to a given music::Note.
+   *   Calling this method will temporarily change the color of the key that
+   *   was played. The color of the key will remain changed until release_key is
+   *   called
+   * @param note a music::Note whose corresponding piano key will be pressed.
+   *   Throws an exception if there is no Key mapped to the note.
    */
-  const music::Note& GetNote(int key_code);
-
-  /**
-   * "Plays a key" on the keyboard. Handles a ci::app::KeyEvent and "plays"
-   *   the Piano Key corresponding to the KeyEvent. Calling this method will
-   *   temporarily change the color of the key that was played and returns the
-   *   note corresponding the to played key. The color of the key will remain
-   *   changed until release_key is called
-   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
-   *   the keyboard. Throws an exception if key_event does not have a keybind
-   *   or if key_event is not a valid ci::app::KeyEvent code
-   */
-  void PressKey(int key_code);
+  void PressKey(const music::Note& note);
 
   /**
    * Releases a pressed key on the keyboard. This will reset the color of the
    *   key to the standard color (black or white)
-   * @param key_code a ci::ap::KeyEvent code that is bound to a Piano Key on
-   *   the keyboard. Throws an exception if key_event does not have a keybind
-   *   or if key_bind is not a valid ci::app::KeyEvent code
+   * @param note a music::Note whose corresponding piano key will be released.
+   *   Throws an exception if there is no Key mapped to the note.
    */
-  void ReleaseKey(int key_code);
-
-  void PressKey(const music::Note& note);
-
   void ReleaseKey(const music::Note& note);
 
-  PianoKey& GetKey(const music::Note& note);
-
   /**
-   * Checks if the input key_code represents a valid keybind on the piano. In
-   *   other words, checks if the KeyEvent corresponding to the key_code is
-   *   mapped to any PianoKey on the keyboard
-   * @param key_code an int representing ci::app::KeyEvent code
-   * @return true if the input key_code is a valid keybind
+   * Returns a Piano Key corresponding to a given music::Note. Uses the
+   *   semitone index of the given note to search for the corresponding key in
+   *   constant O(1) time.
+   * @param note a music::Note whose corresponding piano key will be pressed.
+   *   Throws an exception if there is no Key mapped to the note.
    */
-  bool IsKeybind(int key_code) const;
+  PianoKey& GetKey(const music::Note& note);
 
   /**
    * Get the PianoKey at the specified index
@@ -172,25 +154,6 @@ class Piano {
    * @return a size_t representing the number of natural notes on the keyboard
    */
   const size_t CountWhiteKeys() const;
-
-  /**
-   * Maps keys on the piano to cinder KeyEvents. Uses the first row of the
-   *   keyboard (QWERTY..) for black keys and the second row (ASDF...) for
-   *   white keys. Adds keybinds to the private field keybinds_. Maps keys
-   *   using the natural staggered layout of te computer keyboard. This allows
-   *   keybinds to lie between white keybinds, just as they would on a physical
-   *   piano.
-   */
-  void SetKeyBinds();
-
-  /**
-   * Get the music::Note mapped to a key_code on the piano
-   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key on
-   *   the keyboard. Throws an exception if key_event does not have a keybind
-   *   or if key_event is not a valid ci::app::KeyEvent code
-   * @return a const reference to a music::Note mapped to the given key
-   */
-  PianoKey& GetKey(int key_code);
 
   /**
    * For every key on the keyboard, sets the label of the key to its

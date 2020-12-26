@@ -65,7 +65,6 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
   // white keys on the keyboard than specified by the input
   view_whitekey_count_ = std::min(CountWhiteKeys(), view_whitekey_count);
 
-  SetKeyBinds();
   SetKeyLabels();
 }
 
@@ -113,8 +112,7 @@ void Piano::ShiftView(int displacement) {
     }
   }
 
-  // Reset keybinds and labels
-  SetKeyBinds();
+  // Reset labels
   SetKeyLabels();
 }
 
@@ -153,69 +151,6 @@ const size_t Piano::CountWhiteKeys() const {
     }
   }
   return white_key_count;
-}
-
-void Piano::SetKeyBinds() {
-  std::map<int, PianoKey*> keybinds;
-
-  // Four indices will be used to set keybinds. Each of these will be checked
-  // in the for-loop
-  size_t white_index = 0;
-  size_t black_index = 0;
-  size_t key_index = std::max(view_first_index_, 0);
-  size_t white_keys_accessed = 0;
-
-  // Add the keybinds
-  while (white_index < kWhiteKeyCodes.size() &&
-         black_index < kBlackKeyCodes.size() &&
-         white_keys_accessed < view_whitekey_count_ &&
-         key_index < keys_.size()) {
-    PianoKey& key = keys_.at(key_index);
-
-    if (key.GetType() == PianoKeyType::White) {
-      int white_key_code = kWhiteKeyCodes.at(white_index).key_code_;
-      keybinds[white_key_code] = &key;
-
-      // Increment both key indices only if we add a white-key mapping
-      // This ensures that black_ind still increments between white keys that
-      // have no black keys between them (e.g. E and F)
-      white_index++;
-      black_index++;
-      white_keys_accessed++;
-    } else if (key.GetType() == PianoKeyType::Black) {
-      int black_key_code = kBlackKeyCodes.at(black_index).key_code_;
-      keybinds[black_key_code] = &key;
-    }
-    key_index++;
-  }
-
-  keybinds_ = keybinds;
-}
-
-const music::Note& Piano::GetNote(int key_code) {
-  return GetKey(key_code).GetNote();
-}
-
-void Piano::PressKey(int key_code) {
-  GetKey(key_code).PressKey();
-}
-
-void Piano::ReleaseKey(int key_code) {
-  GetKey(key_code).ReleaseKey();
-}
-
-bool Piano::IsKeybind(int key_code) const {
-  return keybinds_.find(key_code) != keybinds_.end();
-}
-
-PianoKey& Piano::GetKey(int key_code) {
-  auto it = keybinds_.find(key_code);
-  if (it == keybinds_.end()) {
-    throw std::invalid_argument("No piano key bound to the given key_event");
-  }
-
-  PianoKey* key = it->second;
-  return *key;
 }
 
 void Piano::PressKey(const music::Note& note) {
