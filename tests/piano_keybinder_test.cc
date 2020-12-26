@@ -21,6 +21,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
       "Correctly initializes key binds for standard piano, with single-octave "
       "view") {
     Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 8);
+    keybinder.SetKeyBinds(piano.GetPianoKeysInView());
 
     std::map<int, Note> key_binds{
         {ci::app::KeyEvent::KEY_a, Note(0, 'A', Accidental::Natural)},
@@ -37,8 +38,8 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
         {ci::app::KeyEvent::KEY_i, Note(1, 'G', Accidental::Sharp)}};
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
+      REQUIRE(keybinder.IsKeybind(key_bind.first));
+      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
     }
   }
 
@@ -46,6 +47,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
       "Constructor correctly initializes key binds for standard piano,"
       "with larger view") {
     Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
+    keybinder.SetKeyBinds(piano.GetPianoKeysInView());
 
     std::map<int, Note> key_binds{
         {ci::app::KeyEvent::KEY_k, Note(1, 'A', Accidental::Natural)},
@@ -54,8 +56,8 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
         {ci::app::KeyEvent::KEY_SEMICOLON, Note(2, 'C', Accidental::Natural)}};
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
+      REQUIRE(keybinder.IsKeybind(key_bind.first));
+      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
     }
   }
 
@@ -63,6 +65,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
     Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
     // Shift up to F7 natural
     piano.ShiftView(47);
+    keybinder.SetKeyBinds(piano.GetPianoKeysInView());
 
     std::map<int, Note> key_binds{
         {ci::app::KeyEvent::KEY_a, Note(7, 'F', Accidental::Natural)},
@@ -76,8 +79,8 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
     };
 
     for (auto key_bind : key_binds) {
-      REQUIRE(piano.IsKeybind(key_bind.first));
-      REQUIRE(piano.GetNote(key_bind.first) == key_bind.second);
+      REQUIRE(keybinder.IsKeybind(key_bind.first));
+      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
     }
   }
 }
