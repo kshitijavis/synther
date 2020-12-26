@@ -53,24 +53,25 @@ void SyntherApp::mouseDown(ci::app::MouseEvent event) {
 }
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
-  if (piano_.IsKeybind(event.getCode())) {
-    piano_.PressKey(event.getCode());
-    const music::Note& note = piano_.GetNote(event.getCode());
+  if (keybinder_.IsKeybind(event.getCode())) {
+    const visualizer::PianoKey& piano_key = keybinder_.PressKey(event.getCode());
+    const music::Note& note = piano_key.GetNote();
+    piano_.PressKey(note);
     player_.PlayNote(note);
   }
 
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_LEFT:
-      piano_.ShiftView(-1 * kOctaveDistance);
+      HandleShiftView(-1 * kOctaveDistance);
       break;
     case ci::app::KeyEvent::KEY_RIGHT:
-      piano_.ShiftView(kOctaveDistance);
+      HandleShiftView(kOctaveDistance);
       break;
     case ci::app::KeyEvent::KEY_DOWN:
-      piano_.ShiftView(-1 * kWholetoneDistance);
+      HandleShiftView(-1 * kWholetoneDistance);
       break;
     case ci::app::KeyEvent::KEY_UP:
-      piano_.ShiftView(kWholetoneDistance);
+      HandleShiftView(kWholetoneDistance);
       break;
     case ci::app::KeyEvent::KEY_n: {
       std::string instrument_asset_path = RequestInstrumentDirectory();
@@ -101,6 +102,11 @@ std::string SyntherApp::RequestInstrumentDirectory() {
   return instrument_asset_path;
 }
 
+void SyntherApp::HandleShiftView(int displacement) {
+  piano_.ShiftView(displacement);
+  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
+}
+
 void SyntherApp::SetupInstrument(const std::string& asset_directory) {
   std::string json_path = asset_directory + kJsonFilename;
 
@@ -129,6 +135,7 @@ void SyntherApp::BuildPianoFromPlayer() {
                                               kInstrumentTextPadding),
                  kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
                  note_count, kViewWhitekeyCount);
+  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
 }
 
 void SyntherApp::ToggleSustainPedal() {

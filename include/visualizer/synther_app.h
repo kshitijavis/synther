@@ -5,11 +5,10 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-
-#include "visualizer/piano.h"
 #include "core/piano_keybinder.h"
-#include "visualizer/pedal.h"
 #include "core/player.h"
+#include "visualizer/pedal.h"
+#include "visualizer/piano.h"
 
 namespace synther {
 
@@ -105,6 +104,16 @@ class SyntherApp : public ci::app::App {
    *   directory
    */
   std::string RequestInstrumentDirectory();
+
+  /**
+   * Shifts the view window of the piano and updates keybinds accordingly
+   * @param displacement an integer representing the distance to shift the
+   *   keyboard view. The magnitude of the input represents the number of white
+   *   keys by which the view will shift.
+   *   A negative input will shift the view downwards and a positive input will
+   *   shift the view upwards.
+   */
+  void HandleShiftView(int displacement);
 
   /**
    * Updates the state of the app to reflect a change in instrument
