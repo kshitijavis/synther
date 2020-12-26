@@ -28,9 +28,9 @@ _Synther_ allows you to move the keyboard view to play all 88 keys of the keyboa
 | `Up`       | Move the keyboard up a white key                                       |
 | `Down`     | Move the keyboard down a white key                                     |
 | `Right`    | Move the keyboard up an octave                                         |
-| `Up`       | Move the keyboard up down an octave                                    |
+| `Left`     | Move the keyboard down an octave                                       |
 | `Space`    | Toggle the sustain pedal on/off, altering the resonation of the piano  |
-| `n`        | Opens File Explorer, allowing you to change the musical instrument |
+| `n`        | Opens File Explorer, allowing you to change the musical instrument     |
 
 ### Changing Instruments
 Pressing `n` on the keyboard opens up the File Explorer/Finder with a list of directories containing instrument sound files. To change instruments, simply select the instrument's folder and press `open` in File Explorer. Note that many instruments have a smaller range than the Acoustic Piano. Therefore, not all keys on the keyboard will be visible for all instruments.
