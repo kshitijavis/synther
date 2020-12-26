@@ -11,11 +11,12 @@ namespace synther {
 namespace music {
 
 const std::map<char, int> Note::kWholetoneIndices{
-    {'A', 0}, {'B', 2}, {'C', 3}, {'D', 5}, {'E', 7}, {'F', 8}, {'G', 10}};
+    {'C', 0}, {'D', 2}, {'E', 4}, {'F', 5}, {'G', 7}, {'A', 9}, {'B', 11}};
 
 Note::Note(int octave, char letter, Accidental accidental)
-    : octave_(octave), letter_(toupper(letter)), accidental_(accidental) {
-  semitone_index_ = octave_ * kNotesPerOctave + kWholetoneIndices.at(letter);
+    : octave_(octave), accidental_(accidental) {
+  letter_ = toupper(letter);
+  semitone_index_ = octave_ * kNotesPerOctave + kWholetoneIndices.at(letter_);
 
   // Adjust semitone based on accidental
   switch (accidental_) {
@@ -76,6 +77,16 @@ Accidental Note::GetAccidental() const {
 
 int Note::GetSemitoneIndex() const {
   return semitone_index_;
+}
+
+bool Note::operator==(const Note& rhs) const {
+  return octave_ == rhs.octave_ && letter_ == rhs.letter_ &&
+         accidental_ == rhs.accidental_ &&
+         semitone_index_ == rhs.semitone_index_;
+}
+
+bool Note::operator<(const Note& rhs) const {
+  return GetSemitoneIndex() < rhs.GetSemitoneIndex();
 }
 
 }  // namespace music

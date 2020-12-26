@@ -56,6 +56,22 @@ class Note {
   Note(int semitone_index, Accidental priority);
 
   /**
+   * Checks if two notes are equal. Two notes are equal if all of their
+   *   parameters (octave, letter, accidental, semitone-index) are equal
+   * @param rhs the note to compare to
+   * @return true if the two notes are equal
+   */
+  bool operator==(const Note& rhs) const;
+
+  /**
+   * Compares two notes, enabling Note object to be used as key in std::map
+   * @param rhs the Note to compare to
+   * @return true if the semitone of the current object is less than the
+   *   semitone of rhs
+   */
+  bool operator<(const Note& rhs) const;
+
+  /**
    * Compares two notes by their semitone index. The semitone index acts as a
    *   unique ID for any note. Bear in mind that this comparison allows two
    *   seemingly-different notes to be equal (e.g. C-sharp and D-flat)
@@ -99,6 +115,7 @@ class Note {
   // Every increase in a semitone increases the note's index by 1
   int semitone_index_;
 
+  // Static fields
   static const std::map<char, int> kWholetoneIndices;
   static constexpr size_t kNotesPerOctave = 12;
 };

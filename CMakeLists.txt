@@ -42,12 +42,26 @@ FetchContent_Declare(
         GIT_TAG v2.x
 )
 
-# Adds Catch2 testing library
+FetchContent_Declare(
+        json
+        # Use smaller ArthurSonzogni repo instead of the standard nlohmann repo: specifically for FetchContent
+        GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+        GIT_TAG v3.7.3
+)
+
+# Add catch2 testing library
 FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
     FetchContent_Populate(catch2)
     add_library(catch2 INTERFACE)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
+endif()
+
+# Add nlohmann/json library
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
 get_filename_component(CINDER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../" ABSOLUTE)
@@ -62,15 +76,19 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 
 list(APPEND SOURCE_FILES src/core/music_note.cc)
 list(APPEND SOURCE_FILES src/core/recording.cc)
+list(APPEND SOURCE_FILES src/core/player.cc)
+list(APPEND SOURCE_FILES src/core/sound_json_parser.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
 list(APPEND TEST_FILES tests/piano_test.cc)
+list(APPEND TEST_FILES tests/soundsfile_parser_test.cc)
 
 ci_make_app(
         APP_NAME        synther-app
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
+        LIBRARIES       nlohmann_json::nlohmann_json
 )
 
 ci_make_app(
@@ -78,7 +96,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
-        LIBRARIES       catch2
+        LIBRARIES       catch2 nlohmann_json::nlohmann_json
 )
 
 if(MSVC)
