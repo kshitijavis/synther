@@ -24,7 +24,7 @@ const std::vector<PianoKeybinder::KeyEvent> PianoKeybinder::kWhiteKeyCodes{
 
 void PianoKeybinder::SetKeyBinds(
     const std::vector<visualizer::PianoKey>& keys) {
-  std::map<int, visualizer::PianoKey> keybinds;
+  std::map<int, music::Note> keybinds;
 
   // Four indices will be used to set keybinds. Each of these will be checked
   // in the for-loop
@@ -39,7 +39,7 @@ void PianoKeybinder::SetKeyBinds(
 
     if (key.GetType() == visualizer::PianoKeyType::White) {
       int white_key_code = kWhiteKeyCodes.at(white_index).key_code_;
-      keybinds.emplace(white_key_code, key);
+      keybinds.emplace(white_key_code, key.GetNote());
 
       // Increment both key indices only if we add a white-key mapping
       // This ensures that black_ind still increments between white keys that
@@ -48,7 +48,7 @@ void PianoKeybinder::SetKeyBinds(
       black_index++;
     } else if (key.GetType() == visualizer::PianoKeyType::Black) {
       int black_key_code = kBlackKeyCodes.at(black_index).key_code_;
-      keybinds.emplace(black_key_code, key);
+      keybinds.emplace(black_key_code, key.GetNote());
     }
     key_index++;
   }
@@ -60,7 +60,7 @@ bool PianoKeybinder::IsKeybind(int key_code) const {
   return keybinds_.find(key_code) != keybinds_.end();
 }
 
-const visualizer::PianoKey& PianoKeybinder::PressKey(int key_code) {
+const music::Note& PianoKeybinder::PressKey(int key_code) {
   auto it = keybinds_.find(key_code);
   if (it == keybinds_.end()) {
     throw std::invalid_argument("No piano key bound to the given key_event");

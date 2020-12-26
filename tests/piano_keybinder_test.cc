@@ -39,7 +39,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
 
     for (auto key_bind : key_binds) {
       REQUIRE(keybinder.IsKeybind(key_bind.first));
-      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
+      REQUIRE(keybinder.PressKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -57,7 +57,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
 
     for (auto key_bind : key_binds) {
       REQUIRE(keybinder.IsKeybind(key_bind.first));
-      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
+      REQUIRE(keybinder.PressKey(key_bind.first) == key_bind.second);
     }
   }
 
@@ -80,7 +80,7 @@ TEST_CASE("Key Binds are set correctlyj adsfoiajd gapioewj aewpfoijwe",
 
     for (auto key_bind : key_binds) {
       REQUIRE(keybinder.IsKeybind(key_bind.first));
-      REQUIRE(keybinder.PressKey(key_bind.first).GetNote() == key_bind.second);
+      REQUIRE(keybinder.PressKey(key_bind.first) == key_bind.second);
     }
   }
 }

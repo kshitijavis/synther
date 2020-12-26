@@ -38,9 +38,9 @@ void SyntherApp::draw() {
 
   // Draw instrument text
   glm::dvec2 instrument_text_center(kWindowWidth / 2, kTopPadding);
-  ci::gl::drawStringCentered(instrument_, instrument_text_center,
-                             kInstrumentTextColor,
-                             ci::Font(kInstrumentFontName, kInstrumentTextHeight));
+  ci::gl::drawStringCentered(
+      instrument_, instrument_text_center, kInstrumentTextColor,
+      ci::Font(kInstrumentFontName, kInstrumentTextHeight));
 
   sustain_pedal_.Draw();
   piano_.Draw();
@@ -54,8 +54,7 @@ void SyntherApp::mouseDown(ci::app::MouseEvent event) {
 
 void SyntherApp::keyDown(ci::app::KeyEvent event) {
   if (keybinder_.IsKeybind(event.getCode())) {
-    const visualizer::PianoKey& piano_key = keybinder_.PressKey(event.getCode());
-    const music::Note& note = piano_key.GetNote();
+    const music::Note& note = keybinder_.PressKey(event.getCode());
     piano_.PressKey(note);
     player_.PlayNote(note);
   }
@@ -87,8 +86,7 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
 
 void SyntherApp::keyUp(ci::app::KeyEvent event) {
   if (keybinder_.IsKeybind(event.getCode())) {
-    const visualizer::PianoKey& piano_key = keybinder_.PressKey(event.getCode());
-    const music::Note& note = piano_key.GetNote();
+    const music::Note& note = keybinder_.PressKey(event.getCode());
     piano_.ReleaseKey(note);
     player_.StopNote(note);
   }

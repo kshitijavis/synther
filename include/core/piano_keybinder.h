@@ -9,6 +9,7 @@
 
 #include "cinder/gl/gl.h"
 #include "visualizer/piano_key.h"
+#include "core/music_note.h"
 
 namespace synther {
 
@@ -21,12 +22,13 @@ class PianoKeybinder {
   PianoKeybinder() = default;
 
   /**
-   * Maps keys on the piano to cinder KeyEvents. Uses the first row of the
+   * Maps music notes cinder KeyEvents. Uses the first row of the
    *   keyboard (QWERTY..) for black keys and the second row (ASDF...) for
    *   white keys. Adds keybinds to the private field keybinds_. Maps keys
    *   using the natural staggered layout of the computer keyboard. This allows
    *   keybinds to lie between white keybinds, just as they would on a physical
    *   piano.
+   * @param keys a vector of piano keys whose notes will be mapped to KeyEvents
    */
   void SetKeyBinds(const std::vector<visualizer::PianoKey>& keys);
 
@@ -40,24 +42,23 @@ class PianoKeybinder {
   bool IsKeybind(int key_code) const;
 
   /**
-   * Get the visualizer::PianoKey mapped to a key_code on the piano.
-   *   PianoKeybinder stores a list of all keys that are currently pressed.
+   * Get the music::Note mapped to a key_code on the piano.
+   *   PianoKeybinder stores a list of all notes that are currently pressed.
    *   Calling PressKey() tells PianoKeybinder to remember they key that was
    *   pressed. This key will be remembered until ReleaseKey() is called
-   * @param key_code a ci::app::KeyEvent code that is bound to a Piano Key.
+   * @param key_code a ci::app::KeyEvent code that is bound to a music::Note.
    *   Throws an exception if key_event does not have a keybind or if key_event
    *   is not a valid ci::app::KeyEvent code
-   * @return a const reference to a visualizer::PianoKey mapped to the
-   *   given key code
+   * @return a const reference to a music::Note mapped to the given key code
    */
-  const visualizer::PianoKey& PressKey(int key_code);
+  const music::Note& PressKey(int key_code);
 
  private:
   struct KeyEvent {
     int key_code_;
     char key_char_;
   };
-  std::map<int, visualizer::PianoKey> keybinds_;
+  std::map<int, music::Note> keybinds_;
   static const std::vector<KeyEvent> kBlackKeyCodes;
   static const std::vector<KeyEvent> kWhiteKeyCodes;
 };
