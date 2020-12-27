@@ -20,7 +20,7 @@ SyntherApp::SyntherApp()
 }
 
 void SyntherApp::setup() {
-  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
+  UpdateKeybindsAndLabels();
   SetupInstrument(kDefaultSoundJson);
 
   // Setup sustain pedal
@@ -103,7 +103,7 @@ std::string SyntherApp::RequestInstrumentDirectory() {
 
 void SyntherApp::HandleShiftView(int displacement) {
   piano_.ShiftView(displacement);
-  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
+  UpdateKeybindsAndLabels();
 }
 
 void SyntherApp::SetupInstrument(const std::string& asset_directory) {
@@ -134,7 +134,7 @@ void SyntherApp::BuildPianoFromPlayer() {
                                               kInstrumentTextPadding),
                  kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
                  note_count, kViewWhitekeyCount);
-  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
+  UpdateKeybindsAndLabels();
 }
 
 void SyntherApp::ToggleSustainPedal() {
@@ -145,6 +145,11 @@ void SyntherApp::ToggleSustainPedal() {
     sustain_pedal_.Release();
     player_.SetResonateDuration(kStandardResonation);
   }
+}
+
+void SyntherApp::UpdateKeybindsAndLabels() {
+  keybinder_.SetKeyBinds(piano_.GetPianoKeysInView());
+  piano_.SetKeyLabels(keybinder_.GetNoteChars());
 }
 
 }  // namespace visualizer

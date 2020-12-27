@@ -135,6 +135,12 @@ class SyntherApp : public ci::app::App {
    *   to standard, switches to sustained, and vice versa.
    */
   void ToggleSustainPedal();
+
+  /**
+   * Sets keybinds based on the state of the piano's current view. Uses
+   *   updated keybinds to set corresponding labels on the piano
+   */
+  void UpdateKeybindsAndLabels();
 };
 
 }  // namespace visualizer
