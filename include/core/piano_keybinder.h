@@ -5,12 +5,12 @@
 #ifndef SYNTHER_PIANO_CONTROLLER_H
 #define SYNTHER_PIANO_CONTROLLER_H
 
-#include <vector>
 #include <map>
+#include <vector>
 
 #include "cinder/gl/gl.h"
-#include "visualizer/piano_key.h"
 #include "core/music_note.h"
+#include "visualizer/piano_key.h"
 
 namespace synther {
 
@@ -54,6 +54,11 @@ class PianoKeybinder {
    */
   const music::Note& PressKey(int key_code);
 
+  /**
+   * Maps music::Notes to the corresponding character on the computer keyboard
+   *   bound to that note
+   * @return a map from music::Note to characters representing the computer keys
+   */
   std::map<music::Note, char> GetNoteChars() const;
 
  private:
