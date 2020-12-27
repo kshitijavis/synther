@@ -100,7 +100,7 @@ class Piano {
    * @param note a music::Note whose corresponding piano key will be pressed.
    *   Throws an exception if there is no Key mapped to the note.
    */
-  PianoKey& GetKey(const music::Note& note);
+  PianoKey& GetPianoKey(const music::Note& note);
 
   /**
    * Get the PianoKey at the specified index

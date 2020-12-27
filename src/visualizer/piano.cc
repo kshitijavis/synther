@@ -119,7 +119,7 @@ void Piano::SetKeyLabels(const std::map<music::Note, char>& note_labels) {
 
   // Set new key labels
   for (const auto& note_label : note_labels) {
-    PianoKey& key = GetKey(note_label.first);
+    PianoKey& key = GetPianoKey(note_label.first);
     std::string label(1, note_label.second);
     key.SetLabel(label);
   }
@@ -163,14 +163,14 @@ const size_t Piano::CountWhiteKeys() const {
 }
 
 void Piano::PressKey(const music::Note& note) {
-  GetKey(note).PressKey();
+  GetPianoKey(note).PressKey();
 }
 
 void Piano::ReleaseKey(const music::Note& note) {
-  GetKey(note).ReleaseKey();
+  GetPianoKey(note).ReleaseKey();
 }
 
-PianoKey& Piano::GetKey(const music::Note& note) {
+PianoKey& Piano::GetPianoKey(const music::Note& note) {
   size_t semitone_index = note.GetSemitoneIndex();
   size_t key_index = semitone_index - first_semitone_;
   return keys_.at(key_index);

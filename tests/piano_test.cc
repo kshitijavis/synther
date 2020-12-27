@@ -188,27 +188,27 @@ TEST_CASE("Correctly collects and returns all PianoKeys in view",
   }
 }
 
-TEST_CASE("GetKey correctly retrieves key from note using semitones") {
+TEST_CASE("GetPianoKey correctly retrieves key from note using semitones") {
   Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
 
   SECTION("Base note (A0) in first octave without accidental") {
     Note note(0, 'A', Accidental::Natural);
-    REQUIRE(piano.GetKey(note).GetNote() == note);
+    REQUIRE(piano.GetPianoKey(note).GetNote() == note);
   }
 
   SECTION("Base note in higher octave without accidental") {
     Note note(5, 'A', Accidental::Natural);
-    REQUIRE(piano.GetKey(note).GetNote() == note);
+    REQUIRE(piano.GetPianoKey(note).GetNote() == note);
   }
 
   SECTION("Other note in higher octave without accidental") {
     Note note(5, 'F', Accidental::Natural);
-    REQUIRE(piano.GetKey(note).GetNote() == note);
+    REQUIRE(piano.GetPianoKey(note).GetNote() == note);
   }
 
   SECTION("Other note in higher octave with accidental") {
     Note note(5, 'G', Accidental::Sharp);
-    REQUIRE(piano.GetKey(note).GetNote() == note);
+    REQUIRE(piano.GetPianoKey(note).GetNote() == note);
   }
 }
 
