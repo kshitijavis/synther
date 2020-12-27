@@ -210,6 +210,16 @@ TEST_CASE("GetPianoKey correctly retrieves key from note using semitones") {
     Note note(5, 'G', Accidental::Sharp);
     REQUIRE(piano.GetPianoKey(note).GetNote() == note);
   }
+
+  SECTION("Highest note on piano") {
+    Note note(8, 'C', Accidental::Natural);
+    REQUIRE(piano.GetPianoKey(note).GetNote() == note);
+  }
+
+  SECTION("Throws exception if note is not on the piano") {
+    Note note(10, 'G', Accidental::Sharp);
+    REQUIRE_THROWS_AS(piano.GetPianoKey(note).GetNote(), std::invalid_argument);
+  }
 }
 
 // Regression tests on Shiftview after finding numerous unhandled exceptions

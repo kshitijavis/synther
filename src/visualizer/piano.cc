@@ -173,6 +173,9 @@ void Piano::ReleaseKey(const music::Note& note) {
 PianoKey& Piano::GetPianoKey(const music::Note& note) {
   size_t semitone_index = note.GetSemitoneIndex();
   size_t key_index = semitone_index - first_semitone_;
+  if (key_index < 0 || key_index >= keys_.size()) {
+    throw std::invalid_argument("Note does not exist on the piano");
+  }
   return keys_.at(key_index);
 }
 
