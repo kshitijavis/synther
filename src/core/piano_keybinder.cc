@@ -69,4 +69,27 @@ const music::Note& PianoKeybinder::PressKey(int key_code) {
   return it->second;
 }
 
+std::map<music::Note, char> PianoKeybinder::GetNoteChars() const {
+  std::map<music::Note, char> note_chars;
+
+  // Create map of KeyEvents to chars for efficient lookup
+  std::map<int, char> key_chars;
+  for (KeyEvent key_event : kWhiteKeyCodes) {
+    key_chars[key_event.key_code_] = key_event.key_char_;
+  }
+  for (KeyEvent key_event : kBlackKeyCodes) {
+    key_chars[key_event.key_code_] = key_event.key_char_;
+  }
+
+  // Add note->character pairs to map
+  for (const auto& keybind : keybinds_) {
+    int key_code = keybind.first;
+    const music::Note& note = keybind.second;
+    char key_char = std::toupper(key_chars.at(key_code));
+    note_chars.emplace(note, key_char);
+  }
+
+  return note_chars;
+}
+
 }  // namespace synther

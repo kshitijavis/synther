@@ -6,6 +6,7 @@
 #define SYNTHER_PIANO_CONTROLLER_H
 
 #include <vector>
+#include <map>
 
 #include "cinder/gl/gl.h"
 #include "visualizer/piano_key.h"
@@ -52,6 +53,8 @@ class PianoKeybinder {
    * @return a const reference to a music::Note mapped to the given key code
    */
   const music::Note& PressKey(int key_code);
+
+  std::map<music::Note, char> GetNoteChars() const;
 
  private:
   struct KeyEvent {
