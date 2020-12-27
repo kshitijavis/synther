@@ -69,6 +69,11 @@ const music::Note& PianoKeybinder::PressKey(int key_code) {
   return it->second;
 }
 
+/**
+ * Maps music::Notes to the corresponding character on the computer keyboard
+ *   bound to that note
+ * @return a map from music::Note to characters representing the computer keys
+ */
 std::map<music::Note, char> PianoKeybinder::GetNoteChars() const {
   std::map<music::Note, char> note_chars;
 
