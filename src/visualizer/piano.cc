@@ -111,6 +111,20 @@ void Piano::ShiftView(int displacement) {
   }
 }
 
+void Piano::SetKeyLabels(const std::map<music::Note, char>& note_labels) {
+  // First empty all key labels
+  for (PianoKey& key : keys_) {
+    key.SetLabel(" ");
+  }
+
+  // Set new key labels
+  for (const auto& note_label : note_labels) {
+    PianoKey& key = GetKey(note_label.first);
+    std::string label(1, note_label.second);
+    key.SetLabel(label);
+  }
+}
+
 const PianoKey& Piano::GetPianoKey(int index) const {
   return keys_.at(index);
 }
@@ -160,30 +174,6 @@ PianoKey& Piano::GetKey(const music::Note& note) {
   size_t semitone_index = note.GetSemitoneIndex();
   size_t key_index = semitone_index - first_semitone_;
   return keys_.at(key_index);
-}
-
-void Piano::SetKeyLabels(const std::vector<music::Note, char>& key_labels) {
-  // First empty all key labels
-  for (PianoKey& key : keys_) {
-    key.SetLabel(" ");
-  }
-
-  // Create map of KeyEvents to chars for efficient lookup
-  std::map<int, char> key_events;
-  for (KeyEvent key_event : kWhiteKeyCodes) {
-    key_events[key_event.key_code_] = key_event.key_char_;
-  }
-  for (KeyEvent key_event : kBlackKeyCodes) {
-    key_events[key_event.key_code_] = key_event.key_char_;
-  }
-
-  // Set new key labels
-  for (const auto& keybind : keybinds_) {
-    int key_code = keybind.first;
-    PianoKey* key = keybind.second;
-    char key_char = std::toupper(key_events.at(key_code));
-    key->SetLabel(std::string(1, key_char));
-  }
 }
 
 void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,

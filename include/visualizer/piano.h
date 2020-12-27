@@ -67,6 +67,15 @@ class Piano {
   void ShiftView(int displacement);
 
   /**
+   * Sets the labels of the keys on the keyboard. Given a map of music notes to
+   *   characters
+   * @param note_labels a map of music notes to characters. Every Piano Key
+   *   corresponding to a music note will be given a label (given by the map
+   *   values)
+   */
+  void SetKeyLabels(const std::map<music::Note, char>& note_labels);
+
+  /**
    * "Plays a key" on the keyboard. corresponding to a given music::Note.
    *   Calling this method will temporarily change the color of the key that
    *   was played. The color of the key will remain changed until release_key is
@@ -154,15 +163,6 @@ class Piano {
    * @return a size_t representing the number of natural notes on the keyboard
    */
   const size_t CountWhiteKeys() const;
-
-  /**
-   * Sets the labels of the keys on the keyboard. Given a map of music notes to
-   *   characters
-   * @param key_labels a map of music notes to characters. Every Piano Key
-   *   corresponding to a music note will be given a label (given by the map
-   *   values)
-   */
-  void SetKeyLabels(const std::vector<music::Note, char>& key_labels);
 
   /**
    * Draws all the PianoKeys in the current view

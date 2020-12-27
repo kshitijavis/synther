@@ -2,12 +2,12 @@
 // Created by Kshitij Sinha on 11/19/20.
 //
 #include "visualizer/piano.h"
+#include "core/piano_keybinder.h"
 
 #include <catch2/catch.hpp>
 #include <vector>
 
 #include "cinder/Color.h"
-#include "cinder/app/App.h"
 #include "core/music_note.h"
 #include "visualizer/piano_key.h"
 
@@ -15,6 +15,7 @@ using synther::music::Accidental;
 using synther::music::Note;
 using synther::visualizer::Piano;
 using synther::visualizer::PianoKey;
+using synther::PianoKeybinder;
 
 TEST_CASE("Constructor correctly initializes single-octave piano",
           "[constructor]") {
@@ -97,20 +98,30 @@ TEST_CASE("Constructor correctly initializes piano with offset first_semitone",
 }
 
 TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
-  SECTION("Constructor on standard piano with single-octave view") {
+  SECTION("Standard piano with single-octave view") {
     size_t piano_size = 88;
     size_t view_whitekey_count = 8;
     size_t view_first_key = 0;
     Piano piano(glm::dvec2(0, 0), 5, 5, 9, piano_size, view_whitekey_count);
 
+    // Get expected labels
     std::vector<std::string> expected_labels = {
         "A", "W", "S", "D", "R", "F", "T", "G", "H", "U", "J", "I", "K"};
+
+    // Get actual labels automatically using keybinder
+    PianoKeybinder keybinder;
+    keybinder.SetKeyBinds(piano.GetPianoKeysInView());
+    auto t = keybinder.GetNoteChars();
+    piano.SetKeyLabels(t);
 
     size_t view_key_count = 13;
     size_t label_ind = 0;
     for (size_t key_ind = 0; key_ind < piano_size; key_ind++) {
+      // All keys except those in view window have labels
       std::string expected_label = " ";
+
       if (key_ind >= view_first_key && key_ind < view_key_count) {
+        // Key is in view window
         expected_label = expected_labels.at(label_ind);
         label_ind++;
       }
