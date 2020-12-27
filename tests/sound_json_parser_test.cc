@@ -48,6 +48,27 @@ TEST_CASE("Correctly parses filenames", "[getfilenames]") {
   }
 }
 
+TEST_CASE("Correctly extracts vector of note names", "[getnotes][parsenote]") {
+  SECTION("JSON containing notes for standard piano (88 files)") {
+    std::fstream json("../assets/sounds/piano/details.json");
+    SoundJsonParser parser(json);
+    std::vector<Note> actual = parser.GetNotes();
+    std::vector<Note> expected_subset{
+        Note(5, 'A', Accidental::Natural),
+        Note(2, 'G', Accidental::Flat),
+        Note(6, 'E', Accidental::Flat),
+        Note(8, 'C', Accidental::Natural),
+        Note(7, 'F', Accidental::Natural),
+        Note(6, 'D', Accidental::Flat)
+    };
+
+    REQUIRE(actual.size() == 88);
+    for (size_t ind = 0; ind < expected_subset.size(); ind++) {
+      REQUIRE(actual.at(ind) == expected_subset.at(ind));
+    }
+  }
+}
+
 TEST_CASE("Correctly parses note string", "[parsenote]") {
   std::fstream json("../assets/sounds/piano/details.json");
   SoundJsonParser parser(json);

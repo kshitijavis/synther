@@ -116,6 +116,7 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
   }
   audio::SoundJsonParser parser(json);
 
+  // Update state
   instrument_ = parser.GetInstrumentName();
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
 }

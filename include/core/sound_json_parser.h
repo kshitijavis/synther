@@ -56,6 +56,13 @@ class SoundJsonParser {
   std::map<music::Note, std::string> GetNoteFiles() const;
 
   /**
+   * Parses all note names in the JSON and returns a vector of the corresponding
+   *   music::Notes
+   * @return a vector of notes that appear in the JSON
+   */
+  std::vector<music::Note> GetNotes() const;
+
+  /**
    * Converts a string representing a music note into a music::Note object
    * @param note_string. A String representing a music note.
    *   Expected that the note_string is a string of at least 2 characters, where

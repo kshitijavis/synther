@@ -61,6 +61,22 @@ std::map<music::Note, std::string> SoundJsonParser::GetNoteFiles() const {
   return note_files;
 }
 
+std::vector<music::Note> SoundJsonParser::GetNotes() const {
+  // Get raw note string to filename map from JSON
+  std::map<std::string, std::string> note_files =
+      sound_details_.at(kSoundFilesKey)
+          .get<std::map<std::string, std::string>>();
+
+  // Extract all notes from map (stored as keys)
+  std::vector<music::Note> notes;
+  notes.reserve(note_files.size()); // Reserve space for efficient push_pack
+  for (const auto& note_file : note_files) {
+    notes.push_back(ParseNoteString(note_file.first));
+  }
+
+  return notes;
+}
+
 music::Note SoundJsonParser::ParseNoteString(
     const std::string& note_string) const {
   if (note_string.length() < 2) {
@@ -87,7 +103,7 @@ music::Note SoundJsonParser::ParseNoteString(
   std::string octave_digits = note_string.substr(last_index + 1);
   int octave = std::stoi(octave_digits);
 
-  return {octave, letter, accidental}; // Construct and return a music::Note
+  return {octave, letter, accidental};  // Construct and return a music::Note
 }
 
 }  // namespace audio
