@@ -111,6 +111,20 @@ void Piano::ShiftView(int displacement) {
   }
 }
 
+void Piano::SetKeyLabels(const std::map<music::Note, std::string>& note_labels) {
+  // First empty all key labels
+  for (PianoKey& key : keys_) {
+    key.SetLabel(" ");
+  }
+
+  // Set new key labels
+  for (const auto& note_label : note_labels) {
+    PianoKey& key = GetPianoKey(note_label.first);
+    std::string label = note_label.second;
+    key.SetLabel(label);
+  }
+}
+
 void Piano::SetKeyLabels(const std::map<music::Note, char>& note_labels) {
   // First empty all key labels
   for (PianoKey& key : keys_) {
@@ -120,7 +134,7 @@ void Piano::SetKeyLabels(const std::map<music::Note, char>& note_labels) {
   // Set new key labels
   for (const auto& note_label : note_labels) {
     PianoKey& key = GetPianoKey(note_label.first);
-    std::string label(1, note_label.second);
+    std::string label = std::string(1, note_label.second);
     key.SetLabel(label);
   }
 }

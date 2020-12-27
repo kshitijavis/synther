@@ -111,8 +111,7 @@ TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
     // Get actual labels automatically using keybinder
     PianoKeybinder keybinder;
     keybinder.SetKeyBinds(piano.GetPianoKeysInView());
-    auto t = keybinder.GetNoteChars();
-    piano.SetKeyLabels(t);
+    piano.SetKeyLabels(keybinder.GetNoteChars());
 
     size_t view_key_count = 13;
     size_t label_ind = 0;

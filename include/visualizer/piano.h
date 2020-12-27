@@ -68,6 +68,15 @@ class Piano {
 
   /**
    * Sets the labels of the keys on the keyboard. Given a map of music notes to
+   *   strings
+   * @param note_labels a map of music notes to strings. Every Piano Key
+   *   corresponding to a music note will be given a label (given by the map
+   *   values)
+   */
+  void SetKeyLabels(const std::map<music::Note, std::string>& note_labels);
+
+  /**
+   * Sets the labels of the keys on the keyboard. Given a map of music notes to
    *   characters
    * @param note_labels a map of music notes to characters. Every Piano Key
    *   corresponding to a music note will be given a label (given by the map
