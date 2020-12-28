@@ -182,15 +182,6 @@ class Piano {
   int view_first_index_;
   size_t view_whitekey_count_;
 
-  // Keybinds
-  struct KeyEvent {
-    int key_code_;
-    char key_char_;
-  };
-  std::map<int, PianoKey*> keybinds_;
-  static const std::vector<KeyEvent> kBlackKeyCodes;
-  static const std::vector<KeyEvent> kWhiteKeyCodes;
-
   // Helper methods
   /**
    * Counts the number of natural notes/white keys on the keyboard
