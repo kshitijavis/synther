@@ -82,7 +82,7 @@ list(APPEND SOURCE_FILES src/core/piano_keybinder.cc)
 
 list(APPEND TEST_FILES tests/music_note_test.cc)
 list(APPEND TEST_FILES tests/piano_test.cc)
-list(APPEND TEST_FILES tests/soundsfile_parser_test.cc)
+list(APPEND TEST_FILES tests/sound_json_parser_test.cc)
 list(APPEND TEST_FILES tests/player_test.cc)
 list(APPEND TEST_FILES tests/pedal_test.cc)
 list(APPEND TEST_FILES tests/piano_keybinder_test.cc)

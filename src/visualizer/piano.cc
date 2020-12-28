@@ -16,24 +16,17 @@ namespace synther {
 
 namespace visualizer {
 
-const std::vector<Piano::KeyEvent> Piano::kBlackKeyCodes{
-    {ci::app::KeyEvent::KEY_q, 'q'}, {ci::app::KeyEvent::KEY_w, 'w'},
-    {ci::app::KeyEvent::KEY_e, 'e'}, {ci::app::KeyEvent::KEY_r, 'r'},
-    {ci::app::KeyEvent::KEY_t, 't'}, {ci::app::KeyEvent::KEY_y, 'y'},
-    {ci::app::KeyEvent::KEY_u, 'u'}, {ci::app::KeyEvent::KEY_i, 'i'},
-    {ci::app::KeyEvent::KEY_o, 'o'}, {ci::app::KeyEvent::KEY_p, 'p'}};
-
-const std::vector<Piano::KeyEvent> Piano::kWhiteKeyCodes{
-    {ci::app::KeyEvent::KEY_a, 'a'}, {ci::app::KeyEvent::KEY_s, 's'},
-    {ci::app::KeyEvent::KEY_d, 'd'}, {ci::app::KeyEvent::KEY_f, 'f'},
-    {ci::app::KeyEvent::KEY_g, 'g'}, {ci::app::KeyEvent::KEY_h, 'h'},
-    {ci::app::KeyEvent::KEY_j, 'j'}, {ci::app::KeyEvent::KEY_k, 'k'},
-    {ci::app::KeyEvent::KEY_l, 'l'}, {ci::app::KeyEvent::KEY_SEMICOLON, ';'}};
-
 const std::string Piano::kBackgroundColor = "gray";
 const std::string Piano::kOutlineColor = "gold";
 const std::string Piano::kOctaveMarkerColor = "white";
 const std::string Piano::kFontName = "ToppanBunkyuGothicPr6N-DB";
+
+Piano::Piano(const glm::dvec2& top_left_corner, double width, double height)
+    : top_left_corner_(top_left_corner),
+      width_(width),
+      height_(height),
+      first_semitone_(0) {
+}
 
 Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
              int first_semitone, size_t key_count, size_t view_whitekey_count)
@@ -41,7 +34,20 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
       width_(width),
       height_(height),
       first_semitone_(first_semitone) {
-  // Initialize keys_
+  SetKeys(first_semitone, key_count, view_whitekey_count);
+}
+
+void Piano::SetKeys(int first_semitone, size_t key_count,
+                    size_t view_whitekey_count) {
+  if (key_count == 0) {
+    return;
+  }
+
+  first_semitone_ = first_semitone;
+
+  // Empty list of keys and set new keys given parameters
+  keys_.clear();
+  keys_.reserve(key_count);
   for (int semitone = first_semitone_; semitone < first_semitone_ + key_count;
        semitone++) {
     music::Note to_add(semitone, kPriority);
@@ -53,7 +59,7 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
 
   // Set view_first_index_ and ensure that it represents a white key,
   // i.e. a natural-note
-  music::Note first_note(first_semitone, kPriority);
+  const music::Note& first_note = keys_.at(0).GetNote();
   if (first_note.GetAccidental() == music::Accidental::Natural) {
     view_first_index_ = 0;
   } else {
@@ -61,7 +67,7 @@ Piano::Piano(const glm::dvec2& top_left_corner, double width, double height,
     view_first_index_ = 1;
   }
 
-  // Set view_whitekey_count_ to the input parameters, unless there are fewer
+  // Set view_whitekey_count_ to the input parameter, unless there are fewer
   // white keys on the keyboard than specified by the input
   view_whitekey_count_ = std::min(CountWhiteKeys(), view_whitekey_count);
 }
@@ -111,7 +117,8 @@ void Piano::ShiftView(int displacement) {
   }
 }
 
-void Piano::SetKeyLabels(const std::map<music::Note, std::string>& note_labels) {
+void Piano::SetKeyLabels(
+    const std::map<music::Note, std::string>& note_labels) {
   // First empty all key labels
   for (PianoKey& key : keys_) {
     key.SetLabel(" ");
@@ -225,7 +232,7 @@ void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
       glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
       key.DrawWithLabel(black_top_left, black_key_width, black_key_height,
                         kFontName);
-      key_index += 2; // Increment by two because we drew a white and black key
+      key_index += 2;  // Increment by two because we drew a white and black key
     }
     left_edge += white_key_width;
     white_keys_drawn++;

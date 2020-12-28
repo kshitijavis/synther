@@ -2,13 +2,14 @@
 // Created by Kshitij Sinha on 11/29/20.
 //
 
+#include "core/sound_json_parser.h"
+
 #include <catch2/catch.hpp>
 #include <fstream>
 #include <map>
 #include <string>
 
 #include "core/music_note.h"
-#include "core/sound_json_parser.h"
 
 using synther::audio::SoundJsonParser;
 using synther::music::Accidental;
@@ -44,6 +45,25 @@ TEST_CASE("Correctly parses filenames", "[getfilenames]") {
       Note note = expected_pair.first;
       std::string expected_filename = expected_pair.second;
       REQUIRE(actual.at(note) == expected_filename);
+    }
+  }
+}
+
+TEST_CASE("Correctly extracts vector of note names", "[getnotes][parsenote]") {
+  SECTION("JSON containing notes for standard piano (88 files)") {
+    std::fstream json("../assets/sounds/piano/details.json");
+    SoundJsonParser parser(json);
+    std::vector<Note> actual = parser.GetNotes();
+    std::vector<Note> expected_subset{
+        Note(5, 'A', Accidental::Natural), Note(2, 'G', Accidental::Flat),
+        Note(6, 'E', Accidental::Flat),    Note(8, 'C', Accidental::Natural),
+        Note(7, 'F', Accidental::Natural), Note(6, 'D', Accidental::Flat)};
+
+    REQUIRE(actual.size() == 88);
+    for (const Note& expected_note : expected_subset) {
+      bool actual_contains_note = std::find(actual.begin(), actual.end(),
+                                            expected_note) != actual.end();
+      REQUIRE(actual_contains_note);
     }
   }
 }
@@ -90,6 +110,7 @@ TEST_CASE("Correctly parses note string", "[parsenote]") {
 
   SECTION("Invalid note: length too small") {
     std::string note_string = "C";
-    REQUIRE_THROWS_AS(parser.ParseNoteString(note_string), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseNoteString(note_string),
+                      std::invalid_argument);
   }
 }

@@ -34,7 +34,19 @@ namespace visualizer {
 class Piano {
  public:
   /**
-   * Constructs a piano for visualization
+   * Constructs an empty piano for visualization. On construction, the
+   *   piano does not have any keys. SetKeys() must be called to initialize
+   *   the set of keys
+   * @param top_left_corner the screen coordinates of the top left corner of
+   *   the piano, in pixels
+   * @param width the width of the piano in pixels
+   * @param height the height of the piano in pixels
+   */
+  Piano(const glm::dvec2& top_left_corner, double width, double height);
+
+  /**
+   * Constructs a filled piano for visualization. This constructor sets up
+   *   the piano keys on construction
    * @param top_left_corner the screen coordinates of the top left corner of
    *   the piano, in pixels
    * @param width the width of the piano in pixels
@@ -55,6 +67,19 @@ class Piano {
    *   and last keys on the display will always be white keys.
    */
   void Draw() const;
+
+  /**
+   * Sets the size and position of the entire virtual piano given the following
+   *   parameters
+   * @param first_semitone the starting note of the piano, specified by
+   *   its semitone distance from C0, where C0 has a semitone of 0. It is
+   *   recommended that first_semitone represents a white key
+   * @param key_count the number of keys on the piano
+   * @param view_whitekey_count the number of white keys to display on the
+   *   piano when Draw() is called
+   */
+  void SetKeys(int first_semitone, size_t key_count,
+               size_t view_whitekey_count = 20);
 
   /**
    * Shifts the view of the keyboard up/down depending on the input parameter
@@ -156,15 +181,6 @@ class Piano {
   // View window
   int view_first_index_;
   size_t view_whitekey_count_;
-
-  // Keybinds
-  struct KeyEvent {
-    int key_code_;
-    char key_char_;
-  };
-  std::map<int, PianoKey*> keybinds_;
-  static const std::vector<KeyEvent> kBlackKeyCodes;
-  static const std::vector<KeyEvent> kWhiteKeyCodes;
 
   // Helper methods
   /**

@@ -2,20 +2,20 @@
 // Created by Kshitij Sinha on 11/19/20.
 //
 #include "visualizer/piano.h"
-#include "core/piano_keybinder.h"
 
 #include <catch2/catch.hpp>
 #include <vector>
 
 #include "cinder/Color.h"
 #include "core/music_note.h"
+#include "core/piano_keybinder.h"
 #include "visualizer/piano_key.h"
 
+using synther::PianoKeybinder;
 using synther::music::Accidental;
 using synther::music::Note;
 using synther::visualizer::Piano;
 using synther::visualizer::PianoKey;
-using synther::PianoKeybinder;
 
 TEST_CASE("Constructor correctly initializes single-octave piano",
           "[constructor]") {
@@ -97,6 +97,90 @@ TEST_CASE("Constructor correctly initializes piano with offset first_semitone",
   }
 }
 
+TEST_CASE("Set keys correctly resets the keys of the piano",
+          "[constructor][setkeys]") {
+  Piano piano(glm::dvec2(0, 0), 5, 5);
+
+  SECTION("Single-octave piano") {
+    piano.SetKeys(9, 12, 10);
+
+    std::vector<Note> expected_notes{
+        Note(0, 'A', Accidental::Natural), Note(0, 'A', Accidental::Sharp),
+        Note(0, 'B', Accidental::Natural), Note(1, 'C', Accidental::Natural),
+        Note(1, 'C', Accidental::Sharp),   Note(1, 'D', Accidental::Natural),
+        Note(1, 'D', Accidental::Sharp),   Note(1, 'E', Accidental::Natural),
+        Note(1, 'F', Accidental::Natural), Note(1, 'F', Accidental::Sharp),
+        Note(1, 'G', Accidental::Natural), Note(1, 'G', Accidental::Sharp)};
+
+    REQUIRE(piano.GetKeyCount() == 12);
+    for (size_t index = 0; index < expected_notes.size(); index++) {
+      REQUIRE(piano.GetPianoKey(index).GetNote() == expected_notes.at(index));
+    }
+  }
+
+  SECTION("Single-octave piano") {
+    piano.SetKeys(9, 12, 10);
+
+    std::vector<Note> expected_notes{
+        Note(0, 'A', Accidental::Natural), Note(0, 'A', Accidental::Sharp),
+        Note(0, 'B', Accidental::Natural), Note(1, 'C', Accidental::Natural),
+        Note(1, 'C', Accidental::Sharp),   Note(1, 'D', Accidental::Natural),
+        Note(1, 'D', Accidental::Sharp),   Note(1, 'E', Accidental::Natural),
+        Note(1, 'F', Accidental::Natural), Note(1, 'F', Accidental::Sharp),
+        Note(1, 'G', Accidental::Natural), Note(1, 'G', Accidental::Sharp)};
+
+    REQUIRE(piano.GetKeyCount() == 12);
+    for (size_t index = 0; index < expected_notes.size(); index++) {
+      REQUIRE(piano.GetPianoKey(index).GetNote() == expected_notes.at(index));
+    }
+  }
+
+  SECTION("Multi-octave piano") {
+    piano.SetKeys(9, 24);
+
+    std::vector<Note> expected_notes{
+        Note(1, 'A', Accidental::Natural), Note(1, 'A', Accidental::Sharp),
+        Note(1, 'B', Accidental::Natural), Note(2, 'C', Accidental::Natural),
+        Note(2, 'C', Accidental::Sharp),   Note(2, 'D', Accidental::Natural),
+        Note(2, 'D', Accidental::Sharp),   Note(2, 'E', Accidental::Natural),
+        Note(2, 'F', Accidental::Natural), Note(2, 'F', Accidental::Sharp),
+        Note(2, 'G', Accidental::Natural), Note(2, 'G', Accidental::Sharp)};
+
+    REQUIRE(piano.GetKeyCount() == 24);
+    for (size_t index = 13; index < expected_notes.size(); index++) {
+      REQUIRE(piano.GetPianoKey(index).GetNote() == expected_notes.at(index));
+    }
+  }
+
+  SECTION(
+      "Calling SetKeys() resets keyboard every time. If SetKeys() is called "
+      "multiple times, the last call determines the state of the piano") {
+
+    // Call SetKeys() an arbitrary number of times with arbitrary parameters
+    piano.SetKeys(100, 50);
+    piano.SetKeys(0, 0);
+    piano.SetKeys(51235, 12309, 120);
+    piano.SetKeys(-20, 2, 0);
+
+    // Use SetKeys() to create single-octave piano
+    piano.SetKeys(9, 12, 10);
+
+    // Check that piano state matches last call to SetKeys()
+    std::vector<Note> expected_notes{
+        Note(0, 'A', Accidental::Natural), Note(0, 'A', Accidental::Sharp),
+        Note(0, 'B', Accidental::Natural), Note(1, 'C', Accidental::Natural),
+        Note(1, 'C', Accidental::Sharp),   Note(1, 'D', Accidental::Natural),
+        Note(1, 'D', Accidental::Sharp),   Note(1, 'E', Accidental::Natural),
+        Note(1, 'F', Accidental::Natural), Note(1, 'F', Accidental::Sharp),
+        Note(1, 'G', Accidental::Natural), Note(1, 'G', Accidental::Sharp)};
+
+    REQUIRE(piano.GetKeyCount() == 12);
+    for (size_t index = 0; index < expected_notes.size(); index++) {
+      REQUIRE(piano.GetPianoKey(index).GetNote() == expected_notes.at(index));
+    }
+  }
+}
+
 TEST_CASE("Key labels are set correctly", "[constructor][keylabel]") {
   SECTION("Standard piano with single-octave view") {
     size_t piano_size = 88;
@@ -166,14 +250,10 @@ TEST_CASE("Correctly collects and returns all PianoKeys in view",
     piano.ShiftView(47);
 
     std::vector<Note> expected_notes_in_view{
-        Note(7, 'F', Accidental::Natural),
-        Note(7, 'F', Accidental::Sharp),
-        Note(7, 'G', Accidental::Natural),
-        Note(7, 'G', Accidental::Sharp),
-        Note(7, 'A', Accidental::Natural),
-        Note(7, 'A', Accidental::Sharp),
-        Note(7, 'B', Accidental::Natural),
-        Note(8, 'C', Accidental::Natural),
+        Note(7, 'F', Accidental::Natural), Note(7, 'F', Accidental::Sharp),
+        Note(7, 'G', Accidental::Natural), Note(7, 'G', Accidental::Sharp),
+        Note(7, 'A', Accidental::Natural), Note(7, 'A', Accidental::Sharp),
+        Note(7, 'B', Accidental::Natural), Note(8, 'C', Accidental::Natural),
     };
 
     std::vector<PianoKey> actual_keys_in_view = piano.GetPianoKeysInView();
