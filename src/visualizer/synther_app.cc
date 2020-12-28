@@ -13,14 +13,13 @@ namespace visualizer {
 SyntherApp::SyntherApp()
     : piano_(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
                                           kInstrumentTextPadding),
-             kWindowWidth - 2 * kSidePadding, kPianoHeight, kFirstSemitoneIndex,
-             kKeyCount, kViewWhitekeyCount),
+             kWindowWidth - 2 * kSidePadding, kPianoHeight),
       player_(kStandardResonation) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
 void SyntherApp::setup() {
-  UpdateKeybindsAndLabels();
+  // Set up instrument, keyboard, and keybinds
   SetupInstrument(kDefaultSoundJson);
 
   // Setup sustain pedal
@@ -75,7 +74,6 @@ void SyntherApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_n: {
       std::string instrument_asset_path = RequestInstrumentDirectory();
       SetupInstrument(instrument_asset_path);
-      BuildPianoFromPlayer();
       break;
     }
     case ci::app::KeyEvent::KEY_SPACE:
@@ -119,22 +117,13 @@ void SyntherApp::SetupInstrument(const std::string& asset_directory) {
   // Update state
   instrument_ = parser.GetInstrumentName();
   player_.SetUpVoices(parser.GetNoteFiles(), asset_directory);
-}
 
-void SyntherApp::BuildPianoFromPlayer() {
-  std::vector<music::Note> notes = player_.GetPlayableNotes();
-  // If player has no notes, then the piano cannot be initialized
-  if (notes.size() == 0) {
-    return;
-  }
-
+  // Update keyboard to match size of new instrument
+  const std::vector<music::Note>& notes = parser.GetNotes();
   auto first_note = std::min_element(notes.begin(), notes.end());
-  int first_semitone = first_note->GetSemitoneIndex();
   int note_count = notes.size();
-  piano_ = Piano(glm::dvec2(kSidePadding, kTopPadding + kInstrumentTextHeight +
-                                              kInstrumentTextPadding),
-                 kWindowWidth - 2 * kSidePadding, kPianoHeight, first_semitone,
-                 note_count, kViewWhitekeyCount);
+  piano_.SetKeys(first_note->GetSemitoneIndex(), note_count,
+                 kViewWhitekeyCount);
   UpdateKeybindsAndLabels();
 }
 

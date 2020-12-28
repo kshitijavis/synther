@@ -124,13 +124,6 @@ class SyntherApp : public ci::app::App {
   void SetupInstrument(const std::string& asset_directory);
 
   /**
-   * Sets up the piano based on the current state of the player. Uses
-   *   the player's starting note and the number of notes stored in the player
-   *   to create a corresponding piano
-   */
-  void BuildPianoFromPlayer();
-
-  /**
    * Toggles the resonate duration of the player. If duration is currently set
    *   to standard, switches to sustained, and vice versa.
    */

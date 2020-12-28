@@ -19,11 +19,6 @@ TEST_CASE("Correctly parses simple key-value pairs",
           "[getinstrumentname][getorganizationname][getperformername]") {
   SECTION("JSON containing all pairs") {
     std::fstream json("../assets/sounds/piano/details.json");
-    if (json.is_open()) {
-      std::cout << "yah";
-    } else {
-      std::cout << "nah";
-    }
     SoundJsonParser parser(json);
     REQUIRE(parser.GetInstrumentName() == "Acoustic Piano");
     REQUIRE(parser.GetOrganizationName() ==
