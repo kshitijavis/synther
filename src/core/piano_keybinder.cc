@@ -60,12 +60,28 @@ bool PianoKeybinder::IsKeybind(int key_code) const {
   return keybinds_.find(key_code) != keybinds_.end();
 }
 
+bool PianoKeybinder::IsPressedKeybind(int key_code) const {
+  return pressed_keybinds_.find(key_code) != pressed_keybinds_.end();
+}
+
 const music::Note& PianoKeybinder::PressKey(int key_code) {
   auto it = keybinds_.find(key_code);
   if (it == keybinds_.end()) {
     throw std::invalid_argument("No piano key bound to the given key_event");
   }
 
+  pressed_keybinds_.emplace(key_code, it->second);
+  return it->second;
+}
+
+const music::Note& PianoKeybinder::ReleaseKey(int key_code) {
+  auto it = pressed_keybinds_.find(key_code);
+  if (it == pressed_keybinds_.end()) {
+    throw std::invalid_argument(
+        "Keybind corresponding to given key_event has not yet been pressed");
+  }
+
+  pressed_keybinds_.erase(it);
   return it->second;
 }
 
