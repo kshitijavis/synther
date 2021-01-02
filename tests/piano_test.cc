@@ -244,17 +244,16 @@ TEST_CASE("Correctly collects and returns all PianoKeys in view",
     REQUIRE(piano.GetPianoKeysInView().size() == 27);
   }
 
-  SECTION("Standard piano after shifted view") {
-    Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
-    // Shift up to F7 natural
-    piano.ShiftView(47);
+  SECTION("Piano where first and last semitones are a black keys") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 10, 13, 8);
 
     std::vector<Note> expected_notes_in_view{
-        Note(7, 'F', Accidental::Natural), Note(7, 'F', Accidental::Sharp),
-        Note(7, 'G', Accidental::Natural), Note(7, 'G', Accidental::Sharp),
-        Note(7, 'A', Accidental::Natural), Note(7, 'A', Accidental::Sharp),
-        Note(7, 'B', Accidental::Natural), Note(8, 'C', Accidental::Natural),
-    };
+        Note(0, 'B', Accidental::Natural), Note(1, 'C', Accidental::Natural),
+        Note(1, 'C', Accidental::Sharp),   Note(1, 'D', Accidental::Natural),
+        Note(1, 'D', Accidental::Sharp),   Note(1, 'E', Accidental::Natural),
+        Note(1, 'F', Accidental::Natural), Note(1, 'F', Accidental::Sharp),
+        Note(1, 'G', Accidental::Natural), Note(1, 'G', Accidental::Sharp),
+        Note(1, 'A', Accidental::Natural)};
 
     std::vector<PianoKey> actual_keys_in_view = piano.GetPianoKeysInView();
 

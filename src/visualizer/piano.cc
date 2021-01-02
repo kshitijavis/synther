@@ -44,6 +44,7 @@ void Piano::SetKeys(int first_semitone, size_t key_count,
   }
 
   first_semitone_ = first_semitone;
+  view_whitekey_count_ = view_whitekey_count;
 
   // Empty list of keys and set new keys given parameters
   keys_.clear();
@@ -66,10 +67,6 @@ void Piano::SetKeys(int first_semitone, size_t key_count,
     // The key is not a natural, so shift view up to the next natural semitone
     view_first_index_ = 1;
   }
-
-  // Set view_whitekey_count_ to the input parameter, unless there are fewer
-  // white keys on the keyboard than specified by the input
-  view_whitekey_count_ = std::min(CountWhiteKeys(), view_whitekey_count);
 }
 
 void Piano::Draw() const {
@@ -103,15 +100,27 @@ void Piano::ShiftView(int displacement) {
 
     if (displacement < 0) {
       view_first_index_--;
-      // shift down again if view_first is on black key
-      if (keys_.at(view_first_index_).GetType() == PianoKeyType::Black) {
-        view_first_index_--;
+
+      // Shift again if view_first is on black key
+      const PianoKey& first_key = keys_.at(view_first_index_);
+      if (first_key.GetType() == PianoKeyType::Black) {
+        if (view_first_index_ == 0) {
+          view_first_index_++; // Can't move farther down, so move back up
+        } else {
+          view_first_index_--; // Move farther down to next white key
+        }
       }
     } else if (displacement > 0) {
       view_first_index_++;
-      // shift up again if view_first is on black key
-      if (keys_.at(view_first_index_).GetType() == PianoKeyType::Black) {
-        view_first_index_++;
+
+      // Shift again if view_first is on black key
+      const PianoKey& first_key = keys_.at(view_first_index_);
+      if (first_key.GetType() == PianoKeyType::Black) {
+        if (view_first_index_ == keys_.size() - 1) {
+          view_first_index_--; // Can't move farther up, so move back down
+        } else {
+          view_first_index_++; // Move farther up to next white key
+        }
       }
     }
   }
@@ -164,6 +173,12 @@ std::vector<PianoKey> Piano::GetPianoKeysInView() const {
       white_keys_drawn++;
     }
     key_index++;
+  }
+
+  // Trim black keys at end because they cannot be drawn
+  if (!keys_in_view.empty() &&
+      keys_in_view.back().GetType() == PianoKeyType::Black) {
+    keys_in_view.pop_back();
   }
 
   return keys_in_view;
