@@ -213,18 +213,16 @@ void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
   double top_edge = top_left_corner.y;
   double left_edge = top_left_corner.x;
 
-  size_t key_index = std::max(0, view_first_index_);
-  size_t white_keys_drawn = 0;
-  while (white_keys_drawn < view_whitekey_count_ && key_index < keys_.size()) {
-    const PianoKey key = keys_.at(key_index);
+  const std::vector<PianoKey> keys_in_view = GetPianoKeysInView();
+  for (size_t key_index = 0; key_index < keys_in_view.size(); key_index++) {
+    const PianoKey& key = keys_in_view.at(key_index);
 
     if (key.GetType() == PianoKeyType::White) {
       glm::vec2 top_left(left_edge, top_edge);
       key.DrawWithLabel(top_left, white_key_width, white_key_height, kFontName);
-      key_index++;
     } else if (key.GetType() == PianoKeyType::Black) {
       // Draw next white key
-      const PianoKey next_white = keys_.at(key_index + 1);
+      const PianoKey next_white = keys_in_view.at(key_index + 1);
       glm::vec2 white_top_left(left_edge, top_edge);
       next_white.DrawWithLabel(white_top_left, white_key_width,
                                white_key_height, kFontName);
@@ -232,10 +230,9 @@ void Piano::DrawKeys(const glm::dvec2& top_left_corner, double width,
       glm::vec2 black_top_left(left_edge - (black_key_width / 2), top_edge);
       key.DrawWithLabel(black_top_left, black_key_width, black_key_height,
                         kFontName);
-      key_index += 2;  // Increment by two because we drew a white and black key
+      key_index++;  // Extra increment because we drew a white and black key
     }
     left_edge += white_key_width;
-    white_keys_drawn++;
   }
 }
 

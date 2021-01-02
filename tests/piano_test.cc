@@ -265,6 +265,28 @@ TEST_CASE("Correctly collects and returns all PianoKeys in view",
       REQUIRE(expected_note == actual_note);
     }
   }
+
+  SECTION("Standard piano after shifted view") {
+    Piano piano(glm::dvec2(0, 0), 5, 5, 9, 88, 20);
+    // Shift up to F7 natural
+    piano.ShiftView(47);
+
+    std::vector<Note> expected_notes_in_view{
+        Note(7, 'F', Accidental::Natural), Note(7, 'F', Accidental::Sharp),
+        Note(7, 'G', Accidental::Natural), Note(7, 'G', Accidental::Sharp),
+        Note(7, 'A', Accidental::Natural), Note(7, 'A', Accidental::Sharp),
+        Note(7, 'B', Accidental::Natural), Note(8, 'C', Accidental::Natural),
+    };
+
+    std::vector<PianoKey> actual_keys_in_view = piano.GetPianoKeysInView();
+
+    REQUIRE(expected_notes_in_view.size() == actual_keys_in_view.size());
+    for (int ind = 0; ind < expected_notes_in_view.size(); ind++) {
+      const Note& expected_note = expected_notes_in_view.at(ind);
+      const Note& actual_note = actual_keys_in_view.at(ind).GetNote();
+      REQUIRE(expected_note == actual_note);
+    }
+  }
 }
 
 TEST_CASE("GetPianoKey correctly retrieves key from note using semitones") {
